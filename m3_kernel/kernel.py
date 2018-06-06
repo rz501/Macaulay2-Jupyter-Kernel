@@ -14,22 +14,31 @@ class M2Kernel(Kernel):
     banner = 'add banner later'
 
     counter  = 1
-    sentinel = ' --m2jk_sentinel'
+    sentinel = '--m2jk_sentinel'
     proc = pexpect.spawn('/Applications/Macaulay2-1.9.2/bin/M2 --silent --no-readline --no-debug')#, encoding='UTF-8')
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
 
-        # process comment-only cells
+        # strip comments
 
         if not silent:
+            skip = 4 + len(str(self.counter))
+            seek_out = 'o{} : '.format(self.counter)
             self.counter += 1
-            seek_msg = '\r\ni{} : '.format(self.counter)
+            seek_in  = '\r\ni{} : '.format(self.counter)
 
             self.proc.sendline(code + self.sentinel)
             self.proc.expect([self.sentinel + '\r\n'])
-            self.proc.expect([seek_msg])
+            self.proc.expect([seek_in])
+
+            # stream_content = {'name': 'stdout', 'text': code+self.sentinel}
+            # self.send_response(self.iopub_socket, 'stream', stream_content)
 
             output = self.proc.before.decode()
+            # output = (' ' * skip) + seek_out + '\r\n' + output
+            # output = output.replace(seek_out, (' ' * skip) + '\u2A20 ') #u'\21E8')
+            # output = output[2:]
+            # output = '\n'.join([ line[skip:] for line in output.splitlines() ])
 
             display_content = {
                 'data': { 'text/plain': output },
