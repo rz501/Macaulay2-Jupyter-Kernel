@@ -1,3 +1,4 @@
+import re
 import pexpect
 from ipykernel.kernelbase import Kernel
 
@@ -15,26 +16,30 @@ class M2Kernel(Kernel):
 
     counter  = 1
     sentinel = '--m2jk_sentinel'
-    proc = pexpect.spawn('/Applications/Macaulay2-1.9.2/bin/M2 --silent --no-readline --no-debug')#, encoding='UTF-8')
+    proc = pexpect.spawn('/Applications/Macaulay2-1.9.2/bin/M2 --silent --no-readline --no-debug', encoding='UTF-8')
+    pattern = re.compile("^(?:.*)--m2jk_sentinel(?:\r?\n)+(.*?)(?:\r?\n)*i(\d+) : $", re.DOTALL)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
 
         # strip comments
 
         if not silent:
-            skip = 4 + len(str(self.counter))
-            seek_out = 'o{} : '.format(self.counter)
-            self.counter += 1
-            seek_in  = '\r\ni{} : '.format(self.counter)
+            # skip = 4 + len(str(self.counter))
+            # seek_out = 'o{} : '.format(self.counter)
+            # self.counter += 1
+            # seek_in  = '\r\ni{} : '.format(self.counter)
 
             self.proc.sendline(code + self.sentinel)
-            self.proc.expect([self.sentinel + '\r\n'])
-            self.proc.expect([seek_in])
+            self.proc.expect([self.pattern])
+            # self.proc.expect([seek_in])
 
-            # stream_content = {'name': 'stdout', 'text': code+self.sentinel}
+            # stream_content = {'name': 'stdout', 'text': self.proc.before.decode() }
             # self.send_response(self.iopub_socket, 'stream', stream_content)
 
-            output = self.proc.before.decode()
+            # output = self.proc.before.decode()
+            res = self.proc.match.groups()
+            output = res[0]
+            exec_count  = int(res[1])-1
             # output = (' ' * skip) + seek_out + '\r\n' + output
             # output = output.replace(seek_out, (' ' * skip) + '\u2A20 ') #u'\21E8')
             # output = output[2:]
@@ -43,13 +48,13 @@ class M2Kernel(Kernel):
             display_content = {
                 'data': { 'text/plain': output },
                 'metadata': {},
-                'execution_count': self.execution_count
+                'execution_count': exec_count
                 }
 
             self.send_response(self.iopub_socket, 'execute_result', display_content)
 
         return {'status': 'ok',
-                'execution_count': self.execution_count,
+                'execution_count': exec_count,
                 'payload': [],
                 'user_expressions': {}
                }
