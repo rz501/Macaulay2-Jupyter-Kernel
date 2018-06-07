@@ -14,47 +14,33 @@ class M2Kernel(Kernel):
     }
     banner = 'add banner later'
 
-    counter  = 1
-    sentinel = '--m2jk_sentinel'
     proc = pexpect.spawn('/Applications/Macaulay2-1.9.2/bin/M2 --silent --no-readline --no-debug', encoding='UTF-8')
-    pattern = re.compile("^(?:.*)--m2jk_sentinel(?:\r?\n)+(.*?)(?:\r?\n)*i(\d+) : $", re.DOTALL)
+    sentinel = '--m2jk_sentinel'
+    pattern  = re.compile("^(?:.*)--m2jk_sentinel(?:\s+\r?\n)*(.*?)\r?\n\r?\ni(\d+) : $", re.DOTALL)
+
+    def infer_output(self, raw_output, xcount):
+        indent = 4 + len(str(xcount))
+        return '\n'.join([ line[indent:] for line in raw_output.splitlines() ])
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
 
-        # strip comments
+        # strip comments from start of lines
+        # process cell magic
 
         if not silent:
-            # skip = 4 + len(str(self.counter))
-            # seek_out = 'o{} : '.format(self.counter)
-            # self.counter += 1
-            # seek_in  = '\r\ni{} : '.format(self.counter)
-
             self.proc.sendline(code + self.sentinel)
             self.proc.expect([self.pattern])
-            # self.proc.expect([seek_in])
 
-            # stream_content = {'name': 'stdout', 'text': self.proc.before.decode() }
-            # self.send_response(self.iopub_socket, 'stream', stream_content)
+            result = self.proc.match.groups()
+            xcount = int(result[1])-1
+            output = self.infer_output(result[0], xcount)
 
-            # output = self.proc.before.decode()
-            res = self.proc.match.groups()
-            output = res[0]
-            exec_count  = int(res[1])-1
-            # output = (' ' * skip) + seek_out + '\r\n' + output
-            # output = output.replace(seek_out, (' ' * skip) + '\u2A20 ') #u'\21E8')
-            # output = output[2:]
-            # output = '\n'.join([ line[skip:] for line in output.splitlines() ])
-
-            display_content = {
-                'data': { 'text/plain': output },
-                'metadata': {},
-                'execution_count': exec_count
-                }
-
-            self.send_response(self.iopub_socket, 'execute_result', display_content)
+            if output:
+                display_content = {'data': {'text/plain': output}, 'execution_count': xcount}
+                self.send_response(self.iopub_socket, 'execute_result', display_content)
 
         return {'status': 'ok',
-                'execution_count': exec_count,
+                'execution_count': xcount,
                 'payload': [],
                 'user_expressions': {}
                }
