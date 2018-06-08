@@ -18,6 +18,15 @@ class M2Kernel(Kernel):
     sentinel = '--m2jk_sentinel'
     pattern  = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
 
+    def clenup_input(self, code):
+        code = code.strip('\r')
+        code = re.sub(r'--.*\n', '', code)
+        code = code.replace('\n', ' ')
+        return code
+
+    def proc_cellmagic(self, code):
+        pass
+
     def reformat(self, buffer, xcount):
         indent = 4 + len(str(xcount))
         buffer = '\n'.join( reversed( buffer.splitlines() ) )
@@ -28,7 +37,6 @@ class M2Kernel(Kernel):
             return (buffer, None)
         else:
             res = ['\n'.join( reversed( item.splitlines() ) ) if item else None for item in match.groups()]
-            sep = '\n'+('\u2015' * 31)+'\n'
 
             [stdout, *results] = list(reversed(res))
 
@@ -43,11 +51,11 @@ class M2Kernel(Kernel):
                 return (stdout,'<pre>'+results[0]+'</pre>')
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
-
-        # strip comments from start of lines
-        # process cell magic
+        self.proc_cellmagic(code)
 
         if not silent:
+            code = self.clenup_input(code)
+
             self.proc.sendline(code + self.sentinel)
             self.proc.expect([self.pattern])
 
