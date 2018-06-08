@@ -38,9 +38,9 @@ class M2Kernel(Kernel):
                     item = '\n'.join([ line[indent:] for line in item.splitlines() ])
                     results[i] = item
             if results[1]:
-                return (stdout,sep.join(results))
+                return (stdout, '<pre>'+results[0]+'\n'+'<span style="color: gray">'+results[1]+'</span></pre>')
             else:
-                return (stdout,results[0])
+                return (stdout,'<pre>'+results[0]+'</pre>')
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
 
@@ -63,7 +63,9 @@ class M2Kernel(Kernel):
                 self.send_response(self.iopub_socket, 'stream', stdout_content)
 
             if output:
-                execute_content = {'data': {'text/plain': output}, 'execution_count': xcount}
+                # execute_content = {'data': {'text/plain': output}, 'execution_count': xcount}
+                output2 = '<pre>'+output+'</pre>'
+                execute_content = {'data': {'text/html': output2}, 'execution_count': xcount}
                 self.send_response(self.iopub_socket, 'execute_result', execute_content)
 
         return {'status': 'ok',
