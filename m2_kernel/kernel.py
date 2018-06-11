@@ -14,7 +14,8 @@ class M2Kernel(Kernel):
     }
     banner = 'add banner later'
 
-    proc = pexpect.spawn('/Applications/Macaulay2-1.9.2/bin/M2 --silent --no-readline --no-debug', encoding='UTF-8')
+    path = pexpect.which('M2')
+    proc = pexpect.spawn(path + ' --silent --no-readline --no-debug', encoding='UTF-8')
     sentinel = '--m2jk_sentinel'
     pattern  = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
 
