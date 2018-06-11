@@ -1,10 +1,10 @@
 from distutils.core import setup
 
 setup(
-    name='m3_kernel',
+    name='macaulay2_jupyter_kernel',
     version='0.1',
-    packages=['m3_kernel'],
-    description='Macaulay2 kernel for Jupyter (test)',
+    packages=['m2_kernel'],
+    description='Macaulay2 kernel for Jupyter (first version)',
     long_description='add later',
     author='Radoslav Raynov',
     author_email='radoslav@math.cornell.edu',

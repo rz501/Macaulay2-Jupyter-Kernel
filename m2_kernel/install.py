@@ -7,8 +7,8 @@ from jupyter_client.kernelspec import KernelSpecManager
 from IPython.utils.tempdir import TemporaryDirectory
 
 kernel_json = {
-    "argv": [sys.executable, "-m", "m3_kernel", "-f", "{connection_file}"],
-    "display_name": "M3",
+    "argv": [sys.executable, "-m", "m2_kernel", "-f", "{connection_file}"],
+    "display_name": "M2",
     "language": "text",
 }
 
@@ -20,7 +20,7 @@ def install_my_kernel_spec(user=True, prefix=None):
         # TODO: Copy any resources
 
         print('Installing Jupyter kernel spec')
-        KernelSpecManager().install_kernel_spec(td, 'm3', user=user, replace=True, prefix=prefix)
+        KernelSpecManager().install_kernel_spec(td, 'm2', user=user, replace=True, prefix=prefix)
 
 def _is_root():
     try:
