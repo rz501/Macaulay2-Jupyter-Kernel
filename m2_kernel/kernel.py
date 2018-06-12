@@ -10,7 +10,7 @@ class M2Kernel(Kernel):
     language_info = {
         'name': 'Macaulay2',
         'mimetype': 'text/plain',
-        'file_extension': '.m2'
+        'file_extension': 'm2'
     }
     banner = 'add banner later'
 
@@ -19,14 +19,27 @@ class M2Kernel(Kernel):
     sentinel = '--m2jk_sentinel'
     pattern  = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
 
+    magic = {
+        'pretty': True
+        }
+
     def clenup_input(self, code):
         code = code.strip('\r')
-        code = re.sub(r'--.*\n', '', code)
+        code = re.sub(r'%%.*', '', code) # cell magic
+        code = re.sub(r'--.*', '', code) # M2 comments
         code = code.replace('\n', ' ')
         return code
 
     def proc_cellmagic(self, code):
-        pass
+        pattern = re.compile(r'^%%\s*(\w*)\s*=\s*(.*)\s*\n')
+        match = pattern.match(code)
+
+        if match:
+            (magic_key, magic_value) = match.groups()
+            stdout_content = {'name': 'stdout', 'text': '{}={}'.format(magic_key, magic_value)}
+            self.send_response(self.iopub_socket, 'stream', stdout_content)
+            if magic_key in self.magic:
+                self.magic[magic_key] = bool(int(magic_value))
 
     def reformat(self, buffer, xcount):
         indent = 4 + len(str(xcount))
@@ -35,7 +48,7 @@ class M2Kernel(Kernel):
         match = pattern.fullmatch(buffer)
 
         if not match:
-            return (buffer, None)
+            return (buffer, None, None)
         else:
             res = ['\n'.join( reversed( item.splitlines() ) ) if item else None for item in match.groups()]
 
@@ -46,16 +59,31 @@ class M2Kernel(Kernel):
                     item = item[1:]
                     item = '\n'.join([ line[indent:] for line in item.splitlines() ])
                     results[i] = item
-            if results[1]:
-                return (stdout, '<pre>'+results[0]+'\n'+'<span style="color: gray">'+results[1]+'</span></pre>')
-            else:
-                return (stdout,'<pre>'+results[0]+'</pre>')
+            # if results[1]:
+                # return (stdout, '{val}\n<span style="color: gray">{typ}</span>'.format(val=results[0],typ=results[1]))
+            # else:
+            return (stdout, results[0], results[1])
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         self.proc_cellmagic(code)
 
         if not silent:
             code = self.clenup_input(code)
+
+            if not code.rstrip():
+                # silent is not False, so an execution is needed but M2 hangs forever on empty input
+                # one solution is
+                # > code = 'null'
+                # another:
+
+                return {'status': 'ok',
+                    'execution_count': None,
+                    'payload': [],
+                    'user_expressions': {}
+                }
+
+            # stdout_content = {'name': 'stdout', 'text': code}
+            # self.send_response(self.iopub_socket, 'stream', stdout_content)
 
             self.proc.sendline(code + self.sentinel)
             self.proc.expect([self.pattern])
@@ -65,16 +93,27 @@ class M2Kernel(Kernel):
             buffer = result[0].replace('\r', '')
             buffer = re.sub(r'\n\s+\n', '\n\n', buffer) # questionable
 
-            (stdout, output) = self.reformat(buffer, xcount)
+            (stdout, output, typesym) = self.reformat(buffer, xcount)
 
             if stdout:
                 stdout_content = {'name': 'stdout', 'text': stdout}
                 self.send_response(self.iopub_socket, 'stream', stdout_content)
 
             if output:
-                # execute_content = {'data': {'text/plain': output}, 'execution_count': xcount}
-                output2 = '<pre>'+output+'</pre>'
-                execute_content = {'data': {'text/html': output2}, 'execution_count': xcount}
+                if self.magic['pretty']:
+                    if typesym:
+                        content = '<pre>{}\n<span style="color: gray">{}</span></pre>'.format(output, typesym)
+                    else:
+                        content = '<pre>{}</pre>'.format(output)
+                    data = {'text/html': content}
+                else:
+                    if typesym:
+                        content = '{}\n\n{}'.format(output, '\n'.join(['\u21AA '+l for l in typesym.splitlines()]))
+                    else:
+                        content = output
+                    data = {'text/plain': content}
+
+                execute_content = {'data': data, 'execution_count': xcount}
                 self.send_response(self.iopub_socket, 'execute_result', execute_content)
 
         return {'status': 'ok',
