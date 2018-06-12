@@ -12,3 +12,4 @@ Welcome to FirstTest's documentation!
 
    hidden
    Front
+   demo
