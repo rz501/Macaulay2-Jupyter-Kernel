@@ -10,6 +10,6 @@ Welcome to FirstTest's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   hidden
-   Front
-   demo
+   pages/hidden
+   notebooks/Front
+   notebooks/demo
