@@ -7,9 +7,7 @@ logical organization of the code into cells and in-line Markdown with TeX,
 to name just a couple.
 
 For details, check out the [documentation](http://m2jk.rtfd.io).
-For bugs or contibuting
-
-You can even try it online here, however traffic isn't cheap, so I throttle it.
+For bugs or requests, open an issue.
 
 ## Examples
 
