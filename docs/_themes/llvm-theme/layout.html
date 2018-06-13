@@ -10,11 +10,6 @@
 {% extends "basic/layout.html" %}
 
 {% block relbar1 %}
-<div class="logo">
-  <a href="{{ pathto('index') }}">
-    <img src="{{pathto("_static/logo.png", 1) }}"
-         alt="LLVM Logo" width="250" height="88"/></a>
-</div>
 {{ super() }}
 {% endblock %}
 

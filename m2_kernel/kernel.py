@@ -102,7 +102,7 @@ class M2Kernel(Kernel):
             if output:
                 if self.magic['pretty']:
                     if typesym:
-                        content = '<pre>{}\n<span style="color: gray">{}</span></pre>'.format(output, typesym)
+                        content = '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(output, typesym)
                     else:
                         content = '<pre>{}</pre>'.format(output)
                     data = {'text/html': content}
