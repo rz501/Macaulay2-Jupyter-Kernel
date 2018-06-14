@@ -14,7 +14,8 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ## Examples
 
-Below are a few sample notebooks all highlighting different key points. You can view them directly on Github but Macaulay2 output is rendered as plain text.
+Below are a few sample notebooks all highlighting different key points.
+You can view them directly on Github but the output is rendered as plain text.
 
 * [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
 * [intro to the Macaulay2 book](demo/m2book.ipynb)
@@ -23,8 +24,17 @@ Below are a few sample notebooks all highlighting different key points. You can 
 
 ## Installation
 
-The prerequisites are just Jupyter and Macaulay2.
-Note that the former runs on either Python version 2 and 3, but we require version 3.6+.
+#### Prerequisites
+
+#### Install thru Pip
+
+```bash
+git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel m2kj
+cd m2jk
+python3 -m m2_kernel.install
+```
+
+#### Install from Source
 
 ## License
 
