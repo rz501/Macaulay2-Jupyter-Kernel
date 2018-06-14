@@ -6,13 +6,20 @@ but introduces far more powerful features like
 logical organization of the code into cells and in-line Markdown with TeX,
 to name just a couple.
 
-You can see it in action as a [screenshot](https://rawgit.com/radoslavraynov/Macaulay2-Jupyter-Kernel/master/demo/sample.png) or as a Github-rendereded [notebook](demo/sample.ipynb).
+![screenshot](/demo/screenshot.png)
 
 For details, check out the [documentation](http://m2jk.rtfd.io).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
 ## Examples
+
+You can see the full version of the screenshot [here](https://raw.github.com/radoslavraynov/Macaulay2-Jupyter-Kernel/master/demo/sample.png).
+Github renders notebooks directly (if slightly off). The examples below highlight some of the power:
+
+* [sample](#) (the notebook in the screenshot)
+* [the book](#)
+* [new codeing style](#)
 
 ## Installation
 
