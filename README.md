@@ -10,16 +10,19 @@ For details, check out the [documentation](http://m2jk.rtfd.io).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-![screenshot](/demo/screenshot.png)
+![](/demo/screenshot.png)
 
 ## Examples
 
-You can see the full version of the screenshot [here](https://raw.github.com/radoslavraynov/Macaulay2-Jupyter-Kernel/master/demo/sample.png).
-Github renders notebooks directly (if slightly off). The examples below highlight some of the power:
+See the [original](demo/screenshot-bigger.png) screenshot.
+Here's a list of sample notebooks:
 
-* [sample](#) (the notebook in the screenshot)
-* [the book](#)
-* [new codeing style](#)
+* [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
+* [first page of the Macaulay2 book](demo/m2book.ipynb)
+* [examples of a new coding style](demo/newstyle.ipynb)
+* [a sample Python notebook](demo/demo-python.ipynb)
+
+Note that Github renders notebooks directly (if fugly sometimes)!
 
 ## Installation
 
