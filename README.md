@@ -24,20 +24,24 @@ You can view them directly on Github but the output is rendered as plain text.
 
 ## Installation
 
-##### Prerequisites
+### Prerequisites
 
 Quite obviously, you need to have recent versions of both Macaulay2 and Jupyter installed on your system.
 You can find installation instructions for your environment on their respective sites.
 
 Further, `M2` must be on your `PATH`. It already is if you are using it with Emacs. Otherwise, you can achieve that by running `setup()` from within an M2 session; and you might have to restart your machine adter that.
 
-### Install thru Pip
+Finally, you need Python3.6+. Note that Jupyter itself can do away with either version 2 or 3.
+
+### Install
+
+You can install directly it thru `pip` by
 
 ```
 $ pip3 install m2kj
 ```
 
-### Install from Source
+Alrernatively, you can install it from source by
 
 ```
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel m2kj
@@ -45,7 +49,7 @@ $ cd m2jk
 $ python3 -m m2_kernel.install
 ```
 
-###### Run on Jupyter
+### Run on Jupyter
 
 Once installation is complete, you need to start (or restart) Jupyter by
 
@@ -53,7 +57,9 @@ Once installation is complete, you need to start (or restart) Jupyter by
 $ jupyter notebook
 ```
 
-and then select from the main menu File ⇨ New Notebook ⇨ M2.
+This may or may not open a browser for you. If not, copy the output link into one.
+Then select File ⇨ New Notebook ⇨ M2 from the main menu.
+Enjoy!
 
 ## License
 
