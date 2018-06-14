@@ -14,15 +14,12 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ## Examples
 
-See the [original](demo/screenshot-bigger.png) screenshot.
-Here's a list of sample notebooks:
+Below are a few sample notebooks all highlighting different key points. You can view them directly on Github but Macaulay2 output is rendered as plain text.
 
 * [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
-* [first page of the Macaulay2 book](demo/m2book.ipynb)
+* [intro to the Macaulay2 book](demo/m2book.ipynb)
 * [examples of a new coding style](demo/newstyle.ipynb)
 * [a sample Python notebook](demo/demo-python.ipynb)
-
-Note that Github renders notebooks directly (if fugly sometimes)!
 
 ## Installation
 
