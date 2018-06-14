@@ -35,7 +35,7 @@ Finally, you need Python3.6+. Note that Jupyter itself can do away with either v
 
 ### Install
 
-You can install directly it thru `pip` by
+You can install the kernel directly thru `pip` by
 
 ```
 $ pip3 install m2kj
@@ -44,7 +44,7 @@ $ pip3 install m2kj
 Alrernatively, you can install it from source by
 
 ```
-$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel m2kj
+$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2kj
 $ cd m2jk
 $ python3 -m m2_kernel.install
 ```
