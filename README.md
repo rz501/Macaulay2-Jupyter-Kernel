@@ -6,7 +6,7 @@ but introduces far more powerful features like
 logical organization of the code into cells and in-line Markdown with TeX,
 to name just a couple.
 
-You can see it in action as a [screenshot](demo/sample.png) or as a Github-rendereded [notebook](demo/sample.ipynb).
+You can see it in action as a [screenshot](https://rawgit.com/radoslavraynov/Macaulay2-Jupyter-Kernel/master/demo/sample.png) or as a Github-rendereded [notebook](demo/sample.ipynb).
 
 For details, check out the [documentation](http://m2jk.rtfd.io).
 For bugs or requests, open an issue.
