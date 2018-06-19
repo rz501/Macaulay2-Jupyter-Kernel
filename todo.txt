@@ -1,6 +1,7 @@
 Easy
 
 - package as pip package
+- fix screenshot (50,270 - 1000,490)
 - enable raw cell magic
 - include caveats (in the documentation)
 - "M2JK" vs "IM2"

@@ -29,7 +29,9 @@ You can view them directly on Github but the output is rendered as plain text.
 Quite obviously, you need to have recent versions of both Macaulay2 and Jupyter installed on your system.
 You can find installation instructions for your environment on their respective sites.
 
-Further, `M2` must be on your `PATH`. It already is if you are using it with Emacs. Otherwise, you can achieve that by running `setup()` from within an M2 session; and you might have to restart your machine adter that.
+Further, `M2` must be on your `PATH`. It already is, if you are using Emacs as your front-end.
+Otherwise, you can achieve that by running `setup()` from within an M2 session.
+(You might have to restart your machine in the latter case.)
 
 Finally, you need Python3.6+. Note that Jupyter itself can do away with either version 2 or 3.
 
