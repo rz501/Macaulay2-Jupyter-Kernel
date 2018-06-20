@@ -6,7 +6,7 @@ but introduces far more powerful features like
 logical organization of the code into cells and in-line Markdown with TeX,
 to name just a couple.
 
-For details, check out the [documentation](http://m2jk.rtfd.io).
+For details, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
