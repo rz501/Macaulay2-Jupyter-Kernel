@@ -1,0 +1,22 @@
+Easy:
+
+    ☐ package as pip package
+    ☐ fix screenshot (50,270 - 1000,490)
+    ☐ enable raw cell magic
+    ☐ include caveats (in the documentation)
+    ☐ "M2JK" vs "IM2"
+    ☐ test package includes
+    ☐ test loading an m2 file
+    ☐ test exporting an m2 file
+
+Medium:
+
+    ☐ write wiki documentation
+    ☐ make a release as version 0.1.0
+    ☐ write codemirror/lexer for M2
+    ☐ see if you can do travis-ci for macaulay2 (probably not worth the effort)
+
+Hard/Big:
+
+    ☐ run M2 thru Python
+    ☐ "try it online"
