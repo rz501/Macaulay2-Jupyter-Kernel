@@ -5,8 +5,6 @@ from ipykernel.kernelbase import Kernel
 """ Macaulay2 Jupyter Kernel
 """
 
-__version__ = '0.1.0'
-
 class M2Kernel(Kernel):
     implementation = 'macaulay2_jupyter_kernel'
     implementation_version = '0.1'

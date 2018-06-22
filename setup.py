@@ -1,5 +1,5 @@
 from distutils.core import setup
-from m2_kernel.kernel import __version__
+from m2_kernel import __version__
 
 # add code to automatically install the jupyter kernel spec
 
