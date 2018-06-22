@@ -1,8 +1,11 @@
 from distutils.core import setup
+from m2_kernel.kernel import __version__
+
+# add code to automatically install the jupyter kernel spec
 
 setup(
     name='macaulay2_jupyter_kernel',
-    version='0.1.0',
+    version=__version__,
     packages=['m2_kernel'],
     description='Macaulay2 kernel for Jupyter (first version)',
     long_description='add later',

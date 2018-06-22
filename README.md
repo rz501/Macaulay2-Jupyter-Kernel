@@ -48,7 +48,8 @@ Alrernatively, you can install it from source by
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2kj
 $ cd m2jk
-$ python3 setup.py install --record files.txt # or: python3 -m m2_kernel.install
+$ python3 setup.py install # --record files.txt
+$ python3 -m m2_kernel.install
 ```
 
 ### Run on Jupyter

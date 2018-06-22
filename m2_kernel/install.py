@@ -6,6 +6,9 @@ import sys
 from jupyter_client.kernelspec import KernelSpecManager
 from IPython.utils.tempdir import TemporaryDirectory
 
+""" Macaulay2 Jupyter Kernel: standard jupyter kernel spec installation
+"""
+
 kernel_json = {
     "argv": [sys.executable, "-m", "m2_kernel", "-f", "{connection_file}"],
     "display_name": "M2",
