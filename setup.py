@@ -4,7 +4,7 @@ from m2_kernel import __version__
 # add code to automatically install the jupyter kernel spec
 
 setup(
-    name='macaulay2_jupyter_kernel',
+    name='macaulay2_jupyter_kernel', # m2jk
     version=__version__,
     packages=['m2_kernel'],
     description='Macaulay2 kernel for Jupyter (first version)',

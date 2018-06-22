@@ -40,13 +40,14 @@ Otherwise, you can achieve that by running `setup()` from within an M2 session.
 You can install the kernel directly thru `pip` by
 
 ```
-$ pip3 install m2kj
+$ pip3 install m2jk
+$ python3 -m m2_kernel.install
 ```
 
 Alrernatively, you can install it from source by
 
 ```bash
-$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2kj
+$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2jk
 $ cd m2jk
 $ python3 setup.py install # --record files.txt
 $ python3 -m m2_kernel.install
