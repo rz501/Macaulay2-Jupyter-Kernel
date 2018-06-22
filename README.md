@@ -48,22 +48,21 @@ Alrernatively, you can install it from source by
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2kj
 $ cd m2jk
-$ python3 setup.py install --record files.txt
-$ # or: python3 -m m2_kernel.install
+$ python3 setup.py install --record files.txt # or: python3 -m m2_kernel.install
 ```
 
 ### Run on Jupyter
 
 Once installation is complete, you need to start (or restart) Jupyter by
 
-```
+```bash
 $ jupyter notebook &
 ```
 
-This may or may not open a browser for you. If not, copy the output link into one.
+This shoud fire up a browser for you. If not, copy the output link into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 Enjoy!
 
 ## License
 
-This software is not part of Macaualay2 and is released under the MIT License.
+This software is not part of Macaulay2 and is released under the MIT License.

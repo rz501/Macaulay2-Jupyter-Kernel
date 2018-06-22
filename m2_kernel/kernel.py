@@ -82,8 +82,8 @@ class M2Kernel(Kernel):
                     'user_expressions': {}
                 }
 
-            # stdout_content = {'name': 'stdout', 'text': code}
-            # self.send_response(self.iopub_socket, 'stream', stdout_content)
+            stdout_content = {'name': 'stdout', 'text': 'hui;)'}
+            self.send_response(self.iopub_socket, 'stream', stdout_content)
 
             self.proc.sendline(code + self.sentinel)
             self.proc.expect([self.pattern])
