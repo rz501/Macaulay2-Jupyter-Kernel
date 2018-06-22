@@ -1,18 +1,19 @@
 Easy:
 
-    ☐ package as pip package
-    ☐ fix screenshot (50,270 - 1000,490)
-    ☐ enable raw cell magic
-    ☐ include caveats (in the documentation)
-    ☐ "M2JK" vs "IM2"
+    ✔ remove docs from repo @done(18-06-22 10:43)
     ☐ test package includes
     ☐ test loading an m2 file
     ☐ test exporting an m2 file
+    ☐ package as pip package
+    ☐ fix screenshot (50,270 - 1000,490)
+    ☐ enable raw cell magic
+    ☐ document caveats (on the wiki)
+    ☐ explain "M2JK" vs "IM2" (on the wiki)
+    ☐ make a release as version 0.1.0
 
 Medium:
 
-    ☐ write wiki documentation
-    ☐ make a release as version 0.1.0
+    ☐ write wiki documentation @started(18-06-22 10:40)
     ☐ write codemirror/lexer for M2
     ☐ see if you can do travis-ci for macaulay2 (probably not worth the effort)
 
