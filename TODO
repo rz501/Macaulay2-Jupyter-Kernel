@@ -4,20 +4,30 @@ Easy:
     ☐ test package includes
     ☐ test loading an m2 file
     ☐ test exporting an m2 file
-    ☐ package as pip package
-    ☐ fix screenshot (50,270 - 1000,490)
     ☐ enable raw cell magic
-    ☐ document caveats (on the wiki)
-    ☐ explain "M2JK" vs "IM2" (on the wiki)
-    ☐ make a release as version 0.1.0
+    ☐ package as pip package
+    ☐ make a release as version 0.8.0
 
 Medium:
 
-    ☐ write wiki documentation @started(18-06-22 10:40)
-    ☐ write codemirror/lexer for M2
-    ☐ see if you can do travis-ci for macaulay2 (probably not worth the effort)
+    ☐ write codemirror
+    ☐ write lexer
+    ☐ test on Linux
 
 Hard/Big:
 
     ☐ run M2 thru Python
     ☐ "try it online"
+
+Examples:
+
+    ☐ minimal -- the twisted cubic or something in Hartshorne
+    ☐ the first page of the M2 book
+    ☐ the python demo
+    ☐ new coding style demo
+
+Documentation:
+
+    ☐ fix screenshot (50,270 - 1000,490)
+    ☐ document caveats
+    ☐ explain "M2JK" vs "IM2" (on the wiki)
