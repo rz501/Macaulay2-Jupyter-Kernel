@@ -34,7 +34,7 @@ class M2Kernel(Kernel):
         return code
 
     def proc_cellmagic(self, code):
-        pattern = re.compile(r'^%%\s*(\w*)\s*=\s*(.*)\s*\n')
+        pattern = re.compile(r'^%%\s*(\w*)\s*=\s*(.*)\s*\n?')
         match = pattern.match(code)
 
         if match:
