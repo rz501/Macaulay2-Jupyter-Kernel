@@ -1,12 +1,14 @@
 # M2JK
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
-It can be used as a drop-in replacement for Emacs,
+<!-- It can be used as a drop-in replacement for Emacs,
+Unlike Emacs or M2's interactive session,
+Jupyter provides mode
 but introduces far more powerful features like
 logical organization of your code into cells and inline Markdown with TeX,
-to name just a couple.
+to name just a couple. -->
 
-For details, check out the [wiki](../../wiki).
+For details and caveats, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -22,6 +24,10 @@ however, the output is rendered as plain text.
 * [intro to the Macaulay2 book](demo/p1m2book.ipynb)
 * [examples of a new coding style](demo/newstyle.ipynb)
 * [a sample Python notebook](demo/demo-python.ipynb)
+
+You can find detailed instructions how to migrate your `.m2` files into the Jupyter coding style
+[here](../../wiki/Migrate).
+Note that you can always export a Jupyter notebook (back) to `.m2`.
 
 ## Installation
 
@@ -63,7 +69,6 @@ $ jupyter notebook &
 
 This shoud fire up a browser for you. If not, copy the output link into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
-Enjoy!
 
 ## License
 
