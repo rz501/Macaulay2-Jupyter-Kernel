@@ -12,9 +12,9 @@ class M2Kernel(Kernel):
     language_version = '1.11' # "defining implementation" version
     language_info = {
         'name': 'Macaulay2',
-        'mimetype': 'text/plain',
+        'mimetype': 'text/x-macaulay2',
         'file_extension': '.m2',
-        # 'codemirror_mode': None,
+        'codemirror_mode': 'macaulay2',
         # 'pigments_lexer': None,
     }
     banner = 'Macaulay2 thru Jupyter'
