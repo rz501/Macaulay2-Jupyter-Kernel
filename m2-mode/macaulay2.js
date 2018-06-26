@@ -8,7 +8,6 @@ define([
         'keepring|load|quit|return|while)\\b'].join(''))
 
     CodeMirror.defineSimpleMode("macaulay2", {
-        // The start state contains the rules that are intially used
         start: [
             {regex: keyword, token: "keyword"},
             {regex: /--.*/, token: "comment"},

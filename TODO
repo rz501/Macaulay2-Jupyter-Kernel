@@ -1,16 +1,16 @@
 Easy:
 
     ✔ remove docs from repo @done(18-06-22 10:43)
-    ☐ test package includes
-    ☐ test loading an m2 file
-    ☐ test exporting an m2 file
+    ✔ test package includes @done(18-06-26 17:59)
+    ✘ test loading an m2 file @cancelled(18-06-26 17:59)
+    ✔ test exporting an m2 file @done(18-06-26 17:59)
     ☐ enable raw cell magic
     ☐ package as pip package
     ☐ make a release as version 0.8.0
 
 Medium:
 
-    ☐ write codemirror
+    ☐ write codemirror @started(18-06-26 18:03)
     ☐ write lexer
     ☐ test on Linux
 
@@ -23,11 +23,11 @@ Examples:
 
     ✔ minimal -- the twisted cubic or something in Hartshorne @done(18-06-25 19:30)
     ☐ the first page of the M2 book
-    ☐ the python demo
+    ✔ the python demo @done(18-06-26 17:59)
     ☐ new coding style demo
 
 Documentation:
 
-    ☐ fix screenshot (50,270 - 1000,490)
+    ✔ fix screenshot (50,270 - 1000,490) @done(18-06-26 17:59)
     ☐ document caveats
     ☐ explain "M2JK" vs "IM2" (on the wiki)
