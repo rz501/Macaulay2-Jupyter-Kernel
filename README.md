@@ -25,10 +25,6 @@ however, the output is rendered as plain text.
 * [examples of a new coding style](demo/newstyle.ipynb)
 * [a sample Python notebook](demo/demo-python.ipynb)
 
-You can find detailed instructions how to migrate your `.m2` files into the Jupyter coding style
-[here](../../wiki/Migrate).
-Note that you can always export a Jupyter notebook (back) to `.m2`.
-
 ## Installation
 
 ### Prerequisites
@@ -69,6 +65,12 @@ $ jupyter notebook &
 
 This shoud fire up a browser for you. If not, copy the output link into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
+
+### Migrate from Emacs to Jupyter
+
+You can find detailed instructions how to migrate your `.m2` files into the Jupyter coding style
+[here](../../wiki/Migrate).
+Note that you can always export a Jupyter notebook (back) to `.m2`.
 
 ## License
 
