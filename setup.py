@@ -7,14 +7,14 @@ setup(
     name='macaulay2_jupyter_kernel', # m2jk
     version=__version__,
     packages=['m2_kernel'],
-    description='Macaulay2 kernel for Jupyter (first version)',
+    description='Macaulay2 kernel for Jupyter',
     long_description='add later',
     author='Radoslav Raynov',
     author_email='radoslav.raynov@yahoo.com',
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
-    install_requires=[
-        'jupyter_client', 'IPython', 'ipykernel'
-    ],
+    # install_requires=[
+    #     'jupyter_client', 'IPython', 'ipykernel'
+    # ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Programming Language :: Python :: 3.6',

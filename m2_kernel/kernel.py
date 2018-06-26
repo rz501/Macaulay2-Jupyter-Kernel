@@ -7,15 +7,17 @@ from ipykernel.kernelbase import Kernel
 
 class M2Kernel(Kernel):
     implementation = 'macaulay2_jupyter_kernel'
-    implementation_version = '0.1'
+    implementation_version = '0.1.0' # __version__
     language = 'Macaulay2'
     language_version = '1.11' # "defining implementation" version
     language_info = {
         'name': 'Macaulay2',
         'mimetype': 'text/plain',
-        'file_extension': 'm2'
+        'file_extension': '.m2',
+        # 'codemirror_mode': None,
+        # 'pigments_lexer': None,
     }
-    banner = 'add banner later'
+    banner = 'Macaulay2 thru Jupyter'
 
     path = pexpect.which('M2')
     proc = pexpect.spawn(path + ' --silent --no-readline --no-debug', encoding='UTF-8')

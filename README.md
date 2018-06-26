@@ -3,20 +3,20 @@
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 It can be used as a drop-in replacement for Emacs,
 but introduces far more powerful features like
-logical organization of your code into cells and in-line Markdown with TeX,
+logical organization of your code into cells and inline Markdown with TeX,
 to name just a couple.
 
 For details, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-![](/demo/screenshot.png)
+![](/demo/screenshot.png?raw=true)
 
 ## Examples
 
 Below are a few sample notebooks all highlighting different key points.
-You can view them directly on Github!
-(However, the output is rendered as plain text.)
+You can view them directly on Github,
+however, the output is rendered as plain text.
 
 * [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
 * [intro to the Macaulay2 book](demo/p1m2book.ipynb)
