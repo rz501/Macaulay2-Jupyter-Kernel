@@ -8,7 +8,7 @@ but introduces far more powerful features like
 logical organization of your code into cells and inline Markdown with TeX,
 to name just a couple. -->
 
-For details and caveats, check out the [wiki](../../wiki).
+For details, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -66,11 +66,12 @@ $ jupyter notebook &
 This shoud fire up a browser for you. If not, copy the output link into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
-### Migrate from Emacs to Jupyter
+### [Migrate from Emacs to Jupyter](../../wiki/migrate-from-emacs)
 
+<!-- Not so much as an IDE but more as an environment to quickly try out ideas in
 You can find detailed instructions how to migrate your `.m2` files into the Jupyter coding style
 [here](../../wiki/Migrate).
-Note that you can always export a Jupyter notebook (back) to `.m2`.
+Note that you can always export a Jupyter notebook (back) to `.m2`. -->
 
 ## License
 
