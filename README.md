@@ -66,12 +66,11 @@ $ jupyter notebook &
 This shoud fire up a browser for you. If not, copy the output link into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
-### [Migrate from Emacs to Jupyter](../../wiki/migrate-from-emacs)
+## FAQ
 
-<!-- Not so much as an IDE but more as an environment to quickly try out ideas in
-You can find detailed instructions how to migrate your `.m2` files into the Jupyter coding style
-[here](../../wiki/Migrate).
-Note that you can always export a Jupyter notebook (back) to `.m2`. -->
+* [Migrate from Emacs to Jupyter](../../wiki/migrate-from-emacs)
+* [Known Issues](../../wiki/caveats)
+* [Todo List](TODO)
 
 ## License
 
