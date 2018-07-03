@@ -14,6 +14,10 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ![](/demo/screenshot.png?raw=true)
 
+## Disclaimer
+
+The project is still in the alpha phase, so crashes and data loss may occur!
+
 ## Examples
 
 Below are a few sample notebooks all highlighting different key points.

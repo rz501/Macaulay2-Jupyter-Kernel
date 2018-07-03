@@ -25,7 +25,7 @@ def install_my_kernel_spec(user=True, prefix=None):
         # TODO: Copy any resources
 
         print('Installing Jupyter kernel spec')
-        KernelSpecManager().install_kernel_spec(td, 'm2', user=user, replace=True, prefix=prefix)
+        KernelSpecManager().install_kernel_spec(td, 'm2', user=user, prefix=prefix)
 
         print("Installing nbextension for syntax hilighting")
         install_nbextension('m2-mode', overwrite=True, symlink=True, user=user)
