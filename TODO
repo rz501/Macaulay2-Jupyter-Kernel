@@ -1,27 +1,24 @@
-Easy:
+Cell Magic:
+    ☐ raw output
+    ☐ load file
+    ☐ set time-limit
 
-    ☐ enable raw cell magic
-    ☐ enable load cell magic
+Easy:
     ☐ package as pip package
-    ☐ make a release as version 0.8.0
+    ☐ make a release as version 0.2.0
 
 Medium:
-
     ☐ write codemirror @started(18-06-26 18:03)
     ☐ write lexer
     ☐ test on Linux
 
 Hard/Big:
-
     ☐ run M2 thru Python
     ☐ "try it online"
 
 Examples:
-
-    ☐ the first page of the M2 book
+    ✔ the first page of the M2 book @done(18-07-03 13:12)
 
 Documentation:
-
-    ☐ screenshot with syntax highlighting
     ☐ document caveats
     ☐ explain "M2JK" vs "IM2" (on the wiki)

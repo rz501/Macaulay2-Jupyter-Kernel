@@ -21,13 +21,17 @@ The project is still in the alpha phase, so crashes and data loss may occur!
 ## Examples
 
 Below are a few sample notebooks all highlighting different key points.
-You can view them directly on Github,
-however, the output is rendered as plain text.
 
-* [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
-* [preface to the Macaulay2 book](demo/p1m2book.ipynb)
-* [examples of a new coding style](demo/newstyle.ipynb)
-* [a sample Python notebook](demo/demo-python.ipynb)
+* [minimal demo](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
+* [preface to the Macaulay2 book](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
+* [examples of a new coding style](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
+* [a sample Python notebook](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/demo-python.ipynb)
+
+As a side remark,
+the files above are statically rendered locally,
+reside on Github but are displayed thru [nbviewer.jupyter.org](#),
+since Github only supports plain text outputs.
+More on that on the wiki.
 
 ## Installation
 
