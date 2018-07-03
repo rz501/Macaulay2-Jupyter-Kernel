@@ -25,7 +25,7 @@ You can view them directly on Github,
 however, the output is rendered as plain text.
 
 * [minimal demo](demo/minimal.ipynb) (the notebook in the screenshot)
-* [intro to the Macaulay2 book](demo/p1m2book.ipynb)
+* [preface to the Macaulay2 book](demo/p1m2book.ipynb)
 * [examples of a new coding style](demo/newstyle.ipynb)
 * [a sample Python notebook](demo/demo-python.ipynb)
 
@@ -55,7 +55,7 @@ Alrernatively, you can install it from source by
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2jk
 $ cd m2jk
-$ python3 setup.py install # --record files.txt
+$ pip3 install . # or python3 setup.py install --record files.txt
 $ python3 -m m2_kernel.install
 ```
 
