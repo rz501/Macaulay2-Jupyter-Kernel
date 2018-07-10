@@ -1,20 +1,23 @@
+## Disclaimer
+
+The project is still in the alpha testing phase, so crashes and data loss may occur!
+It is a public repository only to make it accessible for 3rd-party tools like Travis CI.
+
 # M2JK
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 Aside from a drop-in replacement for Emacs or M2's interactive session,
-Jupyter provides a number of features like code-organization,
-inline Markdown with TeX and several different key-bindings,
+Jupyter feels like a modern editor and provides a number of features like
+code organization, in-line Markdown with TeX, and different *standard* key-bindings (Vim, Emacs, Sublime),
 to name just a few.
+With a little additional setup,
+it can even all multiple users work on a shared session over a local network or the Internet.
 
 For details, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
 ![](/demo/screenshot.png?raw=true)
-
-## Disclaimer
-
-The project is still in the alpha phase, so crashes and data loss may occur!
 
 ## Examples
 
@@ -36,15 +39,13 @@ is missing completely.
 
 ### Prerequisites
 
-The project runs on Python3.
-
+The project runs on Python version 3.6+.
 Also, quite obviously, you need recent versions of both Macaulay2 and Jupyter installed on your system.
 You can find installation instructions on their respective sites.
 
 Further, `M2` must be on your `PATH`.
 If you are using Emacs as your front-end, it already is.
 Otherwise, you can achieve that by running `setup()` from within an M2 session.
-See [here](../../wiki/installation-details) for details.
 
 ### Install
 
@@ -55,7 +56,7 @@ $ pip3 install m2jk
 $ python3 -m m2_kernel.install
 ```
 
-Alrernatively, you can install the latest version from source by
+Alrernatively, you can install the latest (unstable) version from source by
 
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2jk
@@ -71,7 +72,7 @@ Once installation is complete, you need to start (or restart) Jupyter by
 $ jupyter notebook &
 ```
 
-This shoud fire up a browser for you. If not, copy the output link into one.
+This shoud fire up a browser for you. If not, copy the output URL into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
 ## FAQ
