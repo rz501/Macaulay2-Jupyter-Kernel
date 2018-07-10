@@ -8,10 +8,10 @@ The repository public only to make it accessible for 3rd-party tools like Travis
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 Aside from a drop-in replacement for Emacs or M2's interactive session,
 Jupyter feels like a modern editor and provides a number of features like
-code organization, in-line Markdown with TeX, and different *standard* key-bindings (Vim, Emacs, Sublime),
+code organization, inline Markdown with TeX and different *standard* key-bindings,
 to name just a few.
-With a little additional setup,
-it can even all multiple users work on a shared session over a local network or the Internet.
+With minimal additional setup,
+it can even support multiple users on a shared session over a local network or the Internet.
 
 For details, check out the [wiki](../../wiki).
 For bugs or requests, open an issue.
