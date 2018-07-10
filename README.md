@@ -1,7 +1,7 @@
-### WARNING
+### WARNING!
 
-The project is still in the alpha testing phase, so crashes and data loss may occur!
-The repository public only to make it accessible for 3rd-party tools like Travis CI.
+The project is still in alpha testing phase, so crashes and data loss may occur!
+The repository is public only to make it accessible for 3rd-party tools like Travis CI.
 
 # M2JK
 
