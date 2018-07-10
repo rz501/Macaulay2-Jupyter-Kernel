@@ -1,4 +1,4 @@
-## Disclaimer
+### WARNING
 
 The project is still in the alpha testing phase, so crashes and data loss may occur!
 It is a public repository only to make it accessible for 3rd-party tools like Travis CI.
@@ -23,10 +23,10 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 Below are a few sample notebooks all highlighting different key points.
 
-* [minimal demo](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
-* [preface to the Macaulay2 book](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
-* [examples of a new coding style](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
-* [a sample Python notebook](http://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/demo-python.ipynb)
+* [minimal demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
+* [preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
+* [examples of a new coding style](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
+* [a sample Python notebook](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/demo-python.ipynb)
 
 Note that while the files above are statically rendered locally
 and reside on Github,
