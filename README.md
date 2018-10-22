@@ -52,7 +52,7 @@ You can install the latest version from source by
 
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git
-$ pip3 install macaulay2-jupyter-kernel
+$ pip3 install macaulay2-jupyter-kernel/
 $ python3 -m m2_kernel.install
 ```
 
