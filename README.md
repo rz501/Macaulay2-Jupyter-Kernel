@@ -48,18 +48,11 @@ Otherwise, you can achieve that by running `setup()` from within an M2 session.
 
 ### Install
 
-You can install the stable version of the kernel directly by
-
-```
-$ pip3 install m2jk
-$ python3 -m m2_kernel.install
-```
-
-Alrernatively, you can install the latest (unstable) version from source by
+You can install the latest version from source by
 
 ```bash
-$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git m2jk
-$ pip3 install m2jk
+$ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git
+$ pip3 install macaulay2-jupyter-kernel
 $ python3 -m m2_kernel.install
 ```
 
