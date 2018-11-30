@@ -4,7 +4,7 @@ from m2_kernel import __version__
 # add code to automatically install the jupyter kernel spec
 
 setup(
-    name='macaulay2_jupyter_kernel', # m2jk
+    name='macaulay2_jupyter_kernel',  # m2jk
     version=__version__,
     packages=['m2_kernel'],
     description='Macaulay2 kernel for Jupyter',
@@ -12,9 +12,10 @@ setup(
     author='Radoslav Raynov',
     author_email='radoslav.raynov@yahoo.com',
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
-    # install_requires=[
-    #     'jupyter_client', 'IPython', 'ipykernel'
-    # ],
+    install_requires=[
+        'jupyter_client', 'IPython', 'ipykernel', 'notebook',
+        'pexpect'
+    ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Programming Language :: Python :: 3.6',
