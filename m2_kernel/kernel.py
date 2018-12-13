@@ -5,11 +5,14 @@ from ipykernel.kernelbase import Kernel
 """ Macaulay2 Jupyter Kernel
 """
 
+
 class M2Kernel(Kernel):
+    """ the M2 kernel for Jupyter
+    """
     implementation = 'macaulay2_jupyter_kernel'
     implementation_version = '0.1.0' # __version__
     language = 'Macaulay2'
-    language_version = '1.11' # "defining implementation" version
+    language_version = '1.11'  # "defining implementation" version
     language_info = {
         'name': 'Macaulay2',
         'mimetype': 'text/x-macaulay2',
@@ -22,7 +25,7 @@ class M2Kernel(Kernel):
     path = pexpect.which('M2')
     proc = pexpect.spawn(path + ' --silent --no-readline --no-debug', encoding='UTF-8')
     sentinel = '--m2jk_sentinel'
-    pattern  = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
+    pattern = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
 
     magic = {
         'pretty': True
