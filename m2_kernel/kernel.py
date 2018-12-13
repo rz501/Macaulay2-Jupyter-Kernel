@@ -23,6 +23,8 @@ class M2Kernel(Kernel):
     banner = 'Macaulay2 thru Jupyter'
 
     path = pexpect.which('M2')
+    if not path:
+        raise RuntimeError("Macaulay2 cannot be found on the $PATH")
     proc = pexpect.spawn(path + ' --silent --no-readline --no-debug', encoding='UTF-8')
     sentinel = '--m2jk_sentinel'
     pattern = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
