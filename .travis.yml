@@ -2,7 +2,7 @@ language: python
 
 os:
   - linux
-  # - osx  # travis-ci fails to "download" python3
+  - osx  # travis-ci fails to "download" python3
 
 dist:
   - trusty
@@ -17,4 +17,4 @@ install:
   - pip install -r requirements.txt
   - pip install .
 
-script: echo foo
+script: echo foo  # travis-ci is actually suprisingly bad ...
