@@ -13,3 +13,5 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install .
+
+script: echo foo
