@@ -1,20 +1,16 @@
 language: python
-
-os:
-  - linux
-  - osx  # travis-ci fails to "download" python3
-
-dist:
-  - trusty
-  - xenial
- 
 python:
   - "3.5"
   - "3.6"
-  # - "3.7"  # travis-ci doesn't have it
+  - "3.7-dev"  # travis-ci doesn't have it
+dist: xenial
+
+# travis is surprisingly bad, given it's wide adoption
+# specifically to the current project: (1) it does not support macOS python builds, (2) version
+# support is spotty, (3) linux builds take forever to start, and (4) needs dummy script
 
 install:
   - pip install -r requirements.txt
   - pip install .
 
-script: echo foo  # travis-ci is actually suprisingly bad ...
+script: echo foo
