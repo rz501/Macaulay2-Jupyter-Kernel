@@ -10,9 +10,9 @@ dist:
 python:
   - "3.5"
   - "3.6"
-  - "3.7-dev"
+  - "3.7"
 
 install:
-  - touch /usr/local/bin/M2
+  - touch ./M3; chmod 0755 ./M3
   - pip install -r requirements.txt
-  - pip install .
+  - PATH=.:$PATH pip install .
