@@ -5,12 +5,13 @@ os:
   - osx
 
 dist:
+  - trusty
   - xenial
  
 python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
+  - 3.5
+  - 3.6
+  - 3.7
 
 install:
   - touch ./M3; chmod 0755 ./M3
