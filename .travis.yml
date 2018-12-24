@@ -1,0 +1,21 @@
+language: python
+
+os:
+  - linux
+  - osx
+
+dist:
+  - trusty
+  - xenial
+ 
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  # PyPy versions
+  - "pypy3.5"
+
+install:
+  - touch /usr/local/bin/M2
+  - pip install -r requirements.txt
+  - pip install .
