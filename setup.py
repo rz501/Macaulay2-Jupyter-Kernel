@@ -1,7 +1,7 @@
 from distutils.core import setup
 from distutils.command.install import install
-from m2_kernel.version import __version__
 
+exec(open("./m2_kernel/version.py").read())  # see comment in file
 
 class install_with_kernelspec(install):
     def run(self):
