@@ -15,4 +15,4 @@ python:
 install:
   - touch ./M3; chmod 0755 ./M3
   - pip install -r requirements.txt
-  - PATH=.:$PATH pip install .
+  - PATH=.:$PATH; pip install .
