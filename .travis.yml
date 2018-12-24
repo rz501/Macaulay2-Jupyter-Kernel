@@ -5,15 +5,12 @@ os:
   - osx
 
 dist:
-  - trusty
   - xenial
  
 python:
-  - "3.4"
   - "3.5"
   - "3.6"
-  # PyPy versions
-  - "pypy3.5"
+  - "3.7-dev"
 
 install:
   - touch /usr/local/bin/M2
