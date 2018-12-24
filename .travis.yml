@@ -3,12 +3,16 @@ dist: trusty
 
 os:
   - linux
-  - osx
+  # - osx  # travis-ci fails to "download" python3
+
+dist:
+  - trusty
+  - xenial
  
 python:
   - "3.5"
   - "3.6"
-  - "3.7"
+  # - "3.7"  # travis-ci doesn't have it
 
 install:
   - pip install -r requirements.txt

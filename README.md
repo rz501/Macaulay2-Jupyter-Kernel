@@ -5,6 +5,8 @@ The repository is public only to make it accessible for 3rd-party tools like Tra
 
 # M2JK
 
+[![Build Status](https://img.shields.io/travis-ci/radoslavraynov/Macaulay2-Jupiter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupiter-Kernel)
+
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 Aside from a drop-in replacement for Emacs or M2's interactive session,
 Jupyter provides a number of features like
