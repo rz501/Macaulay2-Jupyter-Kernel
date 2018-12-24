@@ -1,11 +1,6 @@
-### WARNING!
-
-The project is still in alpha testing phase, so crashes and data loss may occur!
-The repository is public only to make it accessible for 3rd-party tools like Travis CI.
-
 # M2JK
 
-[![Build Status](https://img.shields.io/travis-ci/radoslavraynov/Macaulay2-Jupiter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupiter-Kernel)
+[![Build Status](https://img.shields.io/travis-ci/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 Aside from a drop-in replacement for Emacs or M2's interactive session,
@@ -68,12 +63,6 @@ $ jupyter notebook &
 
 This shoud fire up a browser for you. If not, copy the output URL into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
-
-## FAQ
-
-* [Migrate from Emacs to Jupyter](../../wiki/migrate-from-emacs)
-* [Known Issues](../../wiki/caveats)
-* [Todo List](TODO)
 
 ## License
 
