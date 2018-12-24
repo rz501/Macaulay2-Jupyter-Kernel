@@ -1,6 +1,6 @@
 from distutils.core import setup
 from distutils.command.install import install
-from m2_kernel import __version__
+from m2_kernel.version import __version__
 
 
 class install_with_kernelspec(install):
@@ -24,7 +24,7 @@ setup(
     cmdclass={'install': install_with_kernelspec},
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
         'License :: OSI Approved :: MIT License'

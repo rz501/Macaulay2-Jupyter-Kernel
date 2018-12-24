@@ -11,6 +11,5 @@ python:
   - "3.7"
 
 install:
-  - touch ./M2; chmod 0755 ./M2 # fake M2 executable
   - pip install -r requirements.txt
-  - PATH=.:$PATH; pip install .
+  - pip install .
