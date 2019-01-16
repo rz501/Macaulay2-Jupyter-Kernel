@@ -2,4 +2,3 @@ ipykernel
 pexpect
 notebook
 jupyter_client
-
