@@ -1,6 +1,7 @@
 import re
 import pexpect
 from ipykernel.kernelbase import Kernel
+from .version import __version__
 
 """ Macaulay2 Jupyter Kernel
 """
@@ -10,7 +11,7 @@ class M2Kernel(Kernel):
     """ the M2 kernel for Jupyter
     """
     implementation = 'macaulay2_jupyter_kernel'
-    implementation_version = '0.1.0' # __version__
+    implementation_version = __version__
     language = 'Macaulay2'
     language_version = '1.13.0.1'  # "defining implementation" version
     language_info = {
@@ -22,23 +23,21 @@ class M2Kernel(Kernel):
     }
     banner = 'Macaulay2 thru Jupyter'
 
-    # path = pexpect.which('M2')
-    # if not path: raise RuntimeError("Macaulay2 cannot be found on the $PATH")
-    path = "/Users/Radoslav/Projects/Macaulay2/m2-new/M2/usr-dist/x86_64-Darwin-MacOS-10.14.1/bin/M2-binary"
-    proc = pexpect.spawn(path, encoding='UTF-8')
-
-    timeout = 5
-    magic = {
-        'pretty': True
-    }
-
     patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
     patt_emptyline = re.compile(br'^\s*$')
     patt_magic = re.compile(br'\s*--\s*%(.*)$', re.DOTALL)
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
 
+    path = pexpect.which('M2')
+    if not path: raise RuntimeError("Macaulay2 cannot be found on the $PATH")
+    # path = "/Users/Radoslav/Projects/Macaulay2/m2-new/M2/usr-dist/x86_64-Darwin-MacOS-10.14.1/bin/M2-binary"
+    proc = pexpect.spawn(path, encoding='UTF-8')
     proc.expect(patt_consume, timeout=5)
-    print(proc.match.groups())
+
+    magic = {
+        'timeout': 2,
+        'mode': 'm2',  # 
+        'pretty': True }
 
     def preprocess(self, code):
         ok_lines = []
@@ -70,14 +69,14 @@ class M2Kernel(Kernel):
     def trim_topmargin(self, lines):
         return lines
 
-    def process_output(self, lines, outno):
-        value_marker = "o{} = ".format(outno)
-        type_marker = "o{} : ".format(outno)
+    def process_output(self, lines, xcount):
+        value_marker = "o{} = ".format(xcount)
+        type_marker = "o{} : ".format(xcount)
         
         has_value = False
         has_type = False
         has_content = False
-        outno_len = len(str(outno))
+        xcount_len = len(str(xcount))
         
         for line in lines:
             if line.startswith(value_marker):
@@ -87,20 +86,19 @@ class M2Kernel(Kernel):
             elif not self.patt_emptyline.match(line.encode()):
                 has_content = True
     
-        result = {'value': None, 'type': None, 'stdout': None, 'xcount': outno}
+        result = {'value': None, 'type': None, 'stdout': None}
 
         return {
             'value': None,
             'type': None,
-            'stdout': '\n'.join(lines),
-            'xcount': outno }
+            'stdout': '\n'.join(lines)}
 
         if has_content and not (has_value or has_type):
             result.stdout = b'\n'.join(lines)
         elif has_type and not has_value:
-            result.type = b'\n'.join(self.trim_leftmargin(lines, outno_len))
+            result.type = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
         elif has_value and not has_type:
-            result.value = b'\n'.join(self.trim_leftmargin(lines, outno_len))
+            result.value = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
         elif has_value and has_type:
             type_seen = False
             switched = False
@@ -115,8 +113,8 @@ class M2Kernel(Kernel):
                     type_seen = True
                 elif not switched and type_seen and self.patt_emptyline.match(line):
                     switched = True
-            value_lines = self.trim_leftmargin(reversed(value_lines), outno_len)
-            other_lines = self.trim_leftmargin(reversed(other_lines), outno_len)
+            value_lines = self.trim_leftmargin(reversed(value_lines), xcount_len)
+            other_lines = self.trim_leftmargin(reversed(other_lines), xcount_len)
             result.value = b'\n'.join(value_lines)
             result.type = b'\n'.join(other_lines)
 
@@ -126,24 +124,14 @@ class M2Kernel(Kernel):
         self.proc.sendline(code)
         
         while True:
-            self.proc.expect(self.patt_consume, timeout=self.timeout)
+            self.proc.expect(self.patt_consume, timeout=self.magic['timeout'])
             m = self.proc.match
-            if not m:
-                raise "ERROR 1"
-
-            outno = int(m.groups()[1])-1
-
-            input_lines = m.groups()[0].splitlines()
-            if not input_lines:
-                return {
-                'value': None,
-                'type': None,
-                'stdout': "empty lines",
-                'xcount': outno }
-            output_lines = []
+            if not m: raise "ERROR 1"
+            xcount = int(m.groups()[1])-1
             EOB = False
+            output_lines = []
             
-            for line in input_lines:
+            for line in m.groups()[0].splitlines():
                 if line.endswith('--EOB'):
                     EOB = True
                     continue
@@ -152,7 +140,7 @@ class M2Kernel(Kernel):
                 output_lines.append(line)
             
             if EOB:
-                return self.process_output(output_lines, outno)
+                return output_lines, xcount
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         code = self.preprocess(code)
@@ -166,12 +154,12 @@ class M2Kernel(Kernel):
                     'user_expressions': {}
                 }
 
-            result = self.run(code)
+            output_lines, xcount = self.run(code)
+            result = self.process_output(output_lines, xcount)
 
             stdout = result['stdout']
             output = result['value']
             typesym = result['type']
-            xcount = result['xcount']
 
             if stdout:
                 stdout_content = {'name': 'stdout', 'text': stdout}
