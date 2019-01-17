@@ -12,7 +12,7 @@ class M2Kernel(Kernel):
     implementation = 'macaulay2_jupyter_kernel'
     implementation_version = '0.1.0' # __version__
     language = 'Macaulay2'
-    language_version = '1.11'  # "defining implementation" version
+    language_version = '1.13.0.1'  # "defining implementation" version
     language_info = {
         'name': 'Macaulay2',
         'mimetype': 'text/x-macaulay2',
@@ -22,88 +22,156 @@ class M2Kernel(Kernel):
     }
     banner = 'Macaulay2 thru Jupyter'
 
-    path = pexpect.which('M2')
-    if not path:
-        raise RuntimeError("Macaulay2 cannot be found on the $PATH")
-    proc = pexpect.spawn(path + ' --silent --no-readline --no-debug', encoding='UTF-8')
-    sentinel = '--m2jk_sentinel'
-    pattern = re.compile(r"^(?:.*)--m2jk_sentinel(.*)\r?\n\s*\r?\ni(\d+) :\s+$", re.DOTALL)
+    # path = pexpect.which('M2')
+    # if not path: raise RuntimeError("Macaulay2 cannot be found on the $PATH")
+    path = "/Users/Radoslav/Projects/Macaulay2/m2-new/M2/usr-dist/x86_64-Darwin-MacOS-10.14.1/bin/M2-binary"
+    proc = pexpect.spawn(path, encoding='UTF-8')
 
+    timeout = 5
     magic = {
         'pretty': True
-        }
+    }
 
-    def clenup_input(self, code):
-        code = code.strip('\r')
-        code = re.sub(r'%%.*', '', code) # cell magic
-        code = re.sub(r'--.*', '', code) # M2 comments
-        code = code.replace('\n', ' ')
-        return code
+    patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
+    patt_emptyline = re.compile(br'^\s*$')
+    patt_magic = re.compile(br'\s*--\s*%(.*)$', re.DOTALL)
+    patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
 
-    def proc_cellmagic(self, code):
-        pattern = re.compile(r'^%%\s*(\w*)\s*=\s*(.*)\s*\n?')
-        match = pattern.match(code)
+    proc.expect(patt_consume, timeout=5)
+    print(proc.match.groups())
 
-        if match:
-            (magic_key, magic_value) = match.groups()
-            stdout_content = {'name': 'stdout', 'text': '{}={}'.format(magic_key, magic_value)}
-            self.send_response(self.iopub_socket, 'stream', stdout_content)
-            if magic_key in self.magic:
-                self.magic[magic_key] = bool(int(magic_value))
-
-    def reformat(self, buffer, xcount):
-        indent = 4 + len(str(xcount))
-        buffer = '\n'.join( reversed( buffer.splitlines() ) )
-        pattern = re.compile(r'^(.*?o\d+ : .*?\n\n)?(.*?o\d+ = .*?\n\n)(.*)?', re.DOTALL)
-        match = pattern.fullmatch(buffer)
-
-        if not match:
-            return (buffer, None, None)
+    def preprocess(self, code):
+        ok_lines = []
+        for line in code.splitlines():
+            bline = line.encode()
+            if self.patt_emptyline.match(bline):
+                pass
+            elif self.patt_magic.match(bline):
+                print("[magic]", self.patt_magic.match(bline).groups()[0])
+            elif self.patt_comment.match(line):
+                pass
+            else:
+                ok_lines.append(line + '--CMD')
+        if ok_lines:
+            return '\n'.join(ok_lines) + '--EOB'
         else:
-            res = ['\n'.join( reversed( item.splitlines() ) ) if item else None for item in match.groups()]
+            return ''
 
-            [stdout, *results] = list(reversed(res))
+    def process_magic(self, line):
+        pass
 
-            for i, item in enumerate(results):
-                if item:
-                    item = item[1:]
-                    item = '\n'.join([ line[indent:] for line in item.splitlines() ])
-                    results[i] = item
-            # if results[1]:
-                # return (stdout, '{val}\n<span style="color: gray">{typ}</span>'.format(val=results[0],typ=results[1]))
-            # else:
-            return (stdout, results[0], results[1])
+    def trim_comments(self, lines):
+        return [line for line in lines if self.patt_comment.match(line)]
+
+    def trim_leftmargin(self, lines, index_len):
+        m_len = index_len + 4
+        return [(line[m_len:] if len(line)>=m_len else line) for line in lines]
+
+    def trim_topmargin(self, lines):
+        return lines
+
+    def process_output(self, lines, outno):
+        value_marker = "o{} = ".format(outno)
+        type_marker = "o{} : ".format(outno)
+        
+        has_value = False
+        has_type = False
+        has_content = False
+        outno_len = len(str(outno))
+        
+        for line in lines:
+            if line.startswith(value_marker):
+                has_value = True
+            elif line.startswith(type_marker):
+                has_type = True
+            elif not self.patt_emptyline.match(line.encode()):
+                has_content = True
+    
+        result = {'value': None, 'type': None, 'stdout': None, 'xcount': outno}
+
+        return {
+            'value': None,
+            'type': None,
+            'stdout': '\n'.join(lines),
+            'xcount': outno }
+
+        if has_content and not (has_value or has_type):
+            result.stdout = b'\n'.join(lines)
+        elif has_type and not has_value:
+            result.type = b'\n'.join(self.trim_leftmargin(lines, outno_len))
+        elif has_value and not has_type:
+            result.value = b'\n'.join(self.trim_leftmargin(lines, outno_len))
+        elif has_value and has_type:
+            type_seen = False
+            switched = False
+            value_lines = []
+            other_lines = []
+            for line in reversed(lines):
+                if switched:
+                    value_lines.append(line)
+                else:
+                    other_lines.append(line)
+                if not switched and line.startswith(type_marker):
+                    type_seen = True
+                elif not switched and type_seen and self.patt_emptyline.match(line):
+                    switched = True
+            value_lines = self.trim_leftmargin(reversed(value_lines), outno_len)
+            other_lines = self.trim_leftmargin(reversed(other_lines), outno_len)
+            result.value = b'\n'.join(value_lines)
+            result.type = b'\n'.join(other_lines)
+
+        return result
+
+    def run(self, code):
+        self.proc.sendline(code)
+        
+        while True:
+            self.proc.expect(self.patt_consume, timeout=self.timeout)
+            m = self.proc.match
+            if not m:
+                raise "ERROR 1"
+
+            outno = int(m.groups()[1])-1
+
+            input_lines = m.groups()[0].splitlines()
+            if not input_lines:
+                return {
+                'value': None,
+                'type': None,
+                'stdout': "empty lines",
+                'xcount': outno }
+            output_lines = []
+            EOB = False
+            
+            for line in input_lines:
+                if line.endswith('--EOB'):
+                    EOB = True
+                    continue
+                if line.endswith('--CMD'):
+                    continue
+                output_lines.append(line)
+            
+            if EOB:
+                return self.process_output(output_lines, outno)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
-        self.proc_cellmagic(code)
+        code = self.preprocess(code)
 
         if not silent:
-            code = self.clenup_input(code)
-
             if not code.rstrip():
-                # silent is not False, so an execution is needed but M2 hangs forever on empty input
-                # one solution is
-                # > code = 'null'
-                # another:
-
-                return {'status': 'ok',
+                return {
+                    'status': 'ok',
                     'execution_count': None,
                     'payload': [],
                     'user_expressions': {}
                 }
 
-            # stdout_content = {'name': 'stdout', 'text': 'test;)'}
-            # self.send_response(self.iopub_socket, 'stream', stdout_content)
+            result = self.run(code)
 
-            self.proc.sendline(code + self.sentinel)
-            self.proc.expect([self.pattern])
-
-            result = self.proc.match.groups()
-            xcount = int(result[1])-1
-            buffer = result[0].replace('\r', '')
-            buffer = re.sub(r'\n\s+\n', '\n\n', buffer) # questionable
-
-            (stdout, output, typesym) = self.reformat(buffer, xcount)
+            stdout = result['stdout']
+            output = result['value']
+            typesym = result['type']
+            xcount = result['xcount']
 
             if stdout:
                 stdout_content = {'name': 'stdout', 'text': stdout}
