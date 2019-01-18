@@ -1,7 +1,7 @@
 from distutils.core import setup
 from distutils.command.install import install
 
-__version__ = "0.1.0"
+__version__ = 'tbd'
 exec(open("./m2_kernel/version.py").read())  # see comment in file
 
 # class install_with_kernelspec(install):

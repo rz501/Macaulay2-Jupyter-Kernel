@@ -1,17 +1,23 @@
 Important:
-    ☐ propagate M2 errors to stderr always
+    ☐ propagate M2 errors to stderr always - prior in block and all modes
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
+
+Optimization:
+    ☐ work with binary data instead (just do)
 
 UI:
     ☐ write codemirror
     ☐ write lexer
+    ☐ bind cmd+/ (or ctrl+/) with "--" block comments
+    ☐ add `pretty` mode (commented out)
 
 Remote Server Example:
-    ✔ run from from an rpi3 on local network @done(19-01-18 12:09)
+    ✔ run from from an rpi3 on a local network @done(19-01-18 12:09)
     ☐ run from from an rpi3 on the internet securely
     ☐ run from from an ec2 securely
     ☐ "try it online" web site
 
 Documentation:
     ☐ write wiki articles
+    ☐ take screenshots of different output modes

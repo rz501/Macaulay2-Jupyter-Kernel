@@ -1,6 +1,9 @@
 # M2JK
 
 [![Build Status](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
+[![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#)
+
+### To be rewritten this weekend!
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 Aside from a drop-in replacement for Emacs or M2's interactive session,

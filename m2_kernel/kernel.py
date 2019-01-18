@@ -14,10 +14,12 @@ class M2Config():
     """
     DEFAULTS = {
         'timeout': '2',
+        'startup_timeout': '5',
         'mode': 'normal',
         'exepath': '' }
     TYPES = {
-        'timeout': 'int' }
+        'timeout': 'int',
+        'startup_timeout': 'int' }
 
     def __init__(self):
         """ config init
@@ -90,7 +92,7 @@ class M2Kernel(Kernel):
             m2jkModeTeXmacs = Thing#{TeXmacs,Print};
             """
         self.proc = pexpect.spawn('{} -e "{}"'.format(exepath, modes_init), encoding='UTF-8')
-        self.proc.expect(self.patt_consume, timeout=5)
+        self.proc.expect(self.patt_consume, timeout=self.conf.get('startup_timeout'))
 
     def preprocess(self, code):
         """
@@ -115,25 +117,32 @@ class M2Kernel(Kernel):
     def process_magic(self, raw_magic):
         """
         """
-        # if 'tmp' in self.config: self.config.remove_section('tmp')
-        # self.config.read_string('[tmp]\n' + raw_magic)
-        # key, val = self.config.items('tmp')[0]
-        # content = {'name': 'stderr', 'text': "[cell magic] {} = {}".format(key, val)}
+        config = self.conf.config
+        retop = 'null'
 
-        if raw_magic == 'mode=texmacs' and self.conf.get('mode') != 'texmacs':
-            self.conf.set('mode', 'texmacs')
-            # magic['mode'] = 'texmacs'
-            self.send_stream("-- [cell magic] " + raw_magic)
-            return 'Thing#{Standard,Print}=m2jkModeTeXmacs;--CMD'
-        if raw_magic == 'mode=normal':
-            self.conf.set('mode', 'normal')
-            self.send_stream("-- [cell magic] " + raw_magic)
-            return 'Thing#{Standard,Print}=m2jkModeNormal;--CMD'
-        if raw_magic == 'config':
-            # self.config.read(['/Users/Radoslav/Projects/Macaulay2/macaulay2-jupyter-kernel/m2_kernel/conf/example.cfg'])
-            # if self.conf: self.conf.process_magic(raw_magic)
-            self.send_stream("-- opened config fine")
-        return 'null--CMD'
+        if 'tmp' in config: config.remove_section('tmp')
+        config.read_string('[tmp]\n' + raw_magic)
+        key, value = config.items('tmp')[0]
+        self.send_stream("-- [cell magic] {} = {}".format(key, value))
+
+        if key == 'config':
+            if value == 'print':
+                content = '\n'.join([str(dict(config.items(sec))) for sec in config.sections()])
+                self.send_stream(content)
+            elif value == 'reset':
+                self.send_stream('resetting to defaults')
+                self.send_stream('resetting to defaults one more time')
+                self.send_stream('resetting to defaults again')
+
+        elif key == 'mode':
+            curr_mode = self.conf.get('mode')
+            if value == 'texmacs' and curr_mode != 'texmacs':
+                retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
+            elif (value == 'normal' or value == 'pretty') and curr_mode == 'texmacs':
+                retop = 'Thing#{Standard,Print}=m2jkModeNormal;'
+
+        self.conf.set(key, value)
+        return retop + '--CMD'
 
     # def process_magic(self, raw_magic):
     #     self.kernel.send_stream("-- send stream from conf: " + raw_magic)
@@ -232,7 +241,7 @@ class M2Kernel(Kernel):
         """ enqueues a stdout or stderr message for the given cell
         """
         stdfile = 'stderr' if stderr else 'stdout' 
-        content = {'name': stdfile, 'text': text}
+        content = {'name': stdfile, 'text': text+'\n'}
         self.send_response(self.iopub_socket, 'stream', content)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
