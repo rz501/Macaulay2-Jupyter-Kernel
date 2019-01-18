@@ -6,4 +6,4 @@ To preserve single-source definition, we compromise with calling `exec`
 for example, see https://packaging.python.org/guides/single-sourcing-package-version
 """
 
-__version__ = '0.1.1'
+__version__ = '0.2.0'
