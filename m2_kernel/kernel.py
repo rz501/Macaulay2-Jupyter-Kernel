@@ -1,12 +1,60 @@
 import re
 import configparser
 import pexpect
+import os
 from ipykernel.kernelbase import Kernel
 from .version import __version__
 
 """ Macaulay2 Jupyter Kernel
 """
 
+
+class M2Config():
+    """ a config class supporting the kernel
+    """
+    DEFAULTS = {
+        'timeout': '2',
+        'mode': 'normal',
+        'exepath': '' }
+    TYPES = {
+        'timeout': 'int' }
+
+    def __init__(self):
+        """
+        """
+        self.config = configparser.ConfigParser()
+        self.config.read_dict({'magic': self.DEFAULTS})
+        config_path = os.environ.get('M2JK_CONFIG')
+        if config_path:
+            self.config.read(config_path)
+        if not self.config.get('magic', 'exepath'):
+            exepath = pexpect.which('M2')
+            if not exepath:
+                raise RuntimeError("Macaulay2 cannot be found on the $PATH")
+            self.config.set('magic', 'exepath', exepath)
+
+    def get(self, key):
+        args = ['magic', key]
+        kwargs = {'fallback': None}
+        if key in self.TYPES:
+            key_type = self.TYPES[key]
+            if key_type == 'int':
+                value = self.config.getint(*args, **kwargs)
+            elif key_type == 'float':
+                value = self.config.getfloat(*args, **kwargs)
+            elif key_type == 'bool':
+                value = self.config.getboolean(*args, **kwargs)
+            else:
+                raise RuntimeError("UNKNOWN TYPE")
+        else:
+            value = self.config.get(*args, **kwargs)
+        return value
+    
+    def set(self, key, value):
+        self.config['magic'][key] = str(value) if value else ''
+
+    # def process_magic(self, raw_magic):
+    #     self.kernel.send_stream("-- send stream from conf: " + raw_magic)
 
 class M2Kernel(Kernel):
     """ the M2 kernel for Jupyter
@@ -30,30 +78,21 @@ class M2Kernel(Kernel):
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
 
-    magic = {
-        'timeout': 2,
-        'mode': 'normal',
-        'exepath': None }
-    modes_init = """
-        m2jkModeNormal = Thing#{Standard,Print};
-        m2jkModeTeXmacs = Thing#{TeXmacs,Print};
-        """
-
-    path = pexpect.which('M2')
-    if not path: raise RuntimeError("Macaulay2 cannot be found on the $PATH")
-    # path = "/Users/Radoslav/Projects/Macaulay2/m2-new/M2/usr-dist/x86_64-Darwin-MacOS-10.14.1/bin/M2-binary"
-    proc = pexpect.spawn('{} -e "{}"'.format(path, modes_init), encoding='UTF-8')
-    proc.expect(patt_consume, timeout=5)
-
-    config = configparser.ConfigParser()
-    # config.read_dict({'magic': {k:str(v) for k,v in magic.items()}})
-    
-    # config.read_file('/Users/Radoslav/Projects/Macaulay2/macaulay2-jupyter-kernel/m2_kernel/conf/example.cfg')
-
-    # config.read_file('/Users/Radoslav/Projects/Macaulay2/macaulay2-jupyter-kernel/m2_kernel/conf/example.cfg')
-
+    def __init__(self, *args, **kwargs):
+        """"""
+        super().__init__(*args, **kwargs)
+        self.conf = M2Config()
+        exepath = self.conf.get('exepath')
+        modes_init = """
+            m2jkModeNormal = Thing#{Standard,Print};
+            m2jkModeTeXmacs = Thing#{TeXmacs,Print};
+            """
+        self.proc = pexpect.spawn('{} -e "{}"'.format(exepath, modes_init), encoding='UTF-8')
+        self.proc.expect(self.patt_consume, timeout=5)
 
     def preprocess(self, code):
+        """
+        """
         magic_lines = []
         ok_lines = []
         for line in code.splitlines():
@@ -78,12 +117,19 @@ class M2Kernel(Kernel):
         # self.config.read_string('[tmp]\n' + raw_magic)
         # key, val = self.config.items('tmp')[0]
         # content = {'name': 'stderr', 'text': "[cell magic] {} = {}".format(key, val)}
-        if raw_magic == 'mode=texmacs' and self.magic['mode'] != 'texmacs':
-            self.magic['mode'] = 'texmacs'
+        if raw_magic == 'mode=texmacs' and self.config.get('mode') != 'texmacs':
+            self.conf.set('mode', 'texmacs')
+            # magic['mode'] = 'texmacs'
+            self.send_stream("-- [cell magic] " + raw_magic)
             return 'Thing#{Standard,Print}=m2jkModeTeXmacs;--CMD'
         if raw_magic == 'mode=normal':
-            self.magic['mode'] = 'normal'
+            self.conf.set('mode', 'normal')
+            self.send_stream("-- [cell magic] " + raw_magic)
             return 'Thing#{Standard,Print}=m2jkModeNormal;--CMD'
+        if raw_magic == 'config':
+            # self.config.read(['/Users/Radoslav/Projects/Macaulay2/macaulay2-jupyter-kernel/m2_kernel/conf/example.cfg'])
+            # if self.conf: self.conf.process_magic(raw_magic)
+            self.send_stream("-- opened config fine")
         return 'null--CMD'
 
     # def trim_comments(self, lines):
@@ -102,11 +148,14 @@ class M2Kernel(Kernel):
         if mode == 'normal':
             return None, '\n'.join(lines) 
 
-        if mode == 'texmacs':
+        elif mode == 'texmacs':
             text = ''.join(lines)
             m = self.patt_texmacs.match(text)
             if m: return {'text/html': m.groups()[0]}, None
             return None, None
+
+        else:
+            raise RuntimeError('->{}<-'.format(mode))
             
         # value_marker = "o{} = ".format(xcount)
         # type_marker = "o{} : ".format(xcount)
@@ -155,7 +204,7 @@ class M2Kernel(Kernel):
         self.proc.sendline(code)
         
         while True:
-            self.proc.expect(self.patt_consume, timeout=self.magic['timeout'])
+            self.proc.expect(self.patt_consume, timeout=self.config.get('timeout'))
             m = self.proc.match
             if not m: raise "ERROR 1"
             xcount = int(m.groups()[1])-1
@@ -173,6 +222,11 @@ class M2Kernel(Kernel):
             if EOB:
                 return output_lines, xcount
 
+    def send_stream(self, text, stderr=False):
+        stdfile = 'stderr' if stderr else 'stdout' 
+        content = {'name': stdfile, 'text': text}
+        self.send_response(self.iopub_socket, 'stream', content)
+
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         code = self.preprocess(code)
 
@@ -184,7 +238,9 @@ class M2Kernel(Kernel):
                         'user_expressions': {}}
 
             output_lines, xcount = self.run(code)
-            data, stream = self.process_output(output_lines, self.magic['mode'], xcount)
+            mode = self.conf.get('mode')
+            # raise RuntimeWarning("{}".format(self.conf))
+            data, stream = self.process_output(output_lines, mode, xcount)
 
             if stream:
                 stdout_content = {'name': 'stdout', 'text': stream}
