@@ -7,7 +7,7 @@ Optimization:
     ☐ work with binary data instead (just do)
 
 UI:
-    ☐ write codemirror
+    ☐ write codemirror @started(19-01-18 15:04)
     ☐ write lexer
     ☐ bind cmd+/ (or ctrl+/) with "--" block comments
     ☐ add `pretty` mode (commented out)
@@ -21,3 +21,7 @@ Remote Server Example:
 Documentation:
     ☐ write wiki articles
     ☐ take screenshots of different output modes
+
+Bugs:
+    ✔ cell magic renders the M2 statements no-op @done(19-01-18 15:22)
+    ☐ magic should capture --, % and =

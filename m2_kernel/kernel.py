@@ -21,14 +21,13 @@ class M2Config():
         'timeout': 'int',
         'startup_timeout': 'int' }
 
-    def __init__(self):
+    def __init__(self, config_file=os.environ.get('M2JK_CONFIG')):
         """ config init
         """
         self.config = configparser.ConfigParser()
         self.config.read_dict({'magic': self.DEFAULTS})
-        config_path = os.environ.get('M2JK_CONFIG')
-        if config_path:
-            self.config.read(config_path)
+        if config_file:
+            self.config.read(config_file)
         if not self.config.get('magic', 'exepath'):
             exepath = pexpect.which('M2')
             if not exepath:
@@ -58,6 +57,7 @@ class M2Config():
         """ config key/value setter
         """
         self.config['magic'][key] = str(value) if value else ''
+
 
 class M2Kernel(Kernel):
     """ the M2 kernel for Jupyter
@@ -98,7 +98,7 @@ class M2Kernel(Kernel):
         """
         """
         magic_lines = []
-        ok_lines = []
+        code_lines = []
         for line in code.splitlines():
             bline = line.encode()
             if self.patt_emptyline.match(bline):
@@ -108,9 +108,9 @@ class M2Kernel(Kernel):
             elif self.patt_comment.match(line):
                 pass
             else:
-                ok_lines.append(line + '--CMD')
-        if magic_lines or ok_lines:
-            return '\n'.join(magic_lines) + '\n'.join(ok_lines) + '--EOB'
+                code_lines.append(line + '--CMD')
+        if magic_lines or code_lines:
+            return '{}\n{}--EOB'.format('\n'.join(magic_lines), '\n'.join(code_lines))
         else:
             return ''
 
@@ -130,9 +130,9 @@ class M2Kernel(Kernel):
                 content = '\n'.join([str(dict(config.items(sec))) for sec in config.sections()])
                 self.send_stream(content)
             elif value == 'reset':
+                self.conf = M2Config()
+                config = self.conf.config
                 self.send_stream('resetting to defaults')
-                self.send_stream('resetting to defaults one more time')
-                self.send_stream('resetting to defaults again')
 
         elif key == 'mode':
             curr_mode = self.conf.get('mode')
@@ -221,7 +221,7 @@ class M2Kernel(Kernel):
         while True:
             self.proc.expect(self.patt_consume, timeout=self.conf.get('timeout'))
             m = self.proc.match
-            if not m: raise "ERROR 1"
+            if not m: raise RuntimeError("***M2JK: Macaulay2 did not return output as expected")
             xcount = int(m.groups()[1])-1
             EOB = False
             output_lines = []
@@ -248,6 +248,7 @@ class M2Kernel(Kernel):
         """ entry point for the execution of each cell
         """
         code = self.preprocess(code)
+        # self.send_stream("--->\n"+code+"\n<---")
 
         if not silent:
             if not code.rstrip():
