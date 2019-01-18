@@ -1,5 +1,5 @@
 from ipykernel.kernelapp import IPKernelApp
-from . import M2Kernel
+from .kernel import M2Kernel
 
 """ Macaulay2 Jupyter Kernel point of entry
 """

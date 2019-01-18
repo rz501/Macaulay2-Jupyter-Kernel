@@ -3,7 +3,7 @@ import configparser
 import pexpect
 import os
 from ipykernel.kernelbase import Kernel
-from .version import __version__
+from . import __version__
 
 """ Macaulay2 Jupyter Kernel
 """
@@ -125,11 +125,11 @@ class M2Kernel(Kernel):
         if 'tmp' in config: config.remove_section('tmp')
         config.read_string('[tmp]\n' + raw_magic)
         key, value = config.items('tmp')[0]
-        self.send_stream("-- [cell magic] {} = {}".format(key, value))
+        self.send_stream("[cell magic] {} = {}".format(key, value))
 
         if key == 'config':
             if value == 'print':
-                content = '\n'.join([str(dict(config.items(sec))) for sec in config.sections()])
+                content = str(dict(config.items('magic')))
                 self.send_stream(content)
             elif value == 'reset':
                 self.conf = M2Config()
@@ -287,4 +287,3 @@ class M2Kernel(Kernel):
             #         else:
             #             content = output
             #         data = {'text/plain': content}
-
