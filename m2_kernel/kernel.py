@@ -10,7 +10,7 @@ from .version import __version__
 
 
 class M2Config():
-    """ a config class supporting the kernel
+    """ a config class used in the kernel
     """
     DEFAULTS = {
         'timeout': '2',
@@ -20,7 +20,7 @@ class M2Config():
         'timeout': 'int' }
 
     def __init__(self):
-        """
+        """ config init
         """
         self.config = configparser.ConfigParser()
         self.config.read_dict({'magic': self.DEFAULTS})
@@ -30,10 +30,12 @@ class M2Config():
         if not self.config.get('magic', 'exepath'):
             exepath = pexpect.which('M2')
             if not exepath:
-                raise RuntimeError("Macaulay2 cannot be found on the $PATH")
+                raise RuntimeError("***M2JK: Macaulay2 executable not found")
             self.config.set('magic', 'exepath', exepath)
 
     def get(self, key):
+        """ config getter
+        """
         args = ['magic', key]
         kwargs = {'fallback': None}
         if key in self.TYPES:
@@ -45,22 +47,22 @@ class M2Config():
             elif key_type == 'bool':
                 value = self.config.getboolean(*args, **kwargs)
             else:
-                raise RuntimeError("UNKNOWN TYPE")
+                raise KeyError("***M2JK: wrong key_type for {}".format(key))
         else:
             value = self.config.get(*args, **kwargs)
         return value
     
     def set(self, key, value):
+        """ config key/value setter
+        """
         self.config['magic'][key] = str(value) if value else ''
-
-    # def process_magic(self, raw_magic):
-    #     self.kernel.send_stream("-- send stream from conf: " + raw_magic)
 
 class M2Kernel(Kernel):
     """ the M2 kernel for Jupyter
     """
     implementation = 'macaulay2_jupyter_kernel'
     implementation_version = __version__
+    banner = 'Macaulay2 thru Jupyter'
     language = 'Macaulay2'
     language_version = '1.13.0.1'  # "defining implementation" version
     language_info = {
@@ -70,7 +72,6 @@ class M2Kernel(Kernel):
         'codemirror_mode': 'macaulay2',
         # 'pigments_lexer': None,
     }
-    banner = 'Macaulay2 thru Jupyter'
 
     patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
     patt_emptyline = re.compile(br'^\s*$')
@@ -79,7 +80,8 @@ class M2Kernel(Kernel):
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
 
     def __init__(self, *args, **kwargs):
-        """"""
+        """ kernel init - calls __init__ on the parent and sets up the proc and conf
+        """
         super().__init__(*args, **kwargs)
         self.conf = M2Config()
         exepath = self.conf.get('exepath')
@@ -117,7 +119,8 @@ class M2Kernel(Kernel):
         # self.config.read_string('[tmp]\n' + raw_magic)
         # key, val = self.config.items('tmp')[0]
         # content = {'name': 'stderr', 'text': "[cell magic] {} = {}".format(key, val)}
-        if raw_magic == 'mode=texmacs' and self.config.get('mode') != 'texmacs':
+
+        if raw_magic == 'mode=texmacs' and self.conf.get('mode') != 'texmacs':
             self.conf.set('mode', 'texmacs')
             # magic['mode'] = 'texmacs'
             self.send_stream("-- [cell magic] " + raw_magic)
@@ -132,6 +135,9 @@ class M2Kernel(Kernel):
             self.send_stream("-- opened config fine")
         return 'null--CMD'
 
+    # def process_magic(self, raw_magic):
+    #     self.kernel.send_stream("-- send stream from conf: " + raw_magic)
+
     # def trim_comments(self, lines):
     #     return [line for line in lines if self.patt_comment.match(line)]
 
@@ -142,69 +148,69 @@ class M2Kernel(Kernel):
     # def trim_topmargin(self, lines):
     #     return lines
 
-    def process_output(self, lines, mode, xcount):
+    def process_output(self, lines, xcount):
         """
         """
+        mode = self.conf.get('mode')
         if mode == 'normal':
             return None, '\n'.join(lines) 
-
         elif mode == 'texmacs':
             text = ''.join(lines)
             m = self.patt_texmacs.match(text)
             if m: return {'text/html': m.groups()[0]}, None
             return None, None
-
-        else:
-            raise RuntimeError('->{}<-'.format(mode))
+        elif mode == 'pretty':
+            # value_marker = "o{} = ".format(xcount)
+            # type_marker = "o{} : ".format(xcount)
             
-        # value_marker = "o{} = ".format(xcount)
-        # type_marker = "o{} : ".format(xcount)
+            # has_value = False
+            # has_type = False
+            # has_content = False
+            # xcount_len = len(str(xcount))
+            
+            # for line in lines:
+            #     if line.startswith(value_marker):
+            #         has_value = True
+            #     elif line.startswith(type_marker):
+            #         has_type = True
+            #     elif not self.patt_emptyline.match(line.encode()):
+            #         has_content = True
         
-        # has_value = False
-        # has_type = False
-        # has_content = False
-        # xcount_len = len(str(xcount))
-        
-        # for line in lines:
-        #     if line.startswith(value_marker):
-        #         has_value = True
-        #     elif line.startswith(type_marker):
-        #         has_type = True
-        #     elif not self.patt_emptyline.match(line.encode()):
-        #         has_content = True
-    
-        # if has_content and not (has_value or has_type):
-        #     stdout = b'\n'.join(lines)
-        # elif has_type and not has_value:
-        #     valtype = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
-        # elif has_value and not has_type:
-        #     value = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
-        # elif has_value and has_type:
-        #     type_seen = False
-        #     switched = False
-        #     value_lines = []
-        #     other_lines = []
-        #     for line in reversed(lines):
-        #         if switched:
-        #             value_lines.append(line)
-        #         else:
-        #             other_lines.append(line)
-        #         if not switched and line.startswith(type_marker):
-        #             type_seen = True
-        #         elif not switched and type_seen and self.patt_emptyline.match(line):
-        #             switched = True
-        #     value_lines = self.trim_leftmargin(reversed(value_lines), xcount_len)
-        #     other_lines = self.trim_leftmargin(reversed(other_lines), xcount_len)
-        #     result.value = b'\n'.join(value_lines)
-        #     result.type = b'\n'.join(other_lines)
-
-        # return result
+            # if has_content and not (has_value or has_type):
+            #     stdout = b'\n'.join(lines)
+            # elif has_type and not has_value:
+            #     valtype = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
+            # elif has_value and not has_type:
+            #     value = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
+            # elif has_value and has_type:
+            #     type_seen = False
+            #     switched = False
+            #     value_lines = []
+            #     other_lines = []
+            #     for line in reversed(lines):
+            #         if switched:
+            #             value_lines.append(line)
+            #         else:
+            #             other_lines.append(line)
+            #         if not switched and line.startswith(type_marker):
+            #             type_seen = True
+            #         elif not switched and type_seen and self.patt_emptyline.match(line):
+            #             switched = True
+            #     value_lines = self.trim_leftmargin(reversed(value_lines), xcount_len)
+            #     other_lines = self.trim_leftmargin(reversed(other_lines), xcount_len)
+            #     result.value = b'\n'.join(value_lines)
+            #     result.type = b'\n'.join(other_lines)
+            return None, None
+        else:
+            raise RuntimeError("***M2JK: unknown mode `{}`".format(mode))
 
     def run(self, code):
+        """ decouples statements from an M2 code block and returns last output
+        """
         self.proc.sendline(code)
         
         while True:
-            self.proc.expect(self.patt_consume, timeout=self.config.get('timeout'))
+            self.proc.expect(self.patt_consume, timeout=self.conf.get('timeout'))
             m = self.proc.match
             if not m: raise "ERROR 1"
             xcount = int(m.groups()[1])-1
@@ -223,11 +229,15 @@ class M2Kernel(Kernel):
                 return output_lines, xcount
 
     def send_stream(self, text, stderr=False):
+        """ enqueues a stdout or stderr message for the given cell
+        """
         stdfile = 'stderr' if stderr else 'stdout' 
         content = {'name': stdfile, 'text': text}
         self.send_response(self.iopub_socket, 'stream', content)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
+        """ entry point for the execution of each cell
+        """
         code = self.preprocess(code)
 
         if not silent:
@@ -238,9 +248,7 @@ class M2Kernel(Kernel):
                         'user_expressions': {}}
 
             output_lines, xcount = self.run(code)
-            mode = self.conf.get('mode')
-            # raise RuntimeWarning("{}".format(self.conf))
-            data, stream = self.process_output(output_lines, mode, xcount)
+            data, stream = self.process_output(output_lines, xcount)
 
             if stream:
                 stdout_content = {'name': 'stdout', 'text': stream}

@@ -1,24 +1,17 @@
-Cell Magic:
-    ☐ raw output
-    ☐ load file
-    ☐ set time-limit
+Important:
+    ☐ propagate M2 errors to stderr always
+    ☐ test on Ubuntu (x86_64-linux)
+    ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
 
-Easy:
-    ☐ package as pip package
-    ☐ make a release as version 0.2.0
-
-Medium:
-    ☐ write codemirror @started(18-06-26 18:03)
+UI:
+    ☐ write codemirror
     ☐ write lexer
-    ☐ test on Linux
 
-Hard/Big:
-    ☐ run M2 thru Python
-    ☐ "try it online"
-
-Examples:
-    ✔ the first page of the M2 book @done(18-07-03 13:12)
+Remote Server Example:
+    ✔ run from from an rpi3 on local network @done(19-01-18 12:09)
+    ☐ run from from an rpi3 on the internet securely
+    ☐ run from from an ec2 securely
+    ☐ "try it online" web site
 
 Documentation:
-    ☐ document caveats
-    ☐ explain "M2JK" vs "IM2" (on the wiki)
+    ☐ write wiki articles
