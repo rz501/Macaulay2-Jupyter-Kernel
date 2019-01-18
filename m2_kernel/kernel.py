@@ -77,7 +77,7 @@ class M2Kernel(Kernel):
 
     patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
     patt_emptyline = re.compile(br'^\s*$')
-    patt_magic = re.compile(r'\s*--\s*\%(.*)$', re.DOTALL)
+    patt_magic = re.compile(r'\s*--\s*\%(.*=.*)$', re.DOTALL)
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
 
@@ -110,7 +110,9 @@ class M2Kernel(Kernel):
             else:
                 code_lines.append(line + '--CMD')
         if magic_lines or code_lines:
-            return '{}\n{}--EOB'.format('\n'.join(magic_lines), '\n'.join(code_lines))
+            return '{}{}{}--EOB'.format('\n'.join(magic_lines),
+                                        '\n' if magic_lines and code_lines else '',
+                                        '\n'.join(code_lines))
         else:
             return ''
 

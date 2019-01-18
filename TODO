@@ -24,4 +24,4 @@ Documentation:
 
 Bugs:
     ✔ cell magic renders the M2 statements no-op @done(19-01-18 15:22)
-    ☐ magic should capture --, % and =
+    ✔ magic should capture --, % and = @done(19-01-18 15:31)
