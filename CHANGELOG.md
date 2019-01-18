@@ -5,7 +5,7 @@
 
 ## [0.2.0] - 2019-01-18
 - Stable IO processing. Not aware of bugs or caveats.
-- In normal mode, code in evaluates the same way as in M2 interactive mode.
+- In normal mode, code in cells evaluates the same way as in M2 interactive mode.
 - Output now is only presented for the last statement in a block.
   This is intentional and parallels IPython.
   M2 errors still need to be propagated though. See TODO.
