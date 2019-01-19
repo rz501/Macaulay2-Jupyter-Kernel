@@ -17,3 +17,5 @@
 - *texmacs* prints and renders the output value the way your browser does.
 - Timeouts can be set for the allowed delay for a block calculation (plus transport).
   They can be set in a configure script or interactively.
+- Empirical tests didn't show any speed up using byte-strings over regular strings for 
+  both matching and transport

@@ -3,9 +3,6 @@ Important:
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
 
-Optimization:
-    ☐ work with binary data instead (just do)
-
 UI:
     ☐ write codemirror @started(19-01-18 15:04)
     ☐ write lexer
@@ -21,7 +18,3 @@ Remote Server Example:
 Documentation:
     ☐ write wiki articles
     ☐ take screenshots of different output modes
-
-Bugs:
-    ✔ cell magic renders the M2 statements no-op @done(19-01-18 15:22)
-    ✔ magic should capture --, % and = @done(19-01-18 15:31)

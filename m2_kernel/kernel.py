@@ -16,6 +16,8 @@ class M2Config():
         'timeout': '2',
         'startup_timeout': '5',
         'mode': 'normal',
+        'theme': 'ipython',
+        'config_file': '',
         'exepath': '' }
     TYPES = {
         'timeout': 'int',
@@ -28,6 +30,7 @@ class M2Config():
         self.config.read_dict({'magic': self.DEFAULTS})
         if config_file:
             self.config.read(config_file)
+            self.config['config_file'] = config_file
         if not self.config.get('magic', 'exepath'):
             exepath = pexpect.which('M2')
             if not exepath:
