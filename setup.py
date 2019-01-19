@@ -1,12 +1,5 @@
-from distutils.core import setup
+from setuptools import setup
 from m2_kernel import __version__
-
-# class install_with_kernelspec(install):
-#     def run(self):
-#         install.run(self)
-#         from m2_kernel import install as kernel_install
-#         kernel_install.install_my_kernel_spec()
-
 
 setup(
     name='macaulay2_jupyter_kernel',
@@ -19,7 +12,6 @@ setup(
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
-    # cmdclass={'install': install_with_kernelspec},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.7',
