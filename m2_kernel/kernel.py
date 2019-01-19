@@ -15,13 +15,15 @@ class M2Config():
     DEFAULTS = {
         'timeout': '2',
         'startup_timeout': '5',
-        'mode': 'normal',
-        'theme': 'ipython',
+        'mode': 'default',              # default, textmacs, pretty
+        'full_output': 'OFF',           
+        'theme': 'default',             # default, emacs
         'config_file': '',
         'exepath': '' }
     TYPES = {
         'timeout': 'int',
-        'startup_timeout': 'int' }
+        'startup_timeout': 'int',
+        'full_output' : 'bool' }
 
     def __init__(self, config_file=os.environ.get('M2JK_CONFIG')):
         """ config init
@@ -91,7 +93,7 @@ class M2Kernel(Kernel):
         self.conf = M2Config()
         exepath = self.conf.get('exepath')
         modes_init = """
-            m2jkModeNormal = Thing#{Standard,Print};
+            m2jkModeStandard = Thing#{Standard,Print};
             m2jkModeTeXmacs = Thing#{TeXmacs,Print};
             """
         self.proc = pexpect.spawn('{} -e "{}"'.format(exepath, modes_init), encoding='UTF-8')
@@ -141,10 +143,11 @@ class M2Kernel(Kernel):
 
         elif key == 'mode':
             curr_mode = self.conf.get('mode')
+            if curr_mode not in ['default', 'texmacs', 'pretty']: curr_mode = 'default'
             if value == 'texmacs' and curr_mode != 'texmacs':
                 retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
-            elif (value == 'normal' or value == 'pretty') and curr_mode == 'texmacs':
-                retop = 'Thing#{Standard,Print}=m2jkModeNormal;'
+            elif (value == 'default' or value == 'pretty') and curr_mode == 'texmacs':
+                retop = 'Thing#{Standard,Print}=m2jkModeStandard;'
 
         self.conf.set(key, value)
         return retop + '--CMD'
@@ -166,7 +169,8 @@ class M2Kernel(Kernel):
         """
         """
         mode = self.conf.get('mode')
-        if mode == 'normal':
+        if mode not in ['default', 'texmacs', 'pretty']: mode = 'default'
+        if mode == 'default':
             return None, '\n'.join(lines) 
         elif mode == 'texmacs':
             text = ''.join(lines)

@@ -1,12 +1,17 @@
 from setuptools import setup
 from m2_kernel import __version__
 
+
+with open('README.md', 'r') as fh:
+    long_description = fh.read()
+
 setup(
-    name='macaulay2_jupyter_kernel',
+    name='macaulay2-jupyter-kernel',
     version=__version__,
     packages=['m2_kernel'],
-    description='Macaulay2 kernel for Jupyter',
-    long_description='add later',
+    description='Jupyter kernel for Macaulay2',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Radoslav Zlatev',
     author_email='radoslav.raynov@yahoo.com',
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',

@@ -1,19 +1,26 @@
-# M2JK
+# M2JK - Jupyter kernel for Macaulay2
 
-[![Build Status](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
-[![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#)
+[![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)]
+(https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
+<!-- [![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#) -->
+[![](https://img.shields.io/pypi/v/macaulay2_jupyter_kernel.svg?style=flat-square)]
+(#link-to-pypi-page)
 
-### To be rewritten this weekend!
+## WORK IN PROGRESS - DON'T USE UNTIL THE RELEASE
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
-Aside from a drop-in replacement for Emacs or M2's interactive session,
-Jupyter provides a number of features like
-code organization, inline Markdown with TeX and different *standard* key-bindings,
-to name just a few.
-<!-- With minimal additional setup, -->
-<!-- it can even support multiple users on a shared session over a local network or the Internet. -->
 
-For details, check out the [wiki](../../wiki).
+M2JK is intended as a drop-in replacement for Emacs, so after installing it,
+you can fire up Jupyter and start coding right away.
+Some of the features that come with it are
+organizing your code into logical blocks (cells),
+using alternative (non-Emacs) key bindings,
+using Markdown and TeX inline,
+storing and sharing your Macaulay2 code and output in a convenient way,
+and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
+
+M2JK-specific features are [documented](#) in the form of a Jupyter notebook.
+
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -25,7 +32,7 @@ Below are a few sample notebooks all highlighting different key points.
 
 * [minimal demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
 * [preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
-* [examples of the new features](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
+* [features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
 
 Note that while the files above are statically rendered locally
 and reside on Github,
@@ -38,27 +45,36 @@ is missing completely.
 
 ### Prerequisites
 
-The project runs on Python version 3.6+.
-Also, quite obviously, you need recent versions of both Macaulay2 and Jupyter installed on your system.
-You can find installation instructions on their respective sites.
+Jupyter runs on Python. Recent versions of either Python 2 or Python 3 are OK.
+Jupyter is then installed as a regular package, e.g. `pip3 install jupyter`.
+For details, see its documentation online.
+M2JK is written on Python 3.7 but distributed both as source and build,
+so if installed from PyPI, you can do it with Python 2 too.
 
-Further, `M2` must be on your `PATH`.
-If you are using Emacs as your front-end, it already is.
-Otherwise, you can achieve that by running `setup()` from within an M2 session.
+Macaulay2 needs to be installed and on your path.
+If you are using Emacs as your front-end, it already is, but you can test it by `which M2`.
+Otherwise, you can achieve that by running `setup()` from within an M2 session,
+or you can instruct M2JK to use a specific binary.
 
 ### Install
 
-You can install the latest version from source by
+You can install the latest stable version from PyPI by
+
+```bash
+$ pip3 install macaulay2-jupyter-kernel
+```
+
+Alternatively, you can install the latest version development version from source by
 
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git
-$ pip3 install macaulay2-jupyter-kernel/ # keep the forward slash or cd into to the directory 
+$ pip3 install macaulay2-jupyter-kernel/  # keep the forward slash or cd into the directory 
 $ python3 -m m2_kernel.install
 ```
 
 ### Run on Jupyter
 
-Once installation is complete, you need to start (or restart) Jupyter by
+Once the installation is complete, you need to start (or restart) Jupyter by
 
 ```bash
 $ jupyter notebook &

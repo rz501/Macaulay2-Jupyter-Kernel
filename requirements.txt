@@ -1,4 +1,4 @@
 ipykernel
-pexpect
-notebook
 jupyter_client
+notebook
+pexpect

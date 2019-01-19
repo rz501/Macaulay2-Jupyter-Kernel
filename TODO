@@ -19,7 +19,7 @@ Documentation:
     ☐ take screenshots of different output modes
 
 Before Submission:
-    ☐ submit as a pip3 package
-    ☐ add `pretty` mode (commented out)
+    ☐ submit as a pip3 package @started(19-01-19 10:56)
     ☐ fix nbextension installation
+    ☐ add `pretty` mode (commented out)
     ☐ write a one-page documentation notebook

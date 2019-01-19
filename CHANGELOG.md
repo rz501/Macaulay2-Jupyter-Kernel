@@ -1,7 +1,7 @@
-## [Unreleased]
-- Basic implementation. Many bugs.
-- Code organized properly as a pip3 module.
-- Some highlighting on the client side.
+## [0.2.3] - 2019-01-19
+- Bug fixes.
+- Changed mode `normal` to `default`.
+- Better handling of the config / magic.
 
 ## [0.2.0] - 2019-01-18
 - Stable IO processing. Not aware of bugs or caveats.
@@ -19,3 +19,8 @@
   They can be set in a configure script or interactively.
 - Profiling didn't show any speed up using byte-strings over regular strings for 
   both matching and transport, so kept current set up.
+
+## [Unreleased]
+- Basic implementation. Many bugs.
+- Code organized properly as a pip3 module.
+- Some highlighting on the client side.
