@@ -1,5 +1,4 @@
 from distutils.core import setup
-from distutils.command.install import install
 from m2_kernel import __version__
 
 # class install_with_kernelspec(install):
@@ -15,14 +14,14 @@ setup(
     packages=['m2_kernel'],
     description='Macaulay2 kernel for Jupyter',
     long_description='add later',
-    author='Radoslav Raynov',
+    author='Radoslav Zlatev',
     author_email='radoslav.raynov@yahoo.com',
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
     # cmdclass={'install': install_with_kernelspec},
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.7',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
