@@ -1,10 +1,8 @@
 # M2JK - Jupyter kernel for Macaulay2
 
-[![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)]
-(https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
+[![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
 <!-- [![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#) -->
-[![](https://img.shields.io/pypi/v/macaulay2_jupyter_kernel.svg?style=flat-square)]
-(#link-to-pypi-page)
+[![](https://img.shields.io/pypi/v/macaulay2_jupyter_kernel.svg?style=flat-square)](#link-to-pypi-page)
 
 ## WORK IN PROGRESS - DON'T USE UNTIL THE RELEASE
 
@@ -20,7 +18,6 @@ storing and sharing your Macaulay2 code and output in a convenient way,
 and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
 
 M2JK-specific features are [documented](#) in the form of a Jupyter notebook.
-
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -53,18 +50,19 @@ so if installed from PyPI, you can do it with Python 2 too.
 
 Macaulay2 needs to be installed and on your path.
 If you are using Emacs as your front-end, it already is, but you can test it by `which M2`.
-Otherwise, you can achieve that by running `setup()` from within an M2 session,
-or you can instruct M2JK to use a specific binary.
+Otherwise, you can achieve that by running `setup()` from within an M2 session.
+Alternatively, you can configure M2JK to use a specific binary.
 
 ### Install
 
-You can install the latest stable version from PyPI by
+You can install the latest stable version directly from PyPI by
 
 ```bash
 $ pip3 install macaulay2-jupyter-kernel
+$ python3 -m m2_kernel.install
 ```
 
-Alternatively, you can install the latest version development version from source by
+Alternatively, you can install the latest development version from source by
 
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git
