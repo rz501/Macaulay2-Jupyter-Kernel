@@ -6,7 +6,7 @@ define([
 
     return {
       load_ipython_extension: function () {
-        console.log('Loading Macaulay2 Mode...');
+        console.log('Loading Macaulay2 mode...');
       }
     };
 

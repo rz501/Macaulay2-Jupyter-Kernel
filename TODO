@@ -2,6 +2,7 @@ Important:
     ☐ propagate M2 errors to stderr always - prior in block and all modes
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
+    ☐ submit as a pip3 package
 
 UI:
     ☐ write codemirror @started(19-01-18 15:04)
