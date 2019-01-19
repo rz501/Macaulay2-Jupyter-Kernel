@@ -2,6 +2,7 @@
 - Bug fixes.
 - Changed mode `normal` to `default`.
 - Better handling of the config / magic.
+- Syntax hightlight changes.
 
 ## [0.2.0] - 2019-01-18
 - Stable IO processing. Not aware of bugs or caveats.

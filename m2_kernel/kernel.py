@@ -19,7 +19,9 @@ class M2Config():
         'full_output': 'OFF',           
         'theme': 'default',             # default, emacs
         'config_file': '',
-        'exepath': '' }
+        'exepath': '',
+        'version': str(__version__),
+        'exeversion': '' }
     TYPES = {
         'timeout': 'int',
         'startup_timeout': 'int',

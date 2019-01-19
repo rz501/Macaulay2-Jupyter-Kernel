@@ -1,8 +1,8 @@
 # M2JK - Jupyter kernel for Macaulay2
 
 [![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
+[![](https://img.shields.io/pypi/v/macaulay2-jupyter-kernel.svg?style=flat-square)](#link-to-pypi-page)
 <!-- [![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#) -->
-[![](https://img.shields.io/pypi/v/macaulay2_jupyter_kernel.svg?style=flat-square)](#link-to-pypi-page)
 
 ## WORK IN PROGRESS - DON'T USE UNTIL THE RELEASE
 
@@ -17,7 +17,7 @@ using Markdown and TeX inline,
 storing and sharing your Macaulay2 code and output in a convenient way,
 and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
 
-M2JK-specific features are [documented](#) in the form of a Jupyter notebook.
+The M2JK-specific features and configuration are [documented]() in the form of a Jupyter notebook.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -25,16 +25,12 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ## Examples
 
-Below are a few sample notebooks all highlighting different key points.
-
-* [minimal demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
+* [features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
+* [screenshot demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
 * [preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
-* [features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/newstyle.ipynb)
 
-Note that while the files above are statically rendered locally
-and reside on Github,
-they are displayed thru [nbviewer](#)
-since Github seems to only support plain text output.
+Note that while the files above are statically rendered locally and reside on Github,
+they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
 In particular, client-side syntax highlighting, such as in the screenshot,
 is missing completely.
 
