@@ -14,7 +14,7 @@ Some of the features that come with it are
 organizing your code into logical blocks (cells),
 using alternative (non-Emacs) key bindings,
 using Markdown and TeX inline,
-storing and sharing your Macaulay2 code and output in a convenient way,
+conveniently storing and sharing your Macaulay2 code and output,
 and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
 
 The M2JK-specific features and configuration are [documented]() in the form of a Jupyter notebook.
