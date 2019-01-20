@@ -50,11 +50,12 @@ class M2Config:
             key, val = self.config.items('temp')[0]
             if key in self.args:
                 self.args = self.parser.parse_args('--{} {}'.format(key, val).split(), self.args)
-            message = '[magic successed] {} = {}'.format(key, self.args.__dict__[key])
+            val = self.args.__dict__[key]
+            msg = '[magic successed] {} = {}'.format(key, val)
         except:
             key, val = None, None
-            message = '[magic failed]'
-        return key, val, message
+            msg = '[magic failed]'
+        return key, val, msg
 
 
 class M2Kernel(Kernel):
@@ -139,8 +140,11 @@ class M2Kernel(Kernel):
                 retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
             elif val == 'default' or val == 'pretty':
                 retop = 'Thing#{Standard,Print}=m2jkModeStandard;'
-        elif key == 'tb':
-            retop = self.process_magic('mode=default')[:-5]
+            if self.conf.args.tb and self.conf.args.mode != 'default':
+                self.process_magic('tb=off')
+        elif key == 'tb' and val == True:
+            if self.conf.args.mode != 'default':
+                retop = self.process_magic('mode=default')[:-5]
         return retop+'--CMD'
 
     def process_output(self, lines, xcount):
