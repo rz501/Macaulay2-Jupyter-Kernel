@@ -16,6 +16,8 @@ using alternative (non-Emacs) key bindings,
 using Markdown and TeX inline,
 conveniently storing and sharing your Macaulay2 code and output,
 and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
+A small set of "cell magic" expressions implements Macaulay2-specific features,
+like output mode, timeout and executable path.
 
 The M2JK-specific features and configuration are [documented]() in the form of a Jupyter notebook.
 For bugs or requests, open an issue.
@@ -38,11 +40,14 @@ is missing completely.
 
 ### Prerequisites
 
-Jupyter runs on Python. Recent versions of either Python 2 or Python 3 are OK.
-Jupyter is then installed as a regular package, e.g. `pip3 install jupyter`.
-For details, see its documentation online.
-M2JK is written on Python 3.7 but distributed both as source and build,
-so if installed from PyPI, you can do it with Python 2 too.
+You need a recent version of Python, `pip` and Jupyter.
+Python 3 is recommended, in which case the following should suffice
+```bash
+python3 -m pip install --upgrade pip
+pip3 install jupyter
+```
+Note that M2JK is written on Python 3.7, but is distributed (via PyPI) as both source and build,
+so you can probably do away with Python 2 as well.
 
 Macaulay2 needs to be installed and on your path.
 If you are using Emacs as your front-end, it already is, but you can test it by `which M2`.
