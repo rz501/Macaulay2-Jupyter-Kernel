@@ -15,8 +15,8 @@ alternative key bindings,
 using Markdown and TeX in-line,
 conveniently separating, storing and sharing your Macaulay2 code and output,
 and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
-A small set of "cell magic" expressions implements Macaulay2-specific features,
-like output mode, timeout and executable path.
+A small set of "cell magic" expressions configure kernel-specific options
+like output mode, execution timeout and M2-executable path.
 
 The M2JK-specific features and configuration are [documented]() as a Jupyter notebook.
 For bugs or requests, open an issue.
@@ -39,8 +39,8 @@ is missing completely.
 
 ### Prerequisites
 
-You need a recent version of Python, `pip` and Jupyter.
-Python 3 is recommended, in which case the following should suffice
+You need a recent version of Python and `pip`. Python 3 is recommended.
+You can install Jupyter directly.
 ```bash
 python3 -m pip install --upgrade pip
 pip3 install jupyter
