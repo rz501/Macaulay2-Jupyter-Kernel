@@ -21,7 +21,7 @@ class M2Config:
         parser.add_argument('--timeout', type=int, default=2)
         parser.add_argument('--timeout_startup', type=int, default=5)
         parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'], default='default')
-        parser.add_argument('--fulloutput', default=False,
+        parser.add_argument('--tb', default=False,
             type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
@@ -139,6 +139,8 @@ class M2Kernel(Kernel):
                 retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
             elif val == 'default' or val == 'pretty':
                 retop = 'Thing#{Standard,Print}=m2jkModeStandard;'
+        elif key == 'tb':
+            retop = self.process_magic('mode=default')[:-5]
         return retop+'--CMD'
 
     def process_output(self, lines, xcount):
@@ -159,10 +161,6 @@ class M2Kernel(Kernel):
             text = '\n'.join(lines)
             mv = patt_v.match(text)
             mt = patt_t.match(text)
-            
-            print(text)
-            print(mv)
-            print(mt)
 
             if not mv:
                 return None, (text if not mt else '')
@@ -170,10 +168,8 @@ class M2Kernel(Kernel):
             margin = len(str(xcount))+4
             text = '\n'.join([line[margin:] if len(line)>margin else '' for line in lines])
             mvt = patt_vt.match(text)
-            print(mvt)
-            print(mvt.groups())
             return {'text/html': '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(
-                    *mvt.groups() 
+                    *(mvt.groups() if mvt else (text, ''))
                 )}, None
         return None, None
 
@@ -181,15 +177,17 @@ class M2Kernel(Kernel):
         """ decouples statements from an M2 code block and returns last output
         """
         self.proc.sendline(code)
-        
+        output_lines = []
+
         while True:
             self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout)
             m = self.proc.match
             if not m: raise RuntimeError("***M2JK: Macaulay2 did not return output as expected")
             xcount = int(m.groups()[1])-1
             EOB = False
-            output_lines = []
             
+            if not self.conf.args.tb:
+                output_lines = []
             for line in m.groups()[0].splitlines():
                 if line.endswith('--EOB'):
                     EOB = True
