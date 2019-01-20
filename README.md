@@ -12,10 +12,10 @@ M2JK is intended as a drop-in replacement for Emacs, so after installing it,
 you can fire up Jupyter and start coding right away.
 Some of the features that come with it are
 organizing your code into logical blocks (cells),
-using alternative (non-Emacs) key bindings,
+alternative key bindings,
 using Markdown and TeX inline,
-conveniently storing and sharing your Macaulay2 code and output,
-and easily exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
+conveniently storing and sharing your processed Macaulay2 code,
+and exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
 A small set of "cell magic" expressions implements Macaulay2-specific features,
 like output mode, timeout and executable path.
 
@@ -46,8 +46,6 @@ Python 3 is recommended, in which case the following should suffice
 python3 -m pip install --upgrade pip
 pip3 install jupyter
 ```
-Note that M2JK is written on Python 3.7, but is distributed (via PyPI) as both source and build,
-so you can probably do away with Python 2 as well.
 
 Macaulay2 needs to be installed and on your path.
 If you are using Emacs as your front-end, it already is, but you can test it by `which M2`.
