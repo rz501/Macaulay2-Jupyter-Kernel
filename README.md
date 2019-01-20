@@ -40,9 +40,9 @@ is missing completely.
 ### Prerequisites
 
 You need a recent version of Python and `pip`. Python 3 is recommended.
-You can install Jupyter directly.
+You can install Jupyter directly from PyPI.
 ```bash
-python3 -m pip install --upgrade pip
+pip3 install --upgrade pip
 pip3 install jupyter
 ```
 
@@ -53,7 +53,7 @@ Alternatively, you can configure M2JK to use a specific binary.
 
 ### Install
 
-You can install the latest stable version directly from PyPI by
+You can install the latest release version directly from PyPI by
 
 ```bash
 $ pip3 install macaulay2-jupyter-kernel
