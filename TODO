@@ -20,6 +20,6 @@ Documentation:
 
 Before Submission:
     ☐ submit as a pip3 package @started(19-01-19 10:56)
-    ☐ fix nbextension installation
-    ☐ add `pretty` mode (commented out)
+    ✔ fix nbextension installation @done(19-01-20 13:47)
+    ✔ add `pretty` mode (commented out) @done(19-01-20 12:57)
     ☐ write a one-page documentation notebook

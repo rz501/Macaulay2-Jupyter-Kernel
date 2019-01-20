@@ -30,6 +30,7 @@ def install_my_kernel_spec(user=True, prefix=None):
 
         print("Installing nbextension for syntax hilighting")
         install_nbextension('m2-mode', overwrite=True, symlink=True, user=user)
+        # install_nbextension('m2-mode', overwrite=True, user=user)
         enable_nbextension('notebook', 'm2-mode/main')
 
 
