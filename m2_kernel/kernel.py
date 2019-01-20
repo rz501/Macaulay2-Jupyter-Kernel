@@ -21,7 +21,8 @@ class M2Config:
         parser.add_argument('--timeout', type=int, default=2)
         parser.add_argument('--timeout_startup', type=int, default=5)
         parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'], default='default')
-        parser.add_argument('--full_output', type=bool, default=False)
+        parser.add_argument('--fulloutput', default=False,
+            type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
         parser.add_argument('--execpath', default=execpath)
