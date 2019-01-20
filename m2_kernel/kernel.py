@@ -1,69 +1,11 @@
 import re
-import configparser
 import pexpect
-import os
 from ipykernel.kernelbase import Kernel
+from .config import M2Config
 from . import __version__
 
 """ Macaulay2 Jupyter Kernel
 """
-
-
-class M2Config():
-    """ a config class used in the kernel
-    """
-    DEFAULTS = {
-        'timeout': '2',
-        'startup_timeout': '5',
-        'mode': 'default',              # default, textmacs, pretty
-        'full_output': 'OFF',           
-        'theme': 'default',             # default, emacs
-        'config_file': '',
-        'exepath': '',
-        'version': str(__version__),
-        'exeversion': '' }
-    TYPES = {
-        'timeout': 'int',
-        'startup_timeout': 'int',
-        'full_output' : 'bool' }
-
-    def __init__(self, config_file=os.environ.get('M2JK_CONFIG')):
-        """ config init
-        """
-        self.config = configparser.ConfigParser()
-        self.config.read_dict({'magic': self.DEFAULTS})
-        if config_file:
-            self.config.read(config_file)
-            self.config['config_file'] = config_file
-        if not self.config.get('magic', 'exepath'):
-            exepath = pexpect.which('M2')
-            if not exepath:
-                raise RuntimeError("***M2JK: Macaulay2 executable not found")
-            self.config.set('magic', 'exepath', exepath)
-
-    def get(self, key):
-        """ config getter
-        """
-        args = ['magic', key]
-        kwargs = {'fallback': None}
-        if key in self.TYPES:
-            key_type = self.TYPES[key]
-            if key_type == 'int':
-                value = self.config.getint(*args, **kwargs)
-            elif key_type == 'float':
-                value = self.config.getfloat(*args, **kwargs)
-            elif key_type == 'bool':
-                value = self.config.getboolean(*args, **kwargs)
-            else:
-                raise KeyError("***M2JK: wrong key_type for {}".format(key))
-        else:
-            value = self.config.get(*args, **kwargs)
-        return value
-    
-    def set(self, key, value):
-        """ config key/value setter
-        """
-        self.config['magic'][key] = str(value) if value else ''
 
 
 class M2Kernel(Kernel):
@@ -83,8 +25,8 @@ class M2Kernel(Kernel):
     }
 
     patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
-    patt_emptyline = re.compile(br'^\s*$')
-    patt_magic = re.compile(r'\s*--\s*\%(.*=.*)$', re.DOTALL)
+    patt_emptyline = re.compile(r'^\s*$')
+    patt_magic = re.compile(r'\s*--\s*\%(.*)$', re.DOTALL)
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
 
@@ -92,14 +34,18 @@ class M2Kernel(Kernel):
         """ kernel init - calls __init__ on the parent and sets up the proc and conf
         """
         super().__init__(*args, **kwargs)
-        self.conf = M2Config()
-        exepath = self.conf.get('exepath')
+        self.conf = M2Config(pexpect.which('M2'))
+        execpath = self.conf.args.execpath
+        if not execpath:
+            raise RuntimeError("M2JK: M2 not found")
         modes_init = """
             m2jkModeStandard = Thing#{Standard,Print};
             m2jkModeTeXmacs = Thing#{TeXmacs,Print};
             """
-        self.proc = pexpect.spawn('{} -e "{}"'.format(exepath, modes_init), encoding='UTF-8')
-        self.proc.expect(self.patt_consume, timeout=self.conf.get('startup_timeout'))
+        self.proc = pexpect.spawn('{} -e "{}"'.format(execpath, modes_init), encoding='UTF-8')
+        self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout_startup)
+
+        print(self.conf.args)
 
     def preprocess(self, code):
         """
@@ -107,71 +53,44 @@ class M2Kernel(Kernel):
         magic_lines = []
         code_lines = []
         for line in code.splitlines():
-            bline = line.encode()
-            if self.patt_emptyline.match(bline):
+            if self.patt_emptyline.match(line):
                 pass
             elif self.patt_magic.match(line):
                 magic_lines.append(self.process_magic(self.patt_magic.match(line).groups()[0]))
             elif self.patt_comment.match(line):
                 pass
             else:
-                code_lines.append(line + '--CMD')
+                code_lines.append(line+'--CMD')
         if magic_lines or code_lines:
             return '{}{}{}--EOB'.format('\n'.join(magic_lines),
                                         '\n' if magic_lines and code_lines else '',
                                         '\n'.join(code_lines))
-        else:
-            return ''
+        return ''
 
     def process_magic(self, raw_magic):
         """
         """
-        config = self.conf.config
+        key, val, msg = self.conf.read(raw_magic)
+        self.send_stream(msg)
         retop = 'null'
 
-        if 'tmp' in config: config.remove_section('tmp')
-        config.read_string('[tmp]\n' + raw_magic)
-        key, value = config.items('tmp')[0]
-        self.send_stream("[cell magic] {} = {}".format(key, value))
-
         if key == 'config':
-            if value == 'print':
-                content = str(dict(config.items('magic')))
+            if val == 'print':
+                content = str(self.conf.args)
                 self.send_stream(content)
-            elif value == 'reset':
-                self.conf = M2Config()
-                config = self.conf.config
-                self.send_stream('resetting to defaults')
-
+            elif val == 'reset':
+                self.conf = M2Config(self.conf.args.execpath)
         elif key == 'mode':
-            curr_mode = self.conf.get('mode')
-            if curr_mode not in ['default', 'texmacs', 'pretty']: curr_mode = 'default'
-            if value == 'texmacs' and curr_mode != 'texmacs':
+            if val == 'texmacs':
                 retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
-            elif (value == 'default' or value == 'pretty') and curr_mode == 'texmacs':
+            elif val == 'default' or val == 'pretty':
                 retop = 'Thing#{Standard,Print}=m2jkModeStandard;'
-
-        self.conf.set(key, value)
-        return retop + '--CMD'
-
-    # def process_magic(self, raw_magic):
-    #     self.kernel.send_stream("-- send stream from conf: " + raw_magic)
-
-    # def trim_comments(self, lines):
-    #     return [line for line in lines if self.patt_comment.match(line)]
-
-    # def trim_leftmargin(self, lines, index_len):
-    #     m_len = index_len + 4
-    #     return [(line[m_len:] if len(line)>=m_len else line) for line in lines]
-
-    # def trim_topmargin(self, lines):
-    #     return lines
+        return retop+'--CMD'
 
     def process_output(self, lines, xcount):
         """
         """
-        mode = self.conf.get('mode')
-        if mode not in ['default', 'texmacs', 'pretty']: mode = 'default'
+        mode = self.conf.args.mode
         if mode == 'default':
             return None, '\n'.join(lines) 
         elif mode == 'texmacs':
@@ -230,7 +149,7 @@ class M2Kernel(Kernel):
         self.proc.sendline(code)
         
         while True:
-            self.proc.expect(self.patt_consume, timeout=self.conf.get('timeout'))
+            self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout)
             m = self.proc.match
             if not m: raise RuntimeError("***M2JK: Macaulay2 did not return output as expected")
             xcount = int(m.groups()[1])-1
@@ -244,7 +163,6 @@ class M2Kernel(Kernel):
                 if line.endswith('--CMD'):
                     continue
                 output_lines.append(line)
-            
             if EOB:
                 return output_lines, xcount
 
@@ -255,8 +173,17 @@ class M2Kernel(Kernel):
         content = {'name': stdfile, 'text': text+'\n'}
         self.send_response(self.iopub_socket, 'stream', content)
 
+    def mock_execute(self, code):
+        """ run a cell programmatically - for debuging or otherwise
+        """
+        code = self.preprocess(code)
+        if not code.rstrip():
+            return
+        output_lines, xcount = self.run(code)
+        return self.process_output(output_lines, xcount)[1]
+
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
-        """ entry point for the execution of each cell
+        """ kernel entry point for the execution of each cell
         """
         code = self.preprocess(code)
         # self.send_stream("--->\n"+code+"\n<---")
@@ -283,16 +210,3 @@ class M2Kernel(Kernel):
                 'execution_count': xcount,
                 'payload': [],
                 'user_expressions': {}}
-            # if output:
-            #     if self.magic['pretty']:
-            #         if typesym:
-            #             content = '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(output, typesym)
-            #         else:
-            #             content = '<pre>{}</pre>'.format(output)
-            #         data = {'text/html': content}
-            #     else:
-            #         if typesym:
-            #             content = '{}\n\n{}'.format(output, '\n'.join(['\u21AA '+l for l in typesym.splitlines()]))
-            #         else:
-            #             content = output
-            #         data = {'text/plain': content}

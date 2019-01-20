@@ -1,7 +1,10 @@
+## [0.3.0] - 2019-01-20
+- Add robust cell magic support.
+- Minor syntax highlighting changes.
+
 ## [0.2.3] - 2019-01-19
 - Bug fixes.
 - Changed mode `normal` to `default`.
-- Better handling of the config / magic.
 - Syntax hightlight changes.
 
 ## [0.2.0] - 2019-01-18
