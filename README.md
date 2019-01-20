@@ -8,18 +8,17 @@
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 
-M2JK is intended as a drop-in replacement for Emacs, so after installing it,
-you can fire up Jupyter and start coding right away.
+M2JK is intended as a drop-in replacement for Emacs.
 Some of the features that come with it are
 organizing your code into logical blocks (cells),
 alternative key bindings,
-using Markdown and TeX inline,
-conveniently storing and sharing your processed Macaulay2 code,
-and exporting to `m2`, `ipynb`, `html`, `pdf` and other file formats.
+using Markdown and TeX in-line,
+conveniently separating, storing and sharing your Macaulay2 code and output,
+and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions implements Macaulay2-specific features,
 like output mode, timeout and executable path.
 
-The M2JK-specific features and configuration are [documented]() in the form of a Jupyter notebook.
+The M2JK-specific features and configuration are [documented]() as a Jupyter notebook.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
