@@ -1,11 +1,59 @@
-import re
+import argparse
+import configparser
 import pexpect
+import re
+import os
 from ipykernel.kernelbase import Kernel
-from .config import M2Config
 from . import __version__
 
 """ Macaulay2 Jupyter Kernel
 """
+
+
+class M2Config:
+    """"""
+    
+    def __init__(self, execpath, configpath=os.getenv('M2JK_CONFIG')):
+        """"""
+        parser = argparse.ArgumentParser(usage=argparse.SUPPRESS)
+        config = configparser.ConfigParser(allow_no_value=True)
+
+        parser.add_argument('--timeout', type=int, default=2)
+        parser.add_argument('--timeout_startup', type=int, default=5)
+        parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'], default='default')
+        parser.add_argument('--full_output', type=bool, default=False)
+        parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
+        # execpath is now mutable, but modifying it is no-op. fix this
+        parser.add_argument('--execpath', default=execpath)
+        
+        parser.add_argument('--version', action='store_const', const=__version__, default=__version__)
+        parser.add_argument('--configpath', action='store_const', const=configpath, default=configpath)
+        parser.add_argument('--config')
+        
+        args = parser.parse_args('')
+        
+        if configpath:
+            config.read(configpath)
+            line = ' '.join(['--{} {}'.format(key, val) for key, val in config.items('magic')])
+            args = parser.parse_known_args(line.split(), args)
+        
+        self.parser = parser
+        self.config = config
+        self.args = args
+
+    def read(self, line):
+        """"""
+        self.config.remove_section('temp')
+        try:
+            self.config.read_string('[temp]\n'+line)
+            key, val = self.config.items('temp')[0]
+            if key in self.args:
+                self.args = self.parser.parse_args('--{} {}'.format(key, val).split(), self.args)
+            message = '[magic successed] {} = {}'.format(key, self.args.__dict__[key])
+        except:
+            key, val = None, None
+            message = '[magic failed]'
+        return key, val, message
 
 
 class M2Kernel(Kernel):
@@ -30,6 +78,8 @@ class M2Kernel(Kernel):
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
 
+    nonkernelrun = False
+
     def __init__(self, *args, **kwargs):
         """ kernel init - calls __init__ on the parent and sets up the proc and conf
         """
@@ -45,11 +95,8 @@ class M2Kernel(Kernel):
         self.proc = pexpect.spawn('{} -e "{}"'.format(execpath, modes_init), encoding='UTF-8')
         self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout_startup)
 
-        print(self.conf.args)
-
     def preprocess(self, code):
-        """
-        """
+        """"""
         magic_lines = []
         code_lines = []
         for line in code.splitlines():
@@ -68,16 +115,22 @@ class M2Kernel(Kernel):
         return ''
 
     def process_magic(self, raw_magic):
-        """
-        """
+        """"""
         key, val, msg = self.conf.read(raw_magic)
-        self.send_stream(msg)
         retop = 'null'
+
+        if self.nonkernelrun:
+            print(msg)
+        else:
+            self.send_stream(msg)
 
         if key == 'config':
             if val == 'print':
                 content = str(self.conf.args)
-                self.send_stream(content)
+                if self.nonkernelrun:
+                    print(content)
+                else:
+                    self.send_stream(content)
             elif val == 'reset':
                 self.conf = M2Config(self.conf.args.execpath)
         elif key == 'mode':
@@ -88,8 +141,7 @@ class M2Kernel(Kernel):
         return retop+'--CMD'
 
     def process_output(self, lines, xcount):
-        """
-        """
+        """"""
         mode = self.conf.args.mode
         if mode == 'default':
             return None, '\n'.join(lines) 
@@ -99,49 +151,30 @@ class M2Kernel(Kernel):
             if m: return {'text/html': m.groups()[0]}, None
             return None, None
         elif mode == 'pretty':
-            # value_marker = "o{} = ".format(xcount)
-            # type_marker = "o{} : ".format(xcount)
+            patt_v = re.compile(r'.*\no\d+ = ', re.DOTALL)
+            patt_t = re.compile(r'.*\no\d+\s:\s', re.DOTALL)
+            patt_vt = re.compile('(.*)\n\n(.*)', re.DOTALL)
+
+            text = '\n'.join(lines)
+            mv = patt_v.match(text)
+            mt = patt_t.match(text)
             
-            # has_value = False
-            # has_type = False
-            # has_content = False
-            # xcount_len = len(str(xcount))
-            
-            # for line in lines:
-            #     if line.startswith(value_marker):
-            #         has_value = True
-            #     elif line.startswith(type_marker):
-            #         has_type = True
-            #     elif not self.patt_emptyline.match(line.encode()):
-            #         has_content = True
-        
-            # if has_content and not (has_value or has_type):
-            #     stdout = b'\n'.join(lines)
-            # elif has_type and not has_value:
-            #     valtype = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
-            # elif has_value and not has_type:
-            #     value = b'\n'.join(self.trim_leftmargin(lines, xcount_len))
-            # elif has_value and has_type:
-            #     type_seen = False
-            #     switched = False
-            #     value_lines = []
-            #     other_lines = []
-            #     for line in reversed(lines):
-            #         if switched:
-            #             value_lines.append(line)
-            #         else:
-            #             other_lines.append(line)
-            #         if not switched and line.startswith(type_marker):
-            #             type_seen = True
-            #         elif not switched and type_seen and self.patt_emptyline.match(line):
-            #             switched = True
-            #     value_lines = self.trim_leftmargin(reversed(value_lines), xcount_len)
-            #     other_lines = self.trim_leftmargin(reversed(other_lines), xcount_len)
-            #     result.value = b'\n'.join(value_lines)
-            #     result.type = b'\n'.join(other_lines)
-            return None, None
-        else:
-            raise RuntimeError("***M2JK: unknown mode `{}`".format(mode))
+            print(text)
+            print(mv)
+            print(mt)
+
+            if not mv:
+                return None, (text if not mt else '')
+
+            margin = len(str(xcount))+4
+            text = '\n'.join([line[margin:] if len(line)>margin else '' for line in lines])
+            mvt = patt_vt.match(text)
+            print(mvt)
+            print(mvt.groups())
+            return {'text/html': '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(
+                    *mvt.groups() 
+                )}, None
+        return None, None
 
     def run(self, code):
         """ decouples statements from an M2 code block and returns last output

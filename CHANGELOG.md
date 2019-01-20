@@ -1,8 +1,11 @@
-## [0.3.0] - 2019-01-20
+## [0.4.0]
+- Added `pretty` display mode.
+
+## [0.3.0] 
 - Add robust cell magic support.
 - Minor syntax highlighting changes.
 
-## [0.2.3] - 2019-01-19
+## [0.2.3]
 - Bug fixes.
 - Changed mode `normal` to `default`.
 - Syntax hightlight changes.
