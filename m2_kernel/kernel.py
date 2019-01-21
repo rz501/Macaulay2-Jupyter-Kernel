@@ -22,7 +22,7 @@ class M2Config:
         parser.add_argument('--timeout_startup', type=int, default=5)
         parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'], default='default')
         parser.add_argument('--tb', default=False,
-            type=lambda x: True if x.lower() in ['1','true','on'] else False)
+                            type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
         parser.add_argument('--execpath', default=execpath)
@@ -51,7 +51,7 @@ class M2Config:
             if key in self.args:
                 self.args = self.parser.parse_args('--{} {}'.format(key, val).split(), self.args)
             val = self.args.__dict__[key]
-            msg = '[magic successed] {} = {}'.format(key, val)
+            msg = '[magic succeeded] {} = {}'.format(key, val)
         except:
             key, val = None, None
             msg = '[magic failed]'
@@ -63,7 +63,6 @@ class M2Kernel(Kernel):
     """
     implementation = 'macaulay2_jupyter_kernel'
     implementation_version = __version__
-    banner = 'Macaulay2 thru Jupyter'
     language = 'Macaulay2'
     language_version = '1.13.0.1'  # "defining implementation" version
     language_info = {
@@ -73,6 +72,8 @@ class M2Kernel(Kernel):
         'codemirror_mode': 'macaulay2',
         # 'pigments_lexer': None,
     }
+    banner = 'Jupyter Kernel for Macaulay2\nversion {}. Macaulay2 version {}'.format(
+                    implementation_version, language_version)
 
     patt_consume = re.compile(r'((?:.*))\r\ni(\d+)\s:\s', re.DOTALL)
     patt_emptyline = re.compile(r'^\s*$')
@@ -184,7 +185,14 @@ class M2Kernel(Kernel):
         output_lines = []
 
         while True:
-            self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout)
+            try:
+                self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout)
+            except pexpect.exceptions.TIMEOUT:
+                self.send_stream("TIMEOUT occurred", True)
+                return '', 0
+            except:
+                self.send_stream("another exception occurred", True)
+                return '', 0
             m = self.proc.match
             if not m: raise RuntimeError("***M2JK: Macaulay2 did not return output as expected")
             xcount = int(m.groups()[1])-1

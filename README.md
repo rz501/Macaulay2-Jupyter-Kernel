@@ -18,11 +18,17 @@ and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and M2-executable path.
 
+On the other hand, the current implementation is based on regular expressions matching,
+so there is some overhead in I/O-heavy applications.
+
 The M2JK-specific features and configuration are [documented]() as a Jupyter notebook.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-![](/demo/screenshot.png?raw=true)
+## Screenshots
+
+* [Screenshot 1](/demo/screenshot.png?raw=true)
+* [Screenshot 2](/demo/screenshot.png?raw=true)
 
 ## Examples
 

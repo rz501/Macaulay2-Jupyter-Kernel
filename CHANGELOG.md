@@ -1,4 +1,7 @@
 ## [0.4.0]
+- Client-side syntax highlighting.
+
+## [0.3.2]
 - Added `pretty` display mode.
 
 ## [0.3.0] 
