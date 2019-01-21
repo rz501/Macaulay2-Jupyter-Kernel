@@ -36,10 +36,7 @@ For recent changes, see the [changelog](CHANGELOG.md).
 * [Sample 2](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample2.ipynb) (Screenshot 2)
 * [Preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
 
-Note that while the files above are statically rendered locally and reside on Github,
-they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
-In particular, client-side syntax highlighting, such as in the screenshots,
-is missing entirely.
+
 
 ## Installation
 
@@ -70,7 +67,8 @@ Alternatively, you can install the latest development version from source by
 
 ```bash
 $ git clone https://github.com/radoslavraynov/macaulay2-jupyter-kernel.git
-$ pip3 install macaulay2-jupyter-kernel/  # keep the forward slash or cd into the directory 
+$ cd macaulay2-jupyter-kernel
+$ pip3 install .
 $ python3 -m m2_kernel.install
 ```
 
@@ -87,9 +85,16 @@ Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
 ## Caveats
 
-The current implementation is based on regular expressions matching in the Python runtime,
+* The current implementation is based on regular expressions matching in the Python runtime,
 so there is considerable overhead with I/O-heavy programs.
-Ideally, this issue will be addressed in the next (major) version.
+Ideally, this issue will be changed in the next (major) version.
+
+* Note that while the notebooks from the [Examples](#Examples) section are
+statically rendered locally and reside on Github,
+they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
+This isn't a problem when using the default diplay mode.
+On the other hand, client-side syntax highlighting, such as in the screenshots,
+is missing entirely.
 
 ## License
 
