@@ -91,8 +91,9 @@ Ideally, this issue will be changed in the next (major) version.
 
 * Note that while the notebooks from the [Examples](#Examples) section are
 statically rendered locally and reside on Github,
-they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
-This isn't a problem when using the default diplay mode.
+they are displayed thru [nbviewer](https://nbviewer.jupyter.org)
+since Github seems to only support plain text output.
+This isn't a problem when using the default display mode.
 On the other hand, client-side syntax highlighting, such as in the screenshots,
 is missing entirely.
 

@@ -1,11 +1,11 @@
 Important:
-    ☐ propagate M2 errors to stderr always - prior in block and all modes
+    ☐ propagate M2 errors to stderr always - from statements other than the last
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
 
 UI:
-    ☐ write codemirror @started(19-01-18 15:04)
-    ☐ write lexer
+    ☐ improve client-side syntax indentation
+    ☐ add an emacs-like colors theme
 
 Remote Server Example:
     ✔ run from from an rpi3 on a local network @done(19-01-18 12:09)
@@ -18,9 +18,6 @@ Documentation:
     ☐ take screenshots of different output modes
 
 Before Submission:
-    ☐ submit as a pip3 package @started(19-01-19 10:56)
-    ✔ fix nbextension installation @done(19-01-20 13:47)
-    ✔ add `pretty` mode (commented out) @done(19-01-20 12:57)
     ☐ write a one-page documentation notebook
     ☐ bind cmd+/ (or ctrl+/) to block commenting
     ☐ bind 9,0 to Restart & Clear Output
