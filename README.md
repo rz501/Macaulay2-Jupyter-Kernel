@@ -18,9 +18,6 @@ and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and M2-executable path.
 
-On the other hand, the current implementation is based on regular expressions matching,
-so there is some overhead in I/O-heavy applications.
-
 The M2JK-specific features and configuration are [documented]() as a Jupyter notebook.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
@@ -84,6 +81,12 @@ $ jupyter notebook &
 
 This shoud fire up a browser for you. If not, copy the output URL into one.
 Then select File ⇨ New Notebook ⇨ M2 from the main menu.
+
+## Caveats
+
+The current implementation is based on regular expressions matching in the Python runtime,
+so there is considerable overhead with I/O-heavy programs.
+Ideally, this issue will be addressed in the next (major) version.
 
 ## License
 
