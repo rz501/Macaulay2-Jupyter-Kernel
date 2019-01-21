@@ -31,10 +31,10 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ### Notebooks
 
-* [features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
-* [notebook from screenshot 1](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample1.ipynb) (the notebook in the screenshot)
-* [notebook from screenshot 2](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample2.ipynb) (the notebook in the screenshot)
-* [preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
+* [Features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
+* [Sample 1](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample1.ipynb) (Screenshot 1)
+* [Sample 2](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample2.ipynb) (Screenshot 2)
+* [Preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
 
 Note that while the files above are statically rendered locally and reside on Github,
 they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
