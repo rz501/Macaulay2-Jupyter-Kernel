@@ -22,21 +22,24 @@ The M2JK-specific features and configuration are [documented]() as a Jupyter not
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-## Screenshots
-
-* [Screenshot 1](/demo/screenshot.png?raw=true)
-* [Screenshot 2](/demo/screenshot.png?raw=true)
-
 ## Examples
 
+### Screenshots
+
+* [Screenshot 1](/demo/screenshot1.png?raw=true)
+* [Screenshot 2](/demo/screenshot2.png?raw=true)
+
+### Notebooks
+
 * [features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
-* [screenshot demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/minimal.ipynb) (the notebook in the screenshot)
+* [notebook from screenshot 1](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample1.ipynb) (the notebook in the screenshot)
+* [notebook from screenshot 2](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample2.ipynb) (the notebook in the screenshot)
 * [preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
 
 Note that while the files above are statically rendered locally and reside on Github,
 they are displayed thru [nbviewer](#) since Github seems to only support plain text output.
-In particular, client-side syntax highlighting, such as in the screenshot,
-is missing completely.
+In particular, client-side syntax highlighting, such as in the screenshots,
+is missing entirely.
 
 ## Installation
 
