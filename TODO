@@ -1,7 +1,8 @@
 Important:
-    ☐ propagate M2 errors to stderr always - from statements other than the last
+    ✔ propagate M2 errors to stderr always - from statements other than the last @done(19-01-22 00:36)
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
+    ☐ add ^C trigger
 
 UI:
     ☐ improve client-side syntax indentation
@@ -22,10 +23,7 @@ Documentation:
 Testing:
     ☐ write unit tests
 
-Bugs:
-    ☐ 
-
 Before Submission:
-    ☐ write a one-page documentation notebook @started(19-01-21 23:01)
+    ✔ write a one-page documentation notebook @done(19-01-22 00:35)
     ✔ catch timeout of pexpect @done(19-01-21 08:56)
-    ☐ remove tb, add raw mode
+    ✔ remove tb, add raw mode @done(19-01-22 00:35)
