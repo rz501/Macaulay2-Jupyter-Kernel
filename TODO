@@ -17,6 +17,9 @@ Documentation:
     ☐ write wiki articles
     ☐ take screenshots of different output modes
 
+Testing:
+    ☐ write unit tests
+
 Before Submission:
     ☐ write a one-page documentation notebook
     ☐ bind cmd+/ (or ctrl+/) to block commenting
