@@ -13,7 +13,7 @@ Some of the features that come with it are
 organizing your code into logical blocks (cells),
 alternative key bindings,
 using Markdown and TeX in-line,
-conveniently separating, storing and sharing your Macaulay2 code and output,
+conveniently separating, storing, sharing and presenting your Macaulay2 code and output,
 and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and M2-executable path.
