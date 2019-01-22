@@ -18,7 +18,6 @@ and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and the M2-executable path.
 
-The M2JK-specific features and configuration are [documented]() as a Jupyter notebook.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -31,8 +30,8 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ### Notebooks
 
+* [Sample notebook](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample.ipynb) 
 * [Features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
-* [Sample ](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample1.ipynb)
 * [Preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
 
 
