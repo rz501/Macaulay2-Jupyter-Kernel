@@ -1,3 +1,9 @@
+## [0.5.0]
+- Capture TIMEOUT exceptions.
+- Send ^C control to proc when needed.
+- Redirect M2 errors to stderr always.
+- Added raw mode.
+
 ## [0.4.0]
 - Client-side syntax highlighting.
 
