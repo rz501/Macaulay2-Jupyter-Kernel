@@ -6,6 +6,8 @@ Important:
 UI:
     ☐ improve client-side syntax indentation
     ☐ add an emacs-like colors theme
+    ☐ bind cmd+/ (or ctrl+/) to block commenting
+    ☐ bind 9,0 to Restart & Clear Output
 
 Remote Server Example:
     ✔ run from from an rpi3 on a local network @done(19-01-18 12:09)
@@ -20,9 +22,10 @@ Documentation:
 Testing:
     ☐ write unit tests
 
+Bugs:
+    ☐ 
+
 Before Submission:
-    ☐ write a one-page documentation notebook
-    ☐ bind cmd+/ (or ctrl+/) to block commenting
-    ☐ bind 9,0 to Restart & Clear Output
+    ☐ write a one-page documentation notebook @started(19-01-21 23:01)
     ✔ catch timeout of pexpect @done(19-01-21 08:56)
     ☐ remove tb, add raw mode

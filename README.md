@@ -18,6 +18,7 @@ and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and the M2-executable path.
 
+See the [demo][demo] and [features][features] notebooks for sample use and documentation.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
@@ -30,17 +31,16 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 ### Notebooks
 
-* [Sample notebook](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/sample.ipynb) 
-* [Features documentation](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
-* [Preface to the Macaulay2 book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/p1m2book.ipynb)
-
-
+* [Demo notebook][demo] 
+* [Features][features]
+* [Preface to the Macaulay2 book][m2book]
 
 ## Installation
 
 ### Prerequisites
 
-You need a recent version of Python and `pip`. Python 3 is recommended.
+You need a recent version of Python and `pip`.
+Python 3 is recommended for build installs and necessary for source installs.
 You can install Jupyter directly from PyPI.
 ```bash
 pip3 install --upgrade pip
@@ -85,7 +85,7 @@ Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
 * The current implementation is based on regular expressions matching in the Python runtime,
 so there is considerable overhead with I/O-heavy programs.
-Ideally, this issue will be changed in the next (major) version.
+Ideally, this issue will be fixed in the next (major) version.
 
 * Note that while the notebooks from the [Examples](#Examples) section are
 statically rendered locally and reside on Github,
@@ -98,3 +98,7 @@ is missing entirely.
 ## License
 
 This software is not part of Macaulay2 and is released under the MIT License.
+
+[demo](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/demo.ipynb)
+[features](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/features.ipynb)
+[m2book](https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/m2book.ipynb)
