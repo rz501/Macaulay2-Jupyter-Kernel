@@ -20,9 +20,10 @@ class M2Config:
 
         parser.add_argument('--timeout', type=int, default=2)
         parser.add_argument('--timeout_startup', type=int, default=5)
-        parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'], default='default')
-        parser.add_argument('--tb', default=False,
-                            type=lambda x: True if x.lower() in ['1','true','on'] else False)
+        parser.add_argument('--mode', choices=['raw', 'default', 'texmacs', 'pretty'],
+                            default='default')
+        # parser.add_argument('--tb', default=False,
+        #                     type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
         parser.add_argument('--execpath', default=execpath)
@@ -80,6 +81,7 @@ class M2Kernel(Kernel):
     patt_magic = re.compile(r'\s*--\s*\%(.*)$', re.DOTALL)
     patt_comment = re.compile(r'\s*--.*$', re.DOTALL)
     patt_texmacs = re.compile(r'\x02html:(.*)\x05', re.DOTALL)
+    patt_error = re.compile(r'(^stdio:\d+:\d+:\(\d+\):\serror.*$)', re.DOTALL)
 
     nonkernelrun = False
 
@@ -139,19 +141,14 @@ class M2Kernel(Kernel):
         elif key == 'mode':
             if val == 'texmacs':
                 retop = 'Thing#{Standard,Print}=m2jkModeTeXmacs;'
-            elif val == 'default' or val == 'pretty':
+            else:
                 retop = 'Thing#{Standard,Print}=m2jkModeStandard;'
-            if self.conf.args.tb and self.conf.args.mode != 'default':
-                self.process_magic('tb=off')
-        elif key == 'tb' and val == True:
-            if self.conf.args.mode != 'default':
-                retop = self.process_magic('mode=default')[:-5]
         return retop+'--CMD'
 
     def process_output(self, lines, xcount):
         """"""
         mode = self.conf.args.mode
-        if mode == 'default':
+        if mode == 'default' or mode == 'raw':
             return None, '\n'.join(lines) 
         elif mode == 'texmacs':
             text = ''.join(lines)
@@ -185,20 +182,17 @@ class M2Kernel(Kernel):
         output_lines = []
 
         while True:
-            try:
-                self.proc.expect(self.patt_consume, timeout=self.conf.args.timeout)
-            except pexpect.exceptions.TIMEOUT:
-                self.send_stream("TIMEOUT occurred", True)
-                return '', 0
-            except:
-                self.send_stream("another exception occurred", True)
-                return '', 0
+            self.proc.expect([self.patt_consume, pexpect.TIMEOUT], timeout=self.conf.args.timeout)
+            if self.proc.match_index == 1:
+                self.proc.sendcontrol('c')
+                continue
+
             m = self.proc.match
             if not m: raise RuntimeError("***M2JK: Macaulay2 did not return output as expected")
             xcount = int(m.groups()[1])-1
             EOB = False
             
-            if not self.conf.args.tb:
+            if self.conf.args.mode != 'raw':
                 output_lines = []
             for line in m.groups()[0].splitlines():
                 if line.endswith('--EOB'):
@@ -206,7 +200,14 @@ class M2Kernel(Kernel):
                     continue
                 if line.endswith('--CMD'):
                     continue
-                output_lines.append(line)
+                if self.conf.args.mode == 'raw':
+                    output_lines.append(line)
+                else:
+                    merr = self.patt_error.match(line)
+                    if merr:
+                        self.send_stream(merr.groups()[0], True)
+                    else:
+                        output_lines.append(line)
             if EOB:
                 return output_lines, xcount
 
