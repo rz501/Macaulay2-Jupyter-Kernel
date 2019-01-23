@@ -23,15 +23,15 @@ def install_my_kernel_spec(user=True, prefix=None):
         os.chmod(td, 0o755)  # Starts off as 700, not user readable
         with open(os.path.join(td, 'kernel.json'), 'w') as f:
             json.dump(kernel_json, f, sort_keys=True)
-        # TODO: Copy any resources
 
-        print('Installing Jupyter kernel spec')
+        print('Installing kernel spec ...')
         KernelSpecManager().install_kernel_spec(td, 'm2', user=user, prefix=prefix)
 
-        print("Installing nbextension for syntax hilighting")
-        # install_nbextension('m2-mode', overwrite=True, symlink=True, user=user)
-        install_nbextension('m2-mode', overwrite=True, user=user)
-        enable_nbextension('notebook', 'm2-mode/main')
+        basedir = '{}/data/'.format(os.path.dirname(__file__))
+
+        print("Installing nbextension for syntax highlighting ...")
+        install_nbextension(basedir+'m2-mode', overwrite=True, symlink=True, user=user)
+        enable_nbextension('notebook', basedir+'m2-mode/main')
 
 
 def _is_root():

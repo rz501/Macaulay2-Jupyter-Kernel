@@ -37,7 +37,7 @@ class M2Config:
         if configpath:
             config.read(configpath)
             line = ' '.join(['--{} {}'.format(key, val) for key, val in config.items('magic')])
-            args = parser.parse_known_args(line.split(), args)
+            args = parser.parse_args(line.split(), args)
         
         self.parser = parser
         self.config = config

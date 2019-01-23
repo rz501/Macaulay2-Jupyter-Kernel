@@ -1,3 +1,6 @@
+## [0.5.1]
+- Add the nbextension to the distribution
+
 ## [0.5.0]
 - Capture TIMEOUT exceptions.
 - Send ^C control to proc when needed.

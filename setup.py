@@ -17,6 +17,8 @@ setup(
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
+    include_package_data=True,
+    package_data={'m2_kernel': ['data/m2-mode/*.js']},
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3.7',
