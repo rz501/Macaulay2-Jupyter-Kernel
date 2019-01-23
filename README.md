@@ -16,7 +16,7 @@ and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and the M2-executable path. -->
 
-See the [demo][demo] for sample and outline on the kernel-specific features.
+See the [demo][demo] for sample use and an outline of the kernel-specific features.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
