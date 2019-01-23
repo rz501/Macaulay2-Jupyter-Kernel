@@ -20,7 +20,7 @@ See the [demo][demo] for sample and outline on the kernel-specific features.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-* [![](/demo/screenshot1.png)](/demo/screenshot1.png?raw=true)
+[![](/demo/screenshot1.png)](/demo/screenshot1.png?raw=true)
 
 ## Installation
 
