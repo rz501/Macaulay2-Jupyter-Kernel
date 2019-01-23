@@ -7,20 +7,20 @@
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 
-M2JK brings all the power of Jupyter notebooks to Macaulay2,
+<!-- M2JK brings all the power of Jupyter notebooks to Macaulay2,
 so that you can conveniently run, store and share your code, output and comments.
 Some of its features are organizing your code into logical blocks (cells),
 alternative key bindings,
 using Markdown and TeX in-line,
 and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
-like output mode, execution timeout and the M2-executable path.
+like output mode, execution timeout and the M2-executable path. -->
 
-The [demo][demo] notebook also serves as documentation.
+See the [demo][demo] for sample and outline on the kernel-specific features.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-* [![][/demo/screenshot1.png]](/demo/screenshot1.png?raw=true)
+* [![](/demo/screenshot1.png)](/demo/screenshot1.png?raw=true)
 
 ## Installation
 
@@ -72,7 +72,10 @@ Then select File ⇨ New Notebook ⇨ M2 from the main menu.
 
 * The current implementation is based on regular expressions matching in the Python runtime,
 so there is considerable overhead with I/O-heavy programs.
-Ideally, this issue will be fixed in the next (major) version.
+More than that, the package is still under development and not yet stable,
+so crashes are not uncommon.
+Emacs is still recomended for serious development and research.
+Ideally, this issue will be fixed in the next major release.
 
 * Note that while the notebooks from the [Examples](#Examples) section are
 statically rendered locally and reside on Github,
