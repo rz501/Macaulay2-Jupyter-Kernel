@@ -3,7 +3,7 @@
 [![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel/)
 [![](https://img.shields.io/pypi/v/macaulay2-jupyter-kernel.svg?style=flat-square)](https://pypi.org/project/macaulay2-jupyter-kernel/)
 
-## WORK IN PROGRESS - DON'T USE UNTIL THE RELEASE
+## ALPHA TESTING — NOT YET STABLE
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 

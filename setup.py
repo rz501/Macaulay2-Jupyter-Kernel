@@ -18,7 +18,7 @@ setup(
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3.7',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
