@@ -1,39 +1,26 @@
 # M2JK - Jupyter kernel for Macaulay2
 
-[![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel)
-[![](https://img.shields.io/pypi/v/macaulay2-jupyter-kernel.svg?style=flat-square)](#link-to-pypi-page)
-<!-- [![](https://img.shields.io/badge/version-0.2.0-blue.svg?style=flat-square)](#) -->
+[![](https://img.shields.io/travis/radoslavraynov/Macaulay2-Jupyter-Kernel.svg?style=flat-square)](https://travis-ci.org/radoslavraynov/Macaulay2-Jupyter-Kernel/)
+[![](https://img.shields.io/pypi/v/macaulay2-jupyter-kernel.svg?style=flat-square)](https://pypi.org/project/macaulay2-jupyter-kernel/)
 
 ## WORK IN PROGRESS - DON'T USE UNTIL THE RELEASE
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 
-M2JK is intended as a drop-in replacement for Emacs.
-Using Jupyter notebooks you can separate, store and share your Macaulay2 code and output conveniently.
-Some of the features that come with it are
-organizing your code into logical blocks (cells),
+M2JK brings all the power of Jupyter notebooks to Macaulay2,
+so that you can conveniently run, store and share your code, output and comments.
+Some of its features are organizing your code into logical blocks (cells),
 alternative key bindings,
 using Markdown and TeX in-line,
 and exporting to various file formats like `m2`, `ipynb`, `html`, `pdf`, etc.
 A small set of "cell magic" expressions configure kernel-specific options
 like output mode, execution timeout and the M2-executable path.
 
-See the [demo][demo] and [features][features] notebooks for sample use and documentation.
+The [demo][demo] notebook also serves as documentation.
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-## Examples
-
-### Screenshots
-
-* [Screenshot 1](/demo/screenshot1.png?raw=true)
-* [Screenshot 2](/demo/screenshot2.png?raw=true)
-
-### Notebooks
-
-* [Demo notebook][demo] 
-* [Features][features]
-* [Preface to the Macaulay2 book][m2book]
+* [![][/demo/screenshot1.png]](/demo/screenshot1.png?raw=true)
 
 ## Installation
 
