@@ -4,3 +4,4 @@
 __version__ = '0.5.2'
 
 from .kernel import M2Kernel
+from .kernel import M2Interp

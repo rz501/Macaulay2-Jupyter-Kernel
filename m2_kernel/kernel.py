@@ -2,9 +2,11 @@ import argparse
 import configparser
 import pexpect
 import re
+from time import sleep
 import os
 from ipykernel.kernelbase import Kernel
 from . import __version__
+
 
 """ Macaulay2 Jupyter Kernel
 """
@@ -57,6 +59,103 @@ class M2Config:
             key, val = None, None
             msg = '[magic failed]'
         return key, val, msg
+
+
+class M2Interp:
+    """
+    """
+    patt_input = re.compile(br'^i(\d+)\s:')
+    debug = False
+
+    def __init__(self, execpath=pexpect.which('M2'), timeout=4, configpath=None):
+        """"""
+        self.conf = M2Config(execpath, configpath)
+        self.proc = None
+        self.proc_command = self.conf.args.execpath
+        self.proc_kwargs = {
+            'args': ['--silent', '--no-debug', '-e', 'load("my.m2")'],
+            'cwd': '/Users/Radoslav/Projects/Macaulay2/macaulay2-jupyter-kernel/m2_kernel/data/m2-init/',
+            'timeout': timeout
+        }
+
+    def start(self):
+        """"""
+        if not (self.proc is None):
+            return
+        self.proc = pexpect.spawn(self.proc_command, **self.proc_kwargs)
+        # self.proc.delaybeforesend = None
+    
+    def preprocess(self, code):
+        """"""
+        code_lines = []
+        for line in code.splitlines():
+            trimmed = line.lstrip()
+            if not trimmed or trimmed.startswith('--'):
+                continue
+            else:
+                code_lines.append(line+'--CMD')
+        if code_lines:
+            return '\n'.join(code_lines)+'\nnoop()--CMD--EOB'
+        return '' 
+
+    def execute(self, code, lastonly=True):
+        """"""
+        clean_code = self.preprocess(code)
+        if not clean_code: return
+        return self.repl(clean_code, lastonly=lastonly)
+
+    def repl(self, clean_code, lastonly):
+        """"""
+        self.proc.sendline(clean_code)
+        debug_lines = []
+        nodes = []
+        state = None
+        node = ()
+        
+        while True:
+            line = self.proc.readline()
+            # print(line)
+            
+            if self.debug:
+                debug_lines.append(line)
+            if line.endswith(b'--EOB\r\n'):
+                if node: nodes.append(node)
+                # make sure you are not reading the echo!
+                # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
+                # if line[0] == b'i':
+                # print(line[0:1])
+                break
+            if self.debug:
+                continue
+
+            if line.endswith(b'--CMD\r\n'):
+                # may be use a noop here too to avoid pattern matching
+                newinput = self.patt_input.match(line)
+                if newinput:
+                    linenumber = int(newinput.groups()[0])
+                    if node and not lastonly:
+                        nodes.append(node)
+                    node = (linenumber, [], [], [])
+                state = 'CMD'
+            elif line==b'--CLR\r\n':
+                state = None
+            elif line.endswith(b'--VAL\r\n'):
+                state = 'VAL'
+            elif line.endswith(b'--CLS\r\n'):
+                state = 'CLS'
+            else:  # inside one of the states
+                if state=='CMD':  # stdout
+                    node[1].append(line)
+                elif state=='VAL':
+                    node[2].append(line)
+                elif state=='CLS':
+                    node[3].append(line)
+        
+        return debug_lines if self.debug else nodes
+
+
+            
+
 
 
 class M2Kernel(Kernel):
