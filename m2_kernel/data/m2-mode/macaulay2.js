@@ -14,6 +14,8 @@ define([
             {regex: /(true|false|null)\b/, token: "atom"},
             {regex: /(for|while|if|else)\b/, token: "keyword", indent: true},
 
+            /* testing */
+
             /* symbols from M2-symbols.el here */
             {regex: /(and|break|catch|continue|do|else|for|from|global|if|in|list|local|new|not|of|or|return|shield|SPACE|step|symbol|then|threadVariable|throw|time|timing|to|try|when|while)\b/,
                 token: "keyword"},
@@ -28,7 +30,10 @@ define([
             {regex: /[a-z$][\w$]*/, token: "variable"},
             {regex: /^\s*--\s*%.*/, token: "comment meta"},
             {regex: /--.*/, token: "comment"},
-        ]
+        ],
+        meta: {
+            lineComment: "--"
+        }
     });
     CodeMirror.defineMIME('text/x-macaulay2', 'macaulay2');
 });

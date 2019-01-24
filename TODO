@@ -1,5 +1,4 @@
 Important:
-    ✔ propagate M2 errors to stderr always - from statements other than the last @done(19-01-22 00:36)
     ☐ test on Ubuntu (x86_64-linux)
     ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
     ☐ add ^C trigger
@@ -7,8 +6,10 @@ Important:
 UI:
     ☐ improve client-side syntax indentation
     ☐ add an emacs-like colors theme
-    ☐ bind cmd+/ (or ctrl+/) to block commenting
+    ✔ bind cmd+/ (or ctrl+/) to block commenting @done(19-01-23 23:09)
     ☐ bind 9,0 to Restart & Clear Output
+    ☐ install m2-mode in <python-packages>/notebook/static/components/codemirror/mode/macaulay2
+        this enables fixes the GET 404 error and allows for remote syntax highlighting
 
 Remote Server Example:
     ✔ run from from an rpi3 on a local network @done(19-01-18 12:09)
@@ -16,14 +17,8 @@ Remote Server Example:
     ☐ run from from an ec2 securely
     ☐ "try it online" web site
 
-Documentation:
-    ☐ write wiki articles
-    ☐ take screenshots of different output modes
+Wiki Articles:
+    ☐ running remote server on my raspberrypi
 
 Testing:
     ☐ write unit tests
-
-Before Submission:
-    ✔ write a one-page documentation notebook @done(19-01-22 00:35)
-    ✔ catch timeout of pexpect @done(19-01-21 08:56)
-    ✔ remove tb, add raw mode @done(19-01-22 00:35)

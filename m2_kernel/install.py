@@ -5,6 +5,7 @@ import sys
 
 from jupyter_client.kernelspec import KernelSpecManager
 from IPython.utils.tempdir import TemporaryDirectory
+from notebook import __path__ as notebook_pkgdir
 from notebook.nbextensions import install_nbextension, enable_nbextension
 
 """ Macaulay2 Jupyter Kernel: standard jupyter kernel spec installation
@@ -27,11 +28,16 @@ def install_my_kernel_spec(user=True, prefix=None):
         print('Installing kernel spec ...')
         KernelSpecManager().install_kernel_spec(td, 'm2', user=user, prefix=prefix)
 
-        basedir = '{}/data/'.format(os.path.dirname(__file__))
+        srcdir = '{}/data/'.format(os.path.dirname(__file__))
+        dstdir = '{}/static/components/codemirror/mode/'.format(notebook_pkgdir[0])
 
+        # to avoid getting a GET 404 error, m2-mode must be on both paths...
         print("Installing nbextension for syntax highlighting ...")
-        install_nbextension(basedir+'m2-mode', overwrite=True, symlink=True, user=user)
-        enable_nbextension('notebook', basedir+'m2-mode/main')
+        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=True,
+                            nbextensions_dir=dstdir, destination='macaulay2')
+        # may if you never enable it, there'd be no GET 404
+        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=True, user=user)
+        enable_nbextension('notebook', dstdir+'m2-mode/main')
 
 
 def _is_root():

@@ -1,5 +1,11 @@
+## [0.5.2]
+- Put codemirror mode in the correct place.
+  This fixes GET 404 error that prevented syntax highlighting when running remotely.
+  This isn't documented at all but the fix works fine.
+- Add comment in Macaulay2 using Cmd-/ or Ctrl-/.
+
 ## [0.5.1]
-- Add the nbextension to the distribution
+- Add the nbextension to the distribution.
 
 ## [0.5.0]
 - Capture TIMEOUT exceptions.
