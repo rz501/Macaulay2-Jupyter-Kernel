@@ -139,17 +139,15 @@ class M2Interp:
                 # make sure you are not reading an echo!
                 # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
                 # if line[0] == b'i':
-                # print('TRY')
                 for testline in self.proc:
                     line = testline[:-2]
                     break
                 print(line)
             except pexpect.TIMEOUT:
-                # print('CATCH')
                 self.proc.sendcontrol('c') 
                 self.proc.read(1)  # this is VERY IMPORTANT!
                 if node:
-                    node[1].append('[TIMEOUT FORCED i{}]'.format(linenumber).encode())
+                    node[1].append('\r\no{} = [KERNEL ENFORCED TIMEOUT]'.format(linenumber).encode())
                     nodes.append(node)
                 return debug_lines if self.debug else nodes
 

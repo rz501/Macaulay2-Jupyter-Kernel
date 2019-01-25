@@ -1,4 +1,14 @@
-## [0.5.2]
+## [0.6.1] Major changes addressing stability and performance
+- Rewrote the REPL part:
+    * It no longer uses regexes (except for inferring the input \#).
+      This had a tremendous effect on stability and speed.
+    * Added finer timeout control.
+      Now if a statement timeouts, then whole cell execution is interrupted,
+      and this is clearly reported to the client.
+    * Macaulay2 exceptions and stdout are always printed to the cell's stdout.
+      I removed stderr formatting, since it did not fit nicely with the rest.
+
+## [0.5.2
 - Put codemirror mode in the correct place.
   This fixes GET 404 error that prevented syntax highlighting when running remotely.
   This isn't documented at all but the fix works fine.
