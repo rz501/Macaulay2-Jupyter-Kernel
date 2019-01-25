@@ -210,14 +210,34 @@ class M2Kernel(Kernel):
         if mode == 'default':
             lines = [ln.decode() for node in nodes for part in node[1:] for ln in part]
             return None, '\n'.join(lines)
-        elif mode == 'texmacs':
-            pass
+        
+        stdout = '\n'.join([ln.decode() for node in nodes for ln in node[1]])
+
+        if mode == 'texmacs':
+            value_lines = nodes[-1][2]
+            if value_lines:
+                dirty = '\n'.join([ln.decode() for ln in value_lines])
+                clean = dirty[6:] + '\n</math>'
+                return {'text/html': clean}, stdout
+        elif mode == 'pretty':
+            margin = len(str(nodes[-1][0]))+4
+            textval = '\n'.join([ln[margin:].decode() for ln in nodes[-1][2]])
+            textcls = '\n'.join([ln[margin:].decode() for ln in nodes[-1][3]])
+            # entries = nodes[-1][2:]
+            # entries = [line[margin:] if len(line)>margin else '' for entry in entries for line in entry]
+            # raise Exception(str(entries[0]))
+            # entries = ['\n'.join(entry) for entry in entries]
+            html = '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(textval, textcls)
+            return {'text/html': html}, stdout
+        return None, stdout
+
+
             # text = ''.join(lines)
             # m = self.patt_texmacs.match(text)
-            # if m: return {'text/html': m.groups()[0]}, None
+            # if m: return 
             # return None, None
-        elif mode == 'pretty':
-            pass
+        # elif mode == 'pretty':
+            # pass
             # patt_v = re.compile(r'.*\no\d+ = ', re.DOTALL)
             # patt_t = re.compile(r'.*\no\d+\s:\s', re.DOTALL)
             # patt_vt = re.compile('(.*)\n\n(.*)', re.DOTALL)
@@ -232,10 +252,8 @@ class M2Kernel(Kernel):
             # margin = len(str(xcount))+4
             # text = '\n'.join([line[margin:] if len(line)>margin else '' for line in lines])
             # mvt = patt_vt.match(text)
-            # return {'text/html': '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(
-            #         *(mvt.groups() if mvt else (text, ''))
-            #     )}, None
-        return None, None
+
+        # return None, None
 
     def send_stream(self, text, stderr=False):
         """ enqueues a stdout or stderr message for the given cell
