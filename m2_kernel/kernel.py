@@ -2,7 +2,6 @@ import argparse
 import configparser
 import pexpect
 import re
-from time import sleep
 import os
 from ipykernel.kernelbase import Kernel
 from . import __version__
@@ -112,7 +111,15 @@ class M2Interp:
         """"""
         clean_code = self.preprocess(code, usemagic=usemagic)
         if not clean_code: return []
-        return self.repl(clean_code, lastonly=lastonly)
+        try:
+            return self.repl(clean_code, lastonly=lastonly)
+        except Exception as e:
+            # kill M2
+            self.proc.sendcontrol('c')
+            # clear buffer - this is not great but works - fix it
+            for line in self.proc:
+                if line.endswith(b'--EOB'): break
+            raise e
 
     def repl(self, clean_code, lastonly):
         """"""
@@ -120,10 +127,12 @@ class M2Interp:
         debug_lines = []
         nodes = []
         state = None
-        node = ()
+        node = (None,[],[],[])
 
-        while True:
-            line = self.proc.readline()[:-2]  # ends in '\r\n', or throw
+        # while True:
+            # line = self.proc.read_nonblocking()[:-2]  # ends in '\r\n', or throw
+        for line in self.proc:
+            line = line[:-2]
             print(line)
 
             if self.debug:
@@ -153,8 +162,6 @@ class M2Interp:
                             nodes.append(node)
                     node = (linenumber,[],[],[])
                     state = 'CMD'
-            # elif line==b'--CLR':
-                # state = None
             elif line.endswith(b'--VAL'):
                 state = 'VAL'
             elif line.endswith(b'--CLS'):
@@ -168,11 +175,6 @@ class M2Interp:
                     node[3].append(line)
 
         return debug_lines if self.debug else nodes
-
-
-
-
-
 
 
 class M2Kernel(Kernel):
@@ -197,8 +199,6 @@ class M2Kernel(Kernel):
         """
         super().__init__(*args, **kwargs)
         self.interp = M2Interp(configpath=os.environ.get('M2JK_CONFIG'))
-        if not self.interp.conf.args.execpath:
-            raise RuntimeError("M2JK: M2 not found")
         self.interp.start()
 
     def process_output(self, nodes):
@@ -223,37 +223,9 @@ class M2Kernel(Kernel):
             margin = len(str(nodes[-1][0]))+4
             textval = '\n'.join([ln[margin:].decode() for ln in nodes[-1][2]])
             textcls = '\n'.join([ln[margin:].decode() for ln in nodes[-1][3]])
-            # entries = nodes[-1][2:]
-            # entries = [line[margin:] if len(line)>margin else '' for entry in entries for line in entry]
-            # raise Exception(str(entries[0]))
-            # entries = ['\n'.join(entry) for entry in entries]
             html = '<pre>{}</pre><pre style="color: gray">{}</pre>'.format(textval, textcls)
             return {'text/html': html}, stdout
         return None, stdout
-
-
-            # text = ''.join(lines)
-            # m = self.patt_texmacs.match(text)
-            # if m: return 
-            # return None, None
-        # elif mode == 'pretty':
-            # pass
-            # patt_v = re.compile(r'.*\no\d+ = ', re.DOTALL)
-            # patt_t = re.compile(r'.*\no\d+\s:\s', re.DOTALL)
-            # patt_vt = re.compile('(.*)\n\n(.*)', re.DOTALL)
-
-            # text = '\n'.join(lines)
-            # mv = patt_v.match(text)
-            # mt = patt_t.match(text)
-
-            # if not mv:
-            #     return None, (text if not mt else '')
-
-            # margin = len(str(xcount))+4
-            # text = '\n'.join([line[margin:] if len(line)>margin else '' for line in lines])
-            # mvt = patt_vt.match(text)
-
-        # return None, None
 
     def send_stream(self, text, stderr=False):
         """ enqueues a stdout or stderr message for the given cell
@@ -263,6 +235,7 @@ class M2Kernel(Kernel):
         self.send_response(self.iopub_socket, 'stream', content)
 
     def mock_execute(self, code):
+        """"""
         output_lines = self.interp.execute(code, lastonly=False)
         return self.process_output(output_lines)
 
@@ -272,7 +245,8 @@ class M2Kernel(Kernel):
         try:
             output_lines = self.interp.execute(code)
         except Exception as e:
-            output_lines = [(None, str(e), None, None)]
+            output_lines = []
+            self.send_stream(str(e), True)
         xcount = None
 
         if not silent:
