@@ -96,7 +96,9 @@ class M2Interp:
             elif usemagic and trimmed.startswith('--%'):
                 key, val, msg = self.conf.read(trimmed[3:])
                 cmd = ''
-                if key == 'mode':
+                if key == 'timeout':
+                    self.proc.timeout = val
+                elif key == 'mode':
                     cmd = 'mode({});'.format('true' if val=='texmacs' else 'false')
                 magic_lines.append(cmd + ' << "{}";--CMD'.format(msg))
             elif trimmed.startswith('--'):
@@ -114,52 +116,58 @@ class M2Interp:
         try:
             return self.repl(clean_code, lastonly=lastonly)
         except Exception as e:
-            # kill M2
-            self.proc.sendcontrol('c')
+            # kill M2 execution
+            # self.proc.sendcontrol('c')
             # clear buffer - this is not great but works - fix it
-            for line in self.proc:
-                if line.endswith(b'--EOB'): break
+            # for line in self.proc:
+                # if line.endswith(b'--EOB'): break
+            # rethrow
             raise e
 
     def repl(self, clean_code, lastonly):
         """"""
         self.proc.sendline(clean_code)
+        EOT = False
         debug_lines = []
         nodes = []
+        node = ()
+        linenumber = None
         state = None
-        node = (None,[],[],[])
 
-        # while True:
-            # line = self.proc.read_nonblocking()[:-2]  # ends in '\r\n', or throw
-        for line in self.proc:
-            line = line[:-2]
-            print(line)
-
-            if self.debug:
-                debug_lines.append(line)
-            if line.endswith(b'--EOB'):
-                # trim the empty trailing line coming from next input line
-                if node[2]:
-                    nodes.append((node[0],node[1],node[2],node[3][:-1]))
-                else:
-                    nodes.append((node[0],node[1][:-1],[],[]))
+        while not EOT:
+            try:
                 # make sure you are not reading an echo!
                 # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
                 # if line[0] == b'i':
-                break
+                # print('TRY')
+                for testline in self.proc:
+                    line = testline[:-2]
+                    break
+                print(line)
+            except pexpect.TIMEOUT:
+                # print('CATCH')
+                self.proc.sendcontrol('c') 
+                self.proc.read(1)  # this is VERY IMPORTANT!
+                if node:
+                    node[1].append('[TIMEOUT FORCED i{}]'.format(linenumber).encode())
+                    nodes.append(node)
+                return debug_lines if self.debug else nodes
+
+            if line.endswith(b'--EOB'):
+                EOT = True
             if self.debug:
+                debug_lines.append(line)
                 continue
 
             if line.endswith(b'--CMD'):
-                # may be use a noop here too to avoid pattern matching
                 newinput = self.patt_input.match(line)
                 if newinput:
-                    linenumber = int(newinput.groups()[0])
                     if node:
                         if lastonly:
                             nodes.append((node[0],node[1],[],[]))
                         else:
                             nodes.append(node)
+                    linenumber = int(newinput.groups()[0])
                     node = (linenumber,[],[],[])
                     state = 'CMD'
             elif line.endswith(b'--VAL'):
@@ -174,6 +182,13 @@ class M2Interp:
                 elif state=='CLS':
                     node[3].append(line)
 
+        # trim the empty trailing line coming from next input line
+        if not node:
+            pass
+        elif node[2]:
+            nodes.append((node[0],node[1],node[2],node[3][:-1]))
+        else:
+            nodes.append((node[0],node[1][:-1],[],[]))
         return debug_lines if self.debug else nodes
 
 
