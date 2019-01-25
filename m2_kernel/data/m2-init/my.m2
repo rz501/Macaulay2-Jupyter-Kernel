@@ -8,6 +8,8 @@ sentinelStandardAfterPrint = x -> ( << "--CLS\n"; saveStandardAfterPrint(x); << 
 sentinelTeXmacsPrint = x -> ( << "--VAL\n"; saveTeXmacsPrint(x); << "--CLR\n"; )
 --sentinelTeXmacsAfterPrint = x -> ( << "--CLS\n"; saveTeXmacsAfterPrint(x); << "--CLR\n"; )
 
+Thing#{Standard,Print} = sentinelStandardPrint
+Thing#{Standard,AfterPrint} = sentinelStandardAfterPrint
 texmacsmode = false;
 
 noop = () -> ( lineNumber=lineNumber-1; null )
@@ -24,5 +26,3 @@ mode = (usetexmacs) -> (
     );
     noop();
 )
-
-mode(false);

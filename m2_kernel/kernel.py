@@ -84,23 +84,33 @@ class M2Interp:
             return
         self.proc = pexpect.spawn(self.proc_command, **self.proc_kwargs)
         # self.proc.delaybeforesend = None
-    
-    def preprocess(self, code):
+
+    def preprocess(self, code, usemagic):
         """"""
+        magic_lines = []
         code_lines = []
+
         for line in code.splitlines():
             trimmed = line.lstrip()
-            if not trimmed or trimmed.startswith('--'):
+            if not trimmed:
+                continue
+            elif usemagic and trimmed.startswith('--%'):
+                key, val, msg = self.conf.read(trimmed[3:])
+                cmd = ''
+                if key == 'mode':
+                    cmd = 'mode({});'.format('true' if val=='texmacs' else 'false')
+                magic_lines.append(cmd + ' << "{}";--CMD'.format(msg))
+            elif trimmed.startswith('--'):
                 continue
             else:
                 code_lines.append(line+'--CMD')
-        if code_lines:
-            return '\n'.join(code_lines)+'\nnoop()--CMD--EOB'
+        if magic_lines or code_lines:
+            return '\n'.join(magic_lines+code_lines) + '\nnoop()--CMD--EOB'
         return '' 
 
-    def execute(self, code, lastonly=True):
+    def execute(self, code, lastonly=True, usemagic=True):
         """"""
-        clean_code = self.preprocess(code)
+        clean_code = self.preprocess(code, usemagic=usemagic)
         if not clean_code: return
         return self.repl(clean_code, lastonly=lastonly)
 
@@ -115,7 +125,7 @@ class M2Interp:
         while True:
             line = self.proc.readline()
             # print(line)
-            
+
             if self.debug:
                 debug_lines.append(line)
             if line.endswith(b'--EOB\r\n'):
@@ -133,8 +143,11 @@ class M2Interp:
                 newinput = self.patt_input.match(line)
                 if newinput:
                     linenumber = int(newinput.groups()[0])
-                    if node and not lastonly:
-                        nodes.append(node)
+                    if node:
+                        if lastonly:
+                            nodes.append((node[0],node[1],[],[]))
+                        else:
+                            nodes.append(node)
                     node = (linenumber, [], [], [])
                 state = 'CMD'
             elif line==b'--CLR\r\n':
