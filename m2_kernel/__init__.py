@@ -1,7 +1,7 @@
 """ Macaulay2 Kernel for Jupyter
 """
 
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 
 from .kernel import M2Kernel
 from .kernel import M2Interp

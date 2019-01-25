@@ -142,7 +142,7 @@ class M2Interp:
                 for testline in self.proc:
                     line = testline[:-2]
                     break
-                print(line)
+                # print(line)
             except pexpect.TIMEOUT:
                 self.proc.sendcontrol('c') 
                 self.proc.read(1)  # this is VERY IMPORTANT!
