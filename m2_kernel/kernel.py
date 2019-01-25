@@ -121,25 +121,27 @@ class M2Interp:
         nodes = []
         state = None
         node = ()
-        last = None
 
         while True:
-            line = self.proc.readline()
+            line = self.proc.readline()[:-2]  # ends in '\r\n', or throw
             print(line)
 
             if self.debug:
                 debug_lines.append(line)
-            if line.endswith(b'--EOB\r\n'):
-                if node: nodes.append(node)
-                # make sure you are not reading the echo!
+            if line.endswith(b'--EOB'):
+                # trim the empty trailing line coming from next input line
+                if node[2]:
+                    nodes.append((node[0],node[1],node[2],node[3][:-1]))
+                else:
+                    nodes.append((node[0],node[1][:-1],[],[]))
+                # make sure you are not reading an echo!
                 # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
                 # if line[0] == b'i':
-                # print(line[0:1])
                 break
             if self.debug:
                 continue
 
-            if line.endswith(b'--CMD\r\n'):
+            if line.endswith(b'--CMD'):
                 # may be use a noop here too to avoid pattern matching
                 newinput = self.patt_input.match(line)
                 if newinput:
@@ -149,15 +151,13 @@ class M2Interp:
                             nodes.append((node[0],node[1],[],[]))
                         else:
                             nodes.append(node)
-                    node = (linenumber, [], [], [])
-                    last = None
+                    node = (linenumber,[],[],[])
                     state = 'CMD'
-            # elif line==b'--CLR\r\n':
+            # elif line==b'--CLR':
                 # state = None
-            elif line.endswith(b'--VAL\r\n'):
+            elif line.endswith(b'--VAL'):
                 state = 'VAL'
-            elif line.endswith(b'--CLS\r\n'):
-                # this is skipping type output when there's no value output - OK
+            elif line.endswith(b'--CLS'):
                 state = 'CLS'
             else:  # inside one of the states
                 if state=='CMD':  # stdout
@@ -165,9 +165,7 @@ class M2Interp:
                 elif state=='VAL':
                     node[2].append(line)
                 elif state=='CLS':
-                    # remove trainling newline
-                    if last: node[3].append(last)
-                    last = line
+                    node[3].append(line)
 
         return debug_lines if self.debug else nodes
 
@@ -207,19 +205,11 @@ class M2Kernel(Kernel):
         """
         """
         mode = self.interp.conf.args.mode
-
-        if mode == 'default' or mode == 'raw':
-            # stream = '\n'.join([ln for node in nodes for ln in node[1]])
-            output = []
-            for node in nodes:
-                for ln in node[1]: output.append( ln )
-                for ln in node[2]: output.append( ln )
-                for ln in node[3]: output.append( ln )
-            for ln in output:
-                print(ln[:-2].decode())
-            # stream = '\n'.join([ln[:-2].decode() for ln in output])
-            # raise Exception(stream)
-            return None, None
+        if self.interp.debug:
+            return None, b'\n'.join(nodes)
+        if mode == 'default':
+            lines = [ln.decode() for node in nodes for part in node[1:] for ln in part]
+            return None, '\n'.join(lines)
         elif mode == 'texmacs':
             pass
             # text = ''.join(lines)
