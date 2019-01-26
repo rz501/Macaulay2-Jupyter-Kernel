@@ -12,7 +12,7 @@ Thing#{Standard,Print} = sentinelStandardPrint
 --Thing#{Standard,AfterPrint} = sentinelStandardAfterPrint
 texmacsmode = false;
 
-noop = () -> ( lineNumber=lineNumber-1; null )
+noop = (trigger) -> ( lineNumber=lineNumber-1; null )
 mode = (usetexmacs) -> (
     if texmacsmode != usetexmacs then (
         texmacsmode = usetexmacs;

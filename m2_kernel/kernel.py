@@ -82,7 +82,7 @@ class M2Interp:
         if not (self.proc is None):
             return
         self.proc = pexpect.spawn(self.proc_command, **self.proc_kwargs)
-        # self.proc.delaybeforesend = None
+        self.proc.delaybeforesend = None
 
     def preprocess(self, code, usemagic):
         """"""
@@ -106,7 +106,7 @@ class M2Interp:
             else:
                 code_lines.append(line+'--CMD')
         if magic_lines or code_lines:
-            return '\n'.join(magic_lines+code_lines) + '\nnoop()--CMD--EOB'
+            return 'noop(begin)--CMD\n{}\nnoop(end)--CMD--EOB'.format('\n'.join(magic_lines+code_lines))
         return ''
 
     def execute(self, code, lastonly=True, usemagic=True):
@@ -134,11 +134,15 @@ class M2Interp:
         linenumber = None
         state = None
 
+        # make sure you are not reading an echo!
+        # this is important! echo occurs often especially when using M2Interp.execute() directly
+        # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
+        for echoline in self.proc:
+            if echoline[:1] == b'i' and echoline.endswith(b'noop(begin)--CMD\r\n'):
+                break
+
         while not EOT:
             try:
-                # make sure you are not reading an echo!
-                # https://pexpect.readthedocs.io/en/stable/commonissues.html#timing-issue-with-send-and-sendline
-                # if line[0] == b'i':
                 for testline in self.proc:
                     line = testline[:-2]
                     break
