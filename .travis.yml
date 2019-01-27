@@ -12,8 +12,7 @@ dist: xenial
 install:
   - pip install -r requirements.txt
   - pip install .
+  - python -m m2_kernel.install
 
 script:
-  - pip install jupyter
-  - pip install .
-  - python -m m2_kernel.install
+  - echo foo
