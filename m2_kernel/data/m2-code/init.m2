@@ -24,5 +24,5 @@ mode = (usetexmacs) -> (
             --Thing#{Standard,AfterPrint} = sentinelStandardAfterPrint
         )
     );
-    noop();
+    noop(mode);
 )

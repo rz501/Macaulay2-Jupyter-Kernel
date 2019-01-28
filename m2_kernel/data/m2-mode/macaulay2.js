@@ -28,7 +28,7 @@ define([
             {regex: /[\{\[\(]/, indent: true},
             {regex: /[\}\]\);]/, dedent: true},
             {regex: /[a-z$][\w$]*/, token: "variable"},
-            {regex: /^\s*--\s*%.*/, token: "comment meta"},
+            {regex: /^\s*--%.*/, token: "comment meta"},
             {regex: /--.*/, token: "comment"},
         ],
         meta: {

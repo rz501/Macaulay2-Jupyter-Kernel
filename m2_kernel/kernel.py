@@ -61,7 +61,7 @@ class M2Config:
 
 
 class M2Interp:
-    """
+    """ an interpreter for Macaulay2
     """
     patt_input = re.compile(br'^i(\d+)\s:')
     debug = False
