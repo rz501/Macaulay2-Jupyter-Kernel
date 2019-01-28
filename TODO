@@ -2,6 +2,7 @@ Next Release:
     ✘ try to use escape chars instead of words @cancelled(19-01-28 10:13)
     ✔ add `full` mode @done(19-01-28 13:47)
     ✔ add 9,0 Restart and Clean @done(19-01-28 14:03)
+    ☐ add line number in `original`
 
 Cross-platform:
     ☐ test on Ubuntu (x86_64-linux)
