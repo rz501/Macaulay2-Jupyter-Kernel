@@ -21,10 +21,10 @@ class M2Config:
 
         parser.add_argument('--timeout', type=int, default=2)
         parser.add_argument('--timeout_startup', type=int, default=5)
-        parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'],
+        parser.add_argument('--mode', choices=['default', 'original', 'texmacs', 'pretty'],
                             default='default')
-        parser.add_argument('--debug', default=False,
-                            type=lambda x: True if x.lower() in ['1','true','on'] else False)
+        # parser.add_argument('--debug', default=False,
+        #                     type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
         parser.add_argument('--execpath', default=execpath)
@@ -96,12 +96,17 @@ class M2Interp:
             elif usemagic and trimmed.startswith('--%'):
                 key, val, msg = self.conf.read(trimmed[3:])
                 cmd = ''
-                if key == 'debug':
-                    self.debug = val
-                elif key == 'timeout':
+                if key == 'timeout':
                     self.proc.timeout = val
                 elif key == 'mode':
-                    cmd = 'mode({});'.format('true' if val=='texmacs' else 'false')
+                    if val == 'original':
+                        self.debug = True
+                    else:
+                        self.debug = False
+                    if val == 'texmacs':
+                        cmd = 'mode(true);'
+                    else:
+                        cmd = 'mode(false);'
                 magic_lines.append(cmd + ' << "{}";--CMD'.format(msg))
             elif trimmed.startswith('--'):
                 continue
@@ -127,7 +132,12 @@ class M2Interp:
             raise e
 
     def repl(self, clean_code, lastonly):
-        """"""
+        """ REPL
+
+        If `self.debug==True` then result is the raw list of lines of bytes,
+        otherwise, it is a list of (lineNumber, stdoutLines, valueLines, typeLines),
+        where again the last 3 entries are lists of lines of bytes. 
+        """
         self.proc.sendline(clean_code)
         EOT = False
         debug_lines = []
@@ -224,9 +234,19 @@ class M2Kernel(Kernel):
         """
         """
         mode = self.interp.conf.args.mode
-        if self.interp.debug:
-            return None, b'\n'.join(nodes).decode()
-        if mode == 'default':
+        if mode == 'original':
+            clean_lines = []
+            for ln in nodes:
+                if ln.endswith(b'--EOB') or ln.endswith(b'--VAL') or ln.endswith(b'--CLS'):
+                    pass
+                elif ln.endswith(b'--CMD'):
+                    clean_lines.append(ln[:-5])
+                else:
+                    clean_lines.append(ln)
+            return None, b'\n'.join(clean_lines).decode()
+        elif self.interp.debug:
+            return nodes
+        elif mode == 'default':
             lines = [ln.decode() for node in nodes for part in node[1:] for ln in part]
             return None, '\n'.join(lines)
         
