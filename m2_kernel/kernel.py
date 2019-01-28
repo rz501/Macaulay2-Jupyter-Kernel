@@ -21,10 +21,10 @@ class M2Config:
 
         parser.add_argument('--timeout', type=int, default=2)
         parser.add_argument('--timeout_startup', type=int, default=5)
-        parser.add_argument('--mode', choices=['raw', 'default', 'texmacs', 'pretty'],
+        parser.add_argument('--mode', choices=['default', 'texmacs', 'pretty'],
                             default='default')
-        # parser.add_argument('--tb', default=False,
-        #                     type=lambda x: True if x.lower() in ['1','true','on'] else False)
+        parser.add_argument('--debug', default=False,
+                            type=lambda x: True if x.lower() in ['1','true','on'] else False)
         parser.add_argument('--theme', choices=['default', 'emacs'], default='default')
         # execpath is now mutable, but modifying it is no-op. fix this
         parser.add_argument('--execpath', default=execpath)
@@ -96,7 +96,9 @@ class M2Interp:
             elif usemagic and trimmed.startswith('--%'):
                 key, val, msg = self.conf.read(trimmed[3:])
                 cmd = ''
-                if key == 'timeout':
+                if key == 'debug':
+                    self.debug = val
+                elif key == 'timeout':
                     self.proc.timeout = val
                 elif key == 'mode':
                     cmd = 'mode({});'.format('true' if val=='texmacs' else 'false')
@@ -223,7 +225,7 @@ class M2Kernel(Kernel):
         """
         mode = self.interp.conf.args.mode
         if self.interp.debug:
-            return None, b'\n'.join(nodes)
+            return None, b'\n'.join(nodes).decode()
         if mode == 'default':
             lines = [ln.decode() for node in nodes for part in node[1:] for ln in part]
             return None, '\n'.join(lines)
