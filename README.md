@@ -4,7 +4,7 @@
 [![](https://img.shields.io/pypi/v/macaulay2-jupyter-kernel.svg?style=flat-square)](https://pypi.org/project/macaulay2-jupyter-kernel/)
 [![](https://img.shields.io/github/commits-since/radoslavraynov/macaulay2-jupyter-kernel/latest.svg?style=flat-square)](#)
 
-#### Beta Testing Phase!
+> Beta Testing!
 
 You can now use [Jupyter](http://www.jupyter.org) (Notebook or Lab) as a front-end for [Macaulay2](http://faculty.math.illinois.edu/Macaulay2/).
 
@@ -14,13 +14,11 @@ For recent changes, see the [changelog](CHANGELOG.md).
 
 [![](/demo/screenshot1.png)](/demo/screenshot1.png?raw=true)
 
-## Installation
-
-### Prerequisites
+## Requirements
 
 You need a recent version of Python and `pip`.
 Python 3 is recommended for build installs and necessary for source installs.
-You can install Jupyter directly from PyPI.
+You can install Jupyter directly from PyPI by
 ```bash
 pip3 install --upgrade pip
 pip3 install jupyter
@@ -31,7 +29,7 @@ If you are using Emacs as your front-end, it already is, but you can test it by 
 Otherwise, you can achieve that by running `setup()` from within an M2 session.
 Alternatively, you can configure M2JK to use a specific binary.
 
-### Install
+## Installation
 
 You can install the latest release version directly from PyPI by
 
@@ -49,7 +47,7 @@ $ pip3 install .
 $ python3 -m m2_kernel.install
 ```
 
-### Run on Jupyter
+## Running the notebook
 
 Once the installation is complete, you need to start (or restart) Jupyter by
 

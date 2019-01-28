@@ -1,3 +1,11 @@
+## [0.6.5]
+- Guard against echo in pexpect.
+- Added `9,0` as a kernel-restart-and-clear keyboard shortcut.
+- Added `debug` interpreter option.
+- Added `original` display mode, returning the same output as M2's interactive session,
+  making it easy to copy output in text-only context.
+- Other small tweaks.
+
 ## [0.6.0] Major changes addressing stability and performance
 - Rewrote the REPL part:
     * It no longer uses regexes (except for inferring the input \#).

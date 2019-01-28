@@ -1,24 +1,29 @@
-Important:
-    ☐ test on Ubuntu (x86_64-linux)
-    ✔ test on Ubuntu (armv7-linux) @done(19-01-18 12:12)
-    ☐ add ^C trigger
+Next Release:
+    ✘ try to use escape chars instead of words @cancelled(19-01-28 10:13)
+    ✔ add `full` mode @done(19-01-28 13:47)
+    ✔ add 9,0 Restart and Clean @done(19-01-28 14:03)
 
-UI:
-    ☐ improve client-side syntax indentation
-    ☐ add an emacs-like colors theme
-    ✔ bind cmd+/ (or ctrl+/) to block commenting @done(19-01-23 23:09)
-    ☐ bind 9,0 to Restart & Clear Output
+Cross-platform:
+    ☐ test on Ubuntu (x86_64-linux)
+    ☐ test on Ubuntu (armv7-linux)
+    ☐ issue about M2 and escape chars in pexpect
+    ☐ make sure pexpect always uses \r\n
     ☐ install m2-mode in <python-packages>/notebook/static/components/codemirror/mode/macaulay2
         this enables fixes the GET 404 error and allows for remote syntax highlighting
+    ☐ add m2_kernel.remove
+
+Client-side JavaScript and CSS:
+    ☐ add ^C trigger
+        making this work in the REPL would take a litte work
+    ☐ improve client-side syntax indentation
+    ☐ add an emacs-like colors theme
+    ☐ may be look into https://github.com/marks1024/language-macaulay2
 
 Remote Server Example:
     ✔ run from from an rpi3 on a local network @done(19-01-18 12:09)
     ☐ run from from an rpi3 on the internet securely
     ☐ run from from an ec2 securely
     ☐ "try it online" web site
-
-Wiki Articles:
-    ☐ running remote server on my raspberrypi
 
 Testing:
     ☐ write unit tests
