@@ -12,7 +12,7 @@ See the [demo][demo] for sample use and an outline of the kernel-specific featur
 For bugs or requests, open an issue.
 For recent changes, see the [changelog](CHANGELOG.md).
 
-[![](/demo/screenshot1.png)](/demo/screenshot1.png?raw=true)
+[![](/demo/screenshot1.png)](https://github.com/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/screenshot1.png?raw=true)
 
 ## Requirements
 
