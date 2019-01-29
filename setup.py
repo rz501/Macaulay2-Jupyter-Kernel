@@ -20,7 +20,7 @@ setup(
     include_package_data=True,
     package_data={'m2_kernel': ['data/m2-mode/*.js', 'data/m2-code/*.m2']},
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.7',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
