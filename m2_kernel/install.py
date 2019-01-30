@@ -33,11 +33,8 @@ def install_my_kernel_spec(user=True, prefix=None):
 
         # to avoid getting a GET 404 error, m2-mode must be on both paths...
         print("Installing nbextension for syntax highlighting ...")
-        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=True,
+        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=False,
                             nbextensions_dir=dstdir, destination='macaulay2')
-        # may if you never enable it, there'd be no GET 404
-        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=True, user=user)
-        enable_nbextension('notebook', dstdir+'m2-mode/main')
 
 
 def _is_root():
