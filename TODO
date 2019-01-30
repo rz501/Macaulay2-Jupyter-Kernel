@@ -6,6 +6,7 @@ Next Release:
     ☐ add kernel uninstall
     ☐ add actual M2 version to banner
     ☐ improve client-side syntax indentation
+    ✔ fix parsing input lines that are longer than 80 (printWidth) chars @done(19-01-30 10:51)
 
 Remote Server:
     ☐ write a docker file for M2JK (Jupyter, Python3, Macaulay2)

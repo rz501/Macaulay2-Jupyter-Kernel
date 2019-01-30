@@ -84,7 +84,7 @@ class M2Interp:
         self.proc = pexpect.spawn(self.proc_command, **self.proc_kwargs)
         self.proc.delaybeforesend = None
 
-    def preprocess(self, code, usemagic):
+    def preprocess(self, code, usemagic, printwidth=80):
         """"""
         magic_lines = []
         code_lines = []
@@ -111,7 +111,14 @@ class M2Interp:
             elif trimmed.startswith('--'):
                 continue
             else:
-                code_lines.append(line+'--CMD')
+                cand = ""
+                for part in line.split():
+                    if len(cand)+len(part)+5 > printwidth:
+                        code_lines.append(cand+'--CMD')
+                        cand = part
+                    else:
+                        cand += ' ' + part 
+                code_lines.append(cand+'--CMD')
         if magic_lines or code_lines:
             return 'noop(begin)--CMD\n{}\nnoop(end)--CMD--EOB'.format('\n'.join(magic_lines+code_lines))
         return ''

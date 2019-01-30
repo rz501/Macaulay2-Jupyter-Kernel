@@ -12,6 +12,8 @@ Thing#{Standard,Print} = sentinelStandardPrint
 --Thing#{Standard,AfterPrint} = sentinelStandardAfterPrint
 texmacsmode = false;
 
+--printWidth = 1023
+
 noop = (trigger) -> ( lineNumber=lineNumber-1; null )
 mode = (usetexmacs) -> (
     if texmacsmode != usetexmacs then (
