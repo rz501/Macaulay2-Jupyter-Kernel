@@ -1,3 +1,6 @@
+## [0.6.6]
+- Clean up asset installation - codemirror and kernel spec.
+
 ## [0.6.5]
 - Guard against echo in pexpect.
 - Added `9,0` as a kernel-restart-and-clear keyboard shortcut.
