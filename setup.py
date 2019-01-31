@@ -18,7 +18,8 @@ setup(
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
     include_package_data=True,
-    package_data={'m2_kernel': ['data/m2-mode/*.js', 'data/m2-code/*.m2']},
+    package_data={'m2_kernel': [
+        'assets/m2-mode/*', 'assets/m2-code/*', 'assets/m2-spec/*']},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.7',

@@ -1,12 +1,13 @@
 import argparse
 import json
 import os
+import shutil
 import sys
 
 from jupyter_client.kernelspec import KernelSpecManager
 from IPython.utils.tempdir import TemporaryDirectory
-from notebook import __path__ as notebook_pkgdir
-from notebook.nbextensions import install_nbextension, enable_nbextension
+from notebook import __path__ as notebook_dir
+from notebook.nbextensions import install_nbextension
 
 """ Macaulay2 Jupyter Kernel: standard jupyter kernel spec installation
 """
@@ -19,22 +20,23 @@ kernel_json = {
 }
 
 
-def install_my_kernel_spec(user=True, prefix=None):
+def install_kernel_assets(user=True, prefix=None):
+    """
+    """
+    assets_dir = '{}/assets'.format(os.path.dirname(__file__))
+
     with TemporaryDirectory() as td:
         os.chmod(td, 0o755)  # Starts off as 700, not user readable
         with open(os.path.join(td, 'kernel.json'), 'w') as f:
-            json.dump(kernel_json, f, sort_keys=True)
-
+            json.dump(kernel_json, f, indent=2, sort_keys=False)
+        shutil.copy('{}/m2-spec/kernel.js'.format(assets_dir), td)
         print('Installing kernel spec ...')
-        KernelSpecManager().install_kernel_spec(td, 'm2', user=user, prefix=prefix)
+        KernelSpecManager().install_kernel_spec(td, kernel_name='m2', user=user, prefix=prefix)
 
-        srcdir = '{}/data/'.format(os.path.dirname(__file__))
-        dstdir = '{}/static/components/codemirror/mode/'.format(notebook_pkgdir[0])
-
-        # to avoid getting a GET 404 error, m2-mode must be on both paths...
-        print("Installing nbextension for syntax highlighting ...")
-        install_nbextension(srcdir+'m2-mode', overwrite=True, symlink=False,
-                            nbextensions_dir=dstdir, destination='macaulay2')
+    print("Installing nbextension for syntax highlighting ...")
+    install_nbextension('{}/m2-mode'.format(assets_dir),
+            nbextensions_dir='{}/static/components/codemirror/mode/'.format(notebook_dir[0]),
+            destination='macaulay2', overwrite=True, symlink=False)
 
 
 def _is_root():
@@ -60,7 +62,7 @@ def main(argv=None):
     if not args.prefix and not _is_root():
         args.user = True
 
-    install_my_kernel_spec(user=args.user, prefix=args.prefix)
+    install_kernel_assets(user=args.user, prefix=args.prefix)
 
 
 if __name__ == '__main__':
