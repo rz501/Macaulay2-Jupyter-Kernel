@@ -1,15 +1,23 @@
 Next Release:
     ☐ add line number in `original`
     ☐ keep no more than a single blank line at a time
-    ☐ add kernel.js to the kernelspec and move shortcuts code there
-    ☐ fix install locations for codemirror
+    ✔ add kernel.js to the kernelspec and move shortcuts code there @done(19-01-30 20:00)
+    ✔ fix install locations for codemirror @done(19-01-30 19:59)
     ☐ add kernel uninstall
-    ☐ add actual M2 version to banner
+    ☐ add actual M2 version to banner @started(19-01-30 21:18)
     ☐ improve client-side syntax indentation
     ✔ fix parsing input lines that are longer than 80 (printWidth) chars @done(19-01-30 10:51)
 
+Testing:
+    ✔ macOS @done(19-01-30 20:22)
+    ✔ Linux x64_86 @done(19-01-30 20:22)
+    ☐ Linux armv7/8 @started(19-01-30 21:19)
+    ☐ Docker x64_86 @started(19-01-30 20:23)
+    ☐ write unit tests
+    ☐ better testing on travis-ci
+
 Remote Server:
-    ☐ write a docker file for M2JK (Jupyter, Python3, Macaulay2)
+    ☐ write a docker file for M2JK + Jupyter Notebook + M2 @started(19-01-30 20:23)
     ☐ try it on AWS or DO
     ☐ wiki docs
 
@@ -18,7 +26,3 @@ Client-side JavaScript and CSS:
         making this work in the REPL would take a litte work
     ☐ add an emacs-like colors theme
     ☐ may be look into https://github.com/marks1024/language-macaulay2
-
-Testing:
-    ☐ write unit tests
-    ☐ better testing on travis-ci

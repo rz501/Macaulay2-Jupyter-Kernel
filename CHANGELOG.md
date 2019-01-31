@@ -1,5 +1,7 @@
 ## [0.6.6]
 - Clean up asset installation - codemirror and kernel spec.
+- Add custom shortcuts.
+- Add custom help link.
 
 ## [0.6.5]
 - Guard against echo in pexpect.

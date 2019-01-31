@@ -227,8 +227,11 @@ class M2Kernel(Kernel):
         'codemirror_mode': 'macaulay2',
         # 'pigments_lexer': None,
     }
-    banner = 'Jupyter Kernel for Macaulay2\nversion {}. Macaulay2 version {}'.format(
-                    implementation_version, language_version)
+    banner = 'Jupyter Kernel for Macaulay2 (v{})'.format(implementation_version)
+    help_links = [{
+        'text': 'M2JK Demo',
+        'url': 'https://nbviewer.jupyter.org/github/radoslavraynov/Macaulay2-Jupyter-Kernel/blob/master/demo/demo.ipynb'
+    }]
 
     def __init__(self, *args, **kwargs):
         """ kernel init - calls __init__ on the parent and sets up the M2Interp object
