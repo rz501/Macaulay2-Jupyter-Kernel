@@ -12,13 +12,13 @@ Testing:
     ✔ macOS @done(19-01-30 20:22)
     ✔ Linux x64_86 @done(19-01-30 20:22)
     ☐ Linux armv7/8 @started(19-01-30 21:19)
-    ☐ Docker x64_86 @started(19-01-30 20:23)
+    ✔ Docker x64_86 @done(19-02-01 10:28)
     ☐ write unit tests
     ☐ better testing on travis-ci
 
 Remote Server:
-    ☐ write a docker file for M2JK + Jupyter Notebook + M2 @started(19-01-30 20:23)
-    ☐ try it on AWS or DO
+    ✔ write a docker file for M2JK + Jupyter Notebook + M2 @started(19-01-30 20:23) @done(19-02-01 10:28) @lasted(1d14h5m13s)
+    ✔ try it on AWS or DO @done(19-02-01 10:28)
     ☐ wiki docs
 
 Client-side JavaScript and CSS:

@@ -1,3 +1,6 @@
+## [0.6.7]
+- Bug fixes
+
 ## [0.6.6]
 - Clean up asset installation - codemirror and kernel spec.
 - Add custom shortcuts.
