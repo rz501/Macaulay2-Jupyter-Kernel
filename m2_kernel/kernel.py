@@ -111,14 +111,7 @@ class M2Interp:
             elif trimmed.startswith('--'):
                 continue
             else:
-                cand = ""
-                for part in line.split():
-                    if len(cand)+len(part)+5 > printwidth:
-                        code_lines.append(cand+'--CMD')
-                        cand = part
-                    else:
-                        cand += ' ' + part 
-                code_lines.append(cand+'--CMD')
+                code_lines.append(line+'--CMD')
         if magic_lines or code_lines:
             return 'noop(begin)--CMD\n{}\nnoop(end)--CMD--EOB'.format('\n'.join(magic_lines+code_lines))
         return ''
@@ -126,6 +119,7 @@ class M2Interp:
     def execute(self, code, lastonly=True, usemagic=True):
         """"""
         clean_code = self.preprocess(code, usemagic=usemagic)
+        if self.debug: print(clean_code)
         if not clean_code: return []
         try:
             return self.repl(clean_code, lastonly=lastonly)
@@ -164,8 +158,8 @@ class M2Interp:
             try:
                 for testline in self.proc:
                     line = testline[:-2]
+                    if self.debug: print(line)
                     break
-                # print(line)
             except pexpect.TIMEOUT:
                 self.proc.sendcontrol('c') 
                 self.proc.read(1)  # this is VERY IMPORTANT!
