@@ -1,8 +1,9 @@
 FROM jupyter/base-notebook
 
-# install m2jk
+# install m2jk and copy examples
 RUN python3 -m pip install macaulay2-jupyter-kernel
 RUN python3 -m m2_kernel.install
+COPY test.ipynb /test/
 COPY demo.ipynb /test/
 
 # install M2

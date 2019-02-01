@@ -47,6 +47,15 @@ $ pip3 install .
 $ python3 -m m2_kernel.install
 ```
 
+## Docker
+
+A docker image packing `v0.6.7-beta` and Macaulay2 version `1.13` is available as `rzlatev/m2jk`.
+To run locally, you need to map port `8890`.
+
+```bash
+docker run -p 8890:8890 rzlatev/m2jk &
+```
+
 ## Running the notebook
 
 Once the installation is complete, you need to start (or restart) Jupyter by
