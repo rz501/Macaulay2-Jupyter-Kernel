@@ -13,7 +13,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Radoslav Zlatev',
-    author_email='radoslav.raynov@yahoo.com',
+    author_email='radoslav@math.cornell.edu',
     url='https://github.com/radoslavraynov/macaulay2-jupyter-kernel',
     # packages=find_packages(),
     install_requires=['ipykernel', 'notebook', 'pexpect'],
