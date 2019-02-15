@@ -53,7 +53,7 @@ A docker image packing `v0.6.7-beta` and Macaulay2 version `1.13` is available a
 To run locally, you need to map port `8890`.
 
 ```bash
-docker run -p 8890:8890 rzlatev/m2jk &
+$ docker run -p 8890:8890 rzlatev/m2jk &
 ```
 
 ## Running the notebook
