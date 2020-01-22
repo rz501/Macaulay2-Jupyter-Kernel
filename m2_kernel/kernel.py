@@ -82,7 +82,7 @@ class M2Interp:
         if not (self.proc is None):
             return
         self.proc = pexpect.spawn(self.proc_command, **self.proc_kwargs)
-        self.proc.delaybeforesend = None
+        self.proc.delaybeforesend = 0
 
     def preprocess(self, code, usemagic, printwidth=80):
         """"""
